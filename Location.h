@@ -9,9 +9,10 @@
 #include <cstring>
 #include "HandleJson.h"
 #include "FetchAPI.h"
+#include "KEYS.h"
 
 class Location  {
-    std::string API_KEY = "AIzaSyAWtvDfmVQ_tbJPDzPZQ79TNJPXZJiITKg";
+//    std::string API_KEY = "";
     std::string name;
 public:
     Location(std::string name);

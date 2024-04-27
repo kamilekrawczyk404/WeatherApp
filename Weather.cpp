@@ -50,7 +50,7 @@ Weather::~Weather() {
 }
 
 std::string Weather::getUrl() {
-    std::string url = "api.openweathermap.org/data/2.5/forecast?lat=" + std::to_string(this->lat) + "&lon=" + std::to_string(this->lon) + "&appid=" + this->API_KEY;
+    std::string url = "api.openweathermap.org/data/2.5/forecast?lat=" + std::to_string(this->lat) + "&lon=" + std::to_string(this->lon) + "&appid=" + WEATHER_API_KEY;
     
     return url;
 }

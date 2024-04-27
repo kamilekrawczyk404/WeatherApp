@@ -19,7 +19,7 @@ Location::~Location() {
 }
 
 std::string Location::getUrl() {
-    std::string url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + this->name + "&key=" + this->API_KEY;
+    std::string url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + this->name + "&key=" + GOOGLE_LOCATION_API_KEY;
     
     return url;
 }

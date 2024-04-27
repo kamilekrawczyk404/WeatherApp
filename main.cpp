@@ -1,6 +1,4 @@
-#include <iostream>
 #include <SFML/Graphics.hpp>
-#include <curl/curl.h>
 #include "Weather.h"
 
 
@@ -9,9 +7,6 @@ int main() {
   
     Weather weather("Bobowa");
     
-    
-//    auto respone = cpr::Get(cpr::Url{"http://httpbin.org/get"});®
-//    std::cout << response.text << std::endl
     /*sf::RenderWindow window(sf::VideoMode(640, 480), "SFML Application");
     sf::CircleShape shape;
     shape.setRadius(40.f);

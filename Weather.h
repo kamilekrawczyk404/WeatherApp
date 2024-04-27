@@ -15,7 +15,6 @@
 #include <ctime>
 
 class Weather : protected Location {
-    std::string API_KEY = "f35f1233abfd07411eecd90b215686ba";
     template<typename T>
     double toCelsius(T fahrenheit, int digits = 10);
     std::string convertToHoursAndSeconds(time_t unix);

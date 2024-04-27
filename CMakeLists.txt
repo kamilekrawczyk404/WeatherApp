@@ -11,7 +11,8 @@ set(SOURCE_FILES main.cpp
         HandleJson.cpp
         HandleJson.h
         FetchAPI.cpp
-        FetchAPI.h)
+        FetchAPI.h
+        KEYS.h)
 add_executable(cpp_weather_app ${SOURCE_FILES})
 include_directories(/usr/local/include)
 

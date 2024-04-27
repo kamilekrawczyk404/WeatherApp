@@ -1,3 +1,0 @@
-/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/CMakeFiles/cpp_weather_app.dir
-/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,21 @@
+# ninja log v5
+1	12	1713957272247873038	zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-mkdir	5cf442ba6917073a
+1	12	1713957272247873038	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/zlib-subbuild/zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-mkdir	5cf442ba6917073a
+12	2258	1713957274493753940	zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-download	3cadadb1c8a829f
+12	2258	1713957274493753940	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/zlib-subbuild/zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-download	3cadadb1c8a829f
+2258	2284	0	zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-update	b6c590e9910b7ea
+2258	2284	0	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/zlib-subbuild/zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-update	b6c590e9910b7ea
+2284	2294	1713957274530298865	zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-patch	fc63280486fa7344
+2284	2294	1713957274530298865	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/zlib-subbuild/zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-patch	fc63280486fa7344
+2294	2305	1713957274540705533	zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-configure	fec536c36b4a70f3
+2294	2305	1713957274540705533	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/zlib-subbuild/zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-configure	fec536c36b4a70f3
+2305	2315	1713957274551328119	zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-build	c7dc08072aadd80b
+2305	2315	1713957274551328119	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/zlib-subbuild/zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-build	c7dc08072aadd80b
+2315	2325	1713957274561166455	zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-install	8a521d701f351e76
+2315	2325	1713957274561166455	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/zlib-subbuild/zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-install	8a521d701f351e76
+2325	2335	1713957274570943165	zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-test	80b883ee2d10349c
+2325	2335	1713957274570943165	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/zlib-subbuild/zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-test	80b883ee2d10349c
+2335	2349	1713957274584899751	CMakeFiles/zlib-populate-complete	893a39ef1d67b580
+2335	2349	1713957274584899751	zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-done	893a39ef1d67b580
+2335	2349	1713957274584899751	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/zlib-subbuild/CMakeFiles/zlib-populate-complete	893a39ef1d67b580
+2335	2349	1713957274584899751	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/zlib-subbuild/zlib-populate-prefix/src/zlib-populate-stamp/zlib-populate-done	893a39ef1d67b580

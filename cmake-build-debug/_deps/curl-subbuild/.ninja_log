@@ -1,0 +1,23 @@
+# ninja log v5
+1	13	1713957275949095171	curl-populate-prefix/src/curl-populate-stamp/curl-populate-mkdir	cf5081c22e450e4c
+1	13	1713957275949095171	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/curl-subbuild/curl-populate-prefix/src/curl-populate-stamp/curl-populate-mkdir	cf5081c22e450e4c
+13	2131	1713957278066769670	curl-populate-prefix/src/curl-populate-stamp/curl-populate-download	2ff80a06dd0f5242
+13	2131	1713957278066769670	curl-populate-prefix/src/curl-8.4.0.tar.xz	2ff80a06dd0f5242
+13	2131	1713957278066769670	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/curl-subbuild/curl-populate-prefix/src/curl-populate-stamp/curl-populate-download	2ff80a06dd0f5242
+13	2131	1713957278066769670	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/curl-subbuild/curl-populate-prefix/src/curl-8.4.0.tar.xz	2ff80a06dd0f5242
+2131	2142	1713957278077878631	curl-populate-prefix/src/curl-populate-stamp/curl-populate-update	66106f2c7412620e
+2131	2142	1713957278077878631	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/curl-subbuild/curl-populate-prefix/src/curl-populate-stamp/curl-populate-update	66106f2c7412620e
+2142	2153	1713957278088777717	curl-populate-prefix/src/curl-populate-stamp/curl-populate-patch	c027f0f6e820cf1
+2142	2153	1713957278088777717	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/curl-subbuild/curl-populate-prefix/src/curl-populate-stamp/curl-populate-patch	c027f0f6e820cf1
+2153	2163	1713957278099100594	curl-populate-prefix/src/curl-populate-stamp/curl-populate-configure	c6cbd062d4895628
+2153	2163	1713957278099100594	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/curl-subbuild/curl-populate-prefix/src/curl-populate-stamp/curl-populate-configure	c6cbd062d4895628
+2163	2173	1713957278109166180	curl-populate-prefix/src/curl-populate-stamp/curl-populate-build	70c441d0ecd6ea44
+2163	2173	1713957278109166180	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/curl-subbuild/curl-populate-prefix/src/curl-populate-stamp/curl-populate-build	70c441d0ecd6ea44
+2173	2183	1713957278119211598	curl-populate-prefix/src/curl-populate-stamp/curl-populate-install	3a6a5a95d971884c
+2173	2183	1713957278119211598	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/curl-subbuild/curl-populate-prefix/src/curl-populate-stamp/curl-populate-install	3a6a5a95d971884c
+2183	2193	1713957278129411100	curl-populate-prefix/src/curl-populate-stamp/curl-populate-test	736a3023a17886ba
+2183	2193	1713957278129411100	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/curl-subbuild/curl-populate-prefix/src/curl-populate-stamp/curl-populate-test	736a3023a17886ba
+2193	2209	1713957278144796896	CMakeFiles/curl-populate-complete	d7b4e965fa5db18e
+2193	2209	1713957278144796896	curl-populate-prefix/src/curl-populate-stamp/curl-populate-done	d7b4e965fa5db18e
+2193	2209	1713957278144796896	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/curl-subbuild/CMakeFiles/curl-populate-complete	d7b4e965fa5db18e
+2193	2209	1713957278144796896	/Users/kamilek/Desktop/Projects/cpp_weather_app/cmake-build-debug/_deps/curl-subbuild/curl-populate-prefix/src/curl-populate-stamp/curl-populate-done	d7b4e965fa5db18e

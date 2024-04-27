@@ -4,6 +4,7 @@
 
 #ifndef CPP_WEATHER_APP_WEATHER_H
 #define CPP_WEATHER_APP_WEATHER_H
+
 #include <string>
 #include <iostream>
 #include "Location.h"
@@ -11,21 +12,19 @@
 #include "HandleJson.h"
 #include <vector>
 #include <nlohmann/json.hpp>
-#include <math.h>
+#include <cmath>
 #include <ctime>
 
 class Weather : protected Location {
     template<typename T>
     double toCelsius(T fahrenheit, int digits = 10);
-    std::string convertToHoursAndSeconds(time_t unix);
+    
+    static std::string convertToClockFormat(time_t unix);
 public:
     json weatherForecast = json::array();
-    Weather(std::string location);
-    
-    // Destructor
-    ~Weather();
+    Weather(std::string& location, std::vector<std::string>& errors);
 protected:
-    std::string getUrl();
+    std::string getUrl() override;
 };
 
 

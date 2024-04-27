@@ -6,11 +6,12 @@
 #define CPP_WEATHER_APP_FETCHAPI_H
 #include <string>
 #include <curl/curl.h>
-
+#include <iostream>
+#include <nlohmann/json.hpp>
 
 class FetchAPI {
 public:
-    std::string fetchedData;
+    std::string fetchedData = "";
     FetchAPI(std::string url);
     static size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data);
 };

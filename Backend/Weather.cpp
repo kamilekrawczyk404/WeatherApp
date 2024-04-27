@@ -6,7 +6,7 @@
 
 using json = nlohmann::json;
 
-Weather::Weather(std::string location): Location(location) {
+Weather::Weather(std::string& location, std::vector<std::string>& errors): Location(location, errors) {
     FetchAPI api(getUrl());
     HandleJson rawJson(api.fetchedData);
 
@@ -39,15 +39,12 @@ Weather::Weather(std::string location): Location(location) {
         
         weatherForecast.push_back(partial);
         weatherForecast.push_back(json({
-            {"sunrise", convertToHoursAndSeconds(rawJson.content["city"]["sunrise"].get<time_t>())},
-            {"sunset", convertToHoursAndSeconds(rawJson.content["city"]["sunset"].get<time_t>())},
+            {"sunrise", convertToClockFormat(rawJson.content["city"]["sunrise"].get<time_t>())},
+            {"sunset", convertToClockFormat(rawJson.content["city"]["sunset"].get<time_t>())},
         }));
     }
 }
 
-Weather::~Weather() {
-    std::cout << "Destructor..." << std::endl;
-}
 
 std::string Weather::getUrl() {
     std::string url = "api.openweathermap.org/data/2.5/forecast?lat=" + std::to_string(this->lat) + "&lon=" + std::to_string(this->lon) + "&appid=" + WEATHER_API_KEY;
@@ -60,7 +57,7 @@ double Weather::toCelsius(T kelvins, int digits) {
     return round((kelvins - 273.15) * digits) / digits;
 }
 
-std::string Weather::convertToHoursAndSeconds(time_t unix) {
+std::string Weather::convertToClockFormat(time_t unix) {
     struct tm * timeinfo;
     timeinfo = localtime(&unix);
     char buffer[6];

@@ -33,8 +33,14 @@ FetchAPI::FetchAPI(std::string url) {
         curl_easy_cleanup(curl);
         curl = NULL;
 
-        this->fetchedData = response_string;
+        if (nlohmann::json::parse(response_string)["status"] == "ZERO_RESULTS") {
+            std::cout << "brak danych" << std::endl;
+            
+        } else {
+            this->fetchedData = response_string;
+        }
     }
+    
 }
 
 size_t FetchAPI::writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {

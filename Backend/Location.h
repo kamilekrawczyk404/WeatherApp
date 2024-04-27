@@ -7,22 +7,19 @@
 #include <string>
 #include <iostream>
 #include <cstring>
+#include <vector>
 #include "HandleJson.h"
 #include "FetchAPI.h"
 #include "KEYS.h"
 
 class Location  {
-//    std::string API_KEY = "";
     std::string name;
 public:
-    Location(std::string name);
-    ~Location();
+    Location(std::string& name, std::vector<std::string>& errors);
 protected:
-    // storing as a string for able to use in the weather api
     double lat;
     double lon;
     virtual std::string getUrl();
 };
-
 
 #endif //CPP_WEATHER_APP_LOCATION_H

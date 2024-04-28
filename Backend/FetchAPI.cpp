@@ -4,11 +4,19 @@
 
 #include "FetchAPI.h"
 
-FetchAPI::FetchAPI(std::string url) {
-    auto curl = curl_easy_init();
+FetchAPI::FetchAPI(std::string url): apiUrl(url) {
+    this->fetchData();
+}
 
+size_t FetchAPI::writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
+    data->append((char*) ptr, size * nmemb);
+    return size * nmemb;
+};
+
+void FetchAPI::fetchData() {
+    auto curl = curl_easy_init();
     if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_URL, this->apiUrl.c_str());
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
         curl_easy_setopt(curl, CURLOPT_USERPWD, "user:pass");
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "curl/7.42.0");
@@ -34,16 +42,9 @@ FetchAPI::FetchAPI(std::string url) {
         curl = NULL;
 
         if (nlohmann::json::parse(response_string)["status"] == "ZERO_RESULTS") {
-            std::cout << "brak danych" << std::endl;
-            
+            this->errorMessage = "We can't find provided location";
         } else {
             this->fetchedData = response_string;
         }
     }
-    
 }
-
-size_t FetchAPI::writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
-    data->append((char*) ptr, size * nmemb);
-    return size * nmemb;
-};

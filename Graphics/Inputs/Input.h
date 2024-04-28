@@ -18,7 +18,6 @@ public:
     
     Input(float width, float height, fncPtr func, float fontSize = 14.f, std::string placeholder = "");
     
-    void checkOverflow(bool ltr = true);
     void textEntered(sf::Event& event, std::vector<std::string>& errors);
     void draw(sf::RenderWindow& window);
     void setPosition(float x, float y);
@@ -29,6 +28,7 @@ private:
     float width, height, fontSize;
     std::string placeholder;
     
+    void setPlaceholder();
     void onEnter();
     fncPtr onEnterHandler;
 };

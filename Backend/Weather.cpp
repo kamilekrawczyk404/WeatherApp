@@ -6,7 +6,7 @@
 
 using json = nlohmann::json;
 
-Weather::Weather(std::string& location, std::vector<std::string>& errors): Location(location, errors) {
+Weather::Weather(std::string& location): Location(location) {
     FetchAPI api(getUrl());
     HandleJson rawJson(api.fetchedData);
 
@@ -36,7 +36,7 @@ Weather::Weather(std::string& location, std::vector<std::string>& errors): Locat
                   "snow", item["snow"]["3h"]
               })},
         });
-        
+
         weatherForecast.push_back(partial);
         weatherForecast.push_back(json({
             {"sunrise", convertToClockFormat(rawJson.content["city"]["sunrise"].get<time_t>())},

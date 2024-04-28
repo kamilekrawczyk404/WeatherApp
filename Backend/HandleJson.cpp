@@ -7,7 +7,3 @@
 HandleJson::HandleJson(std::string rawJson) {
     this->content = json::parse(rawJson);
 }
-
-HandleJson::~HandleJson() {
-    std::cout << "Destructor.." << std::endl;
-}

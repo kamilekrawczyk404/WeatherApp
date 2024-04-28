@@ -11,8 +11,10 @@
 
 class FetchAPI {
 public:
-    std::string fetchedData = "";
+    std::string fetchedData = "", errorMessage = "", apiUrl = "";
+    
     FetchAPI(std::string url);
+    void fetchData();
     static size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data);
 };
 

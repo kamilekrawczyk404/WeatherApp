@@ -15,10 +15,12 @@
 class Location  {
     std::string name;
 public:
-    Location(std::string& name, std::vector<std::string>& errors);
+    std::string errorMessage = "";
+    
+    Location(std::string& name);
+    bool isOk();
 protected:
-    double lat;
-    double lon;
+    double lat, lon;
     virtual std::string getUrl();
 };
 

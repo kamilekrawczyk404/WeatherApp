@@ -15,7 +15,6 @@ class HandleJson {
 public:
     json content;
     HandleJson(std::string rawJson);
-    ~HandleJson();
 };
 
 

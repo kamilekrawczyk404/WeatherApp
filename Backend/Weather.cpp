@@ -9,40 +9,47 @@ using json = nlohmann::json;
 Weather::Weather(std::string& location): Location(location) {
     FetchAPI api(getUrl());
     HandleJson rawJson(api.fetchedData);
-
+    
     for(auto item : rawJson.content["list"]) {
         json partial({
-             {"date", item["dt_txt"] },
+//             {"date", item["dt_txt"]},
+             {"weekday", Helpers::getWeekday(item["dt_txt"])},
              {"temperature", json ({
-               {"feels_like", toCelsius<double>(item["main"]["feels_like"].get<double>())},
-               {"temp_min", toCelsius<double>(item["main"]["temp_min"])},
-               {"temp_max", toCelsius<double>(item["main"]["temp_max"])},
-               {"main", toCelsius<double>(item["main"]["temp"])},
+               {"feels_like", std::to_string(Helpers::toCelsius(item["main"]["feels_like"]))},
+               {"temp_min", std::to_string(Helpers::toCelsius(item["main"]["temp_min"]))},
+               {"temp_max", std::to_string(Helpers::toCelsius(item["main"]["temp_max"]))},
+               {"main", std::to_string(Helpers::toCelsius(item["main"]["temp"]))},
              })},
-             {"humidity", item["main"]["humidity"]},
-             {"pressure", item["main"]["pressure"]},
+             {"specificInformation", json({
+                 {"humidity", item["main"]["humidity"]}, 
+                 {"pressure", item["main"]["pressure"]},
+                 {"cloudiness", item["clouds"]["all"]},
+                 {"wind", json({
+                     {"speed", item["wind"]["speed"]},
+                     {"deg", item["wind"]["deg"]}
+                 })},
+                 {"visibility", std::to_string(item["visibility"].get<double>() / 1000)},
+                 {"fall", json({
+                     {"rain", item["rain"]["3h"]},
+                     {"snow", item["snow"]["3h"]},
+                 })},
+             })},
              {"weather", json({
+                  {"icon", item["weather"][0]["icon"].get<std::string>() + ".png"},
                   {"info", item["weather"][0]["main"]},
                   {"description", item["weather"][0]["description"]}
              })},
-             {"cloudiness", item["clouds"]["all"]},
-             {"wind", json({
-                   {"speed", item["wind"]["speed"]},
-                   {"deg", item["wind"]["deg"]}
-             })},
-              {"visibility", item["visibility"].get<double>() / 1000},
-              {"fall", json({
-                  "rain", item["rain"]["3h"],
-                  "snow", item["snow"]["3h"]
-              })},
+             
         });
-
         weatherForecast.push_back(partial);
-        weatherForecast.push_back(json({
-            {"sunrise", convertToClockFormat(rawJson.content["city"]["sunrise"].get<time_t>())},
-            {"sunset", convertToClockFormat(rawJson.content["city"]["sunset"].get<time_t>())},
-        }));
     }
+    locationInfo.push_back( {
+        {"sunrise", Helpers::convertToClockFormat(rawJson.content["city"]["sunrise"].get<time_t>())},
+        {"sunset", Helpers::convertToClockFormat(rawJson.content["city"]["sunset"].get<time_t>())},
+        {"city", rawJson.content["city"]["name"].get<std::string>() + "," + rawJson.content["city"]["country"].get<std::string>()}
+    });
+    
+//    std::cout << weatherForecast << std::endl;
 }
 
 
@@ -50,18 +57,4 @@ std::string Weather::getUrl() {
     std::string url = "api.openweathermap.org/data/2.5/forecast?lat=" + std::to_string(this->lat) + "&lon=" + std::to_string(this->lon) + "&appid=" + WEATHER_API_KEY;
     
     return url;
-}
-
-template<typename T>
-double Weather::toCelsius(T kelvins, int digits) {
-    return round((kelvins - 273.15) * digits) / digits;
-}
-
-std::string Weather::convertToClockFormat(time_t unix) {
-    struct tm * timeinfo;
-    timeinfo = localtime(&unix);
-    char buffer[6];
-    strftime(buffer, sizeof(buffer), "%H:%M", timeinfo);
-    
-    return buffer;
 }

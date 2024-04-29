@@ -5,11 +5,11 @@
 #include "Input.h"
 
 Input::Input(float width, float height, fncPtr func, float fontSize, std::string placeholder) : onEnterHandler(func), placeholder(placeholder), fontSize(fontSize), width(width), height(height), customFont(), background(sf::Vector2<float>(width, height)), inputText("", customFont.font, (int)fontSize) {
-    this->background.setFillColor(sf::Color::White);
-    this->background.setOutlineColor(sf::Color::Black);
+    this->background.setFillColor(sf::Color(36, 36, 36, 255 / 4));
+    this->background.setOutlineColor(sf::Color::White);
     this->background.setOutlineThickness(2.f);
     
-    this->inputText.setFillColor(sf::Color::Black);
+    this->inputText.setFillColor(sf::Color::White);
     
     if (this->placeholder.length()) {
         this->setPlaceholder();
@@ -27,7 +27,6 @@ void Input::setPosition(float x, float y) {
 
 void Input::textEntered(sf::Event& event, std::vector<std::string>& errors) {
     errors[0] = "";
-    
     
     if (event.text.unicode < 128) {
         if (this->inputText.getString() == placeholder && event.text.unicode != '\b') {

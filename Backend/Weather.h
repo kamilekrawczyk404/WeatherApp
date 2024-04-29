@@ -10,16 +10,13 @@
 #include "Location.h"
 #include "FetchAPI.h"
 #include "HandleJson.h"
+#include "Helpers.h"
 #include <nlohmann/json.hpp>
 #include <cmath>
-#include <ctime>
 
 class Weather : public Location {
-    template<typename T>
-    double toCelsius(T fahrenheit, int digits = 10);
-    static std::string convertToClockFormat(time_t unix);
 public:
-    json weatherForecast = json::array();
+    json weatherForecast = json::array(), locationInfo;
     Weather(std::string& location);
 protected:
     std::string getUrl() override;

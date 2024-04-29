@@ -6,6 +6,7 @@
 
 Div::Div(float width, float height): width(width), height(height) {
     this->properties.setSize(sf::Vector2f(width, height));
+    this->properties.setFillColor(sf::Color(36, 36, 36, 255 / 4));
 };
 
 void Div::draw(sf::RenderWindow &window) {

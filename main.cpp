@@ -1,14 +1,16 @@
 #include <SFML/Graphics.hpp>
 #include "Backend/Weather.h"
-#include "Graphics/Inputs/Input.h"
-#include "Graphics/StaticText/StaticText.h"
-#include "Graphics/Image/Image.h"
-#include "Graphics/Containers/Div.h"
+#include "Frontend/Graphics/Inputs/Input.h"
+#include "Frontend/Graphics/StaticText/StaticText.h"
+#include "Frontend/Graphics/Image/Image.h"
+#include "Frontend/Graphics/Containers/Div.h"
 #include <vector>
 #include <nlohmann/json.hpp>
+#include <string>
+#include "Frontend/Layout/Layout.h"
 
 std::vector<std::string> errors = {""};
-nlohmann::json weatherData;
+nlohmann::json weatherData, cityData;
 
 void getLocation(std::string content) {
     Weather *weather = new Weather(content);
@@ -18,28 +20,30 @@ void getLocation(std::string content) {
         delete weather;
     } else {
         weatherData = weather->weatherForecast;
+        cityData = weather->locationInfo;
     }
 }
 
 int main() {
+    Layout ui;
+    
+    // Input width
+    float width = 310;
+    
+    // Main background
     Image background("background.jpg");
     
-    Div section(350.f, 150.f);
-    section.properties.setFillColor(sf::Color(255, 255, 255, 255 * 3/4));
-    section.properties.setPosition((background.textureSize.x - section.properties.getLocalBounds().getSize().x )/ 2, (background.textureSize.y - section.properties.getLocalBounds().getSize().y )/ 2);
-    
     sf::RenderWindow window(sf::VideoMode(background.textureSize.x, background.textureSize.y), "Simple Forecast Application");
-    float centerX = window.getSize().x / 2;
-    float centerY = window.getSize().y / 2;
     
-    Input locationInput(300.f, 30.f, getLocation, 14.f, "Enter your location");
-    locationInput.setPosition((centerX - locationInput.background.getSize().x / 2), (centerY - locationInput.background.getSize().y / 2));
-    
-    StaticText title("Weather Forecast Application", 18, sf::Color::Black);
-    title.justifyCenter(centerX, centerY, 0, -50.f);
-    
+    // Interactive part with user
+    Input locationInput(width, 30.f, getLocation, 14.f, "Enter your location");
     StaticText errorMessage(errors.at(0), 14, sf::Color::Red);
-    errorMessage.justifyCenter(centerX, centerY, 0, 40.f);
+    Div section(width + 4.f, 22.f);
+    locationInput.setPosition(ui.margin, 20.f);
+    errorMessage.setPosition(ui.margin + 10.f, 57.5f);
+//    section.properties.setFillColor(sf::Color(255, 255, 255, 255 * 3/4));
+    section.properties.setPosition(ui.margin - 2, 55.f);
+    
     
     while (window.isOpen())
     {
@@ -60,16 +64,15 @@ int main() {
 
         if (!weatherData.empty()) {
             // we got the information!
-        } else {
+            ui.loadJson(weatherData, cityData);
+            ui.drawLayout(window);
+        } 
+        locationInput.draw(window);
+        
+        if (errors[0] != "") {
             section.draw(window);
-            locationInput.draw(window);
-            title.draw(window);
-
-            if (errors.size()) {
-                errorMessage.setText(errors.at(0));
-                errorMessage.justifyCenter(centerX, centerY, 0, 40.f);
-                errorMessage.draw(window);
-            }
+            errorMessage.setText(errors.at(0));
+            errorMessage.draw(window);
         }
         
         window.display();

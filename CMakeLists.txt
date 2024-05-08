@@ -52,8 +52,6 @@ file(COPY ${FONTS_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 target_include_directories(cpp_weather_app PRIVATE ${CMAKE_SOURCE_DIR}/Frontend/fonts)
 
 configure_file(Frontend/Graphics/Images/background.jpg background.jpg COPYONLY)
-configure_file(Frontend/Graphics/Images/WeatherIcons/sunset.png sunset.png COPYONLY)
-configure_file(Frontend/Graphics/Images/WeatherIcons/sunrise.png sunrise.png COPYONLY)
 
 file(GLOB IMAGE_FILES ${CMAKE_SOURCE_DIR}/Frontend/Graphics/Images/**/*.*)
 file(COPY ${IMAGE_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

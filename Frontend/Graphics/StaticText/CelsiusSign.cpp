@@ -5,8 +5,8 @@
 #include "CelsiusSign.h"
 
 CelsiusSign::CelsiusSign(sf::RenderWindow& window, float x, float y, int fontSize ) {
-    StaticText degreeSymbol("o", fontSize / 2, sf::Color::White);
-    StaticText cSymbol("C", fontSize, sf::Color::White);
+    StaticText degreeSymbol("o", fontSize / 2);
+    StaticText cSymbol("C", fontSize);
     
     degreeSymbol.setPosition(x, y + 2.f);
     cSymbol.setPosition(x + (float)fontSize / 3, y);

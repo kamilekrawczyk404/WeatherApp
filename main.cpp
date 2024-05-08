@@ -36,7 +36,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(background.textureSize.x, background.textureSize.y), "Simple Forecast Application");
     
     // Interactive part with user
-    Input locationInput(width, 30.f, getLocation, 14.f, "Enter your location");
+    Input locationInput(width, 30.f, getLocation, 16.f, "Enter your location");
     locationInput.setPosition(ui.margin, 20.f);
     
     StaticText errorMessage(errors.at(0), 14, sf::Color::Red);

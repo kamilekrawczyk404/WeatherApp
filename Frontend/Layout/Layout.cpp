@@ -22,13 +22,13 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     mainSectionContainer.properties.setPosition(margin - 2.f, top - 10.f);
     mainSectionContainer.draw(window);
     
-    StaticText location(city[0]["city"], 24, sf::Color::White);
+    StaticText location(city[0]["city"], 24);
     location.setPosition(margin + 10.f, top + 150.f);
     
-    StaticText temperature("", 50, sf::Color::White);
+    StaticText temperature("", 50);
     temperature.setPosition(margin + 120.f, top + 10.f);
     
-    StaticText currentInfo("", 40, sf::Color::White);
+    StaticText currentInfo("", 40);
     currentInfo.setPosition(margin + 10.f, top + 100.f);
     
     Image sunrise("sunrise.png");
@@ -36,7 +36,7 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     sunrise.image.setScale(0.75f, 0.75f);
     sunrise.draw(window);
     
-    StaticText sunriseInfo(city[0]["sunrise"], 24, sf::Color::White);
+    StaticText sunriseInfo(city[0]["sunrise"], 24);
     sunriseInfo.text.setPosition(margin + 20.f, top + 260.f);
     sunriseInfo.draw(window);
     
@@ -45,7 +45,7 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     sunset.image.setScale(0.75f, 0.75f);
     sunset.draw(window);
     
-    StaticText sunsetInfo(city[0]["sunset"], 24, sf::Color::White);
+    StaticText sunsetInfo(city[0]["sunset"], 24);
     sunsetInfo.text.setPosition(margin + 170.f, top + 260.f);
     sunsetInfo.draw(window);
     
@@ -81,16 +81,9 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     CelsiusSign(window, margin + 125.f + temperature.text.getString().getSize() * 50 / 2, top + 10.f, 50);
 
     Image currentIcon(iconName);
-
-    // Different images sizes
-    if (iconName == "04d.png" || iconName == "04n.png") {
-        currentIcon.image.setScale(0.75f, 0.75f);
-        currentIcon.image.setPosition(margin / 2 + 20.f, top - 10.f);
-    } else {
-        currentIcon.image.setPosition(margin / 2, top - 20.f);
-    }
-    
+    currentIcon.image.setPosition(margin / 2, top - 20.f);
     currentIcon.draw(window);
+    
     location.draw(window);
     
     // Right side
@@ -99,12 +92,6 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     Div rightSection(250.f, 370.f);
     rightSection.properties.setPosition(offsetRight, margin);
     rightSection.draw(window);
-
-    // Bottom side
-    const float offsetTop = 440.f - margin;
-    Div bottomSection(1000.f - 2 * margin, 225.f);
-    bottomSection.properties.setPosition(margin, offsetTop);
-    bottomSection.draw(window);
 
     for(auto& [key, value] : weather[currentDay][hasDay ? "day" : "night"]["specificInformation"].items()) {
         int index = std::distance(weather[currentDay][hasDay ? "day" : "night"]["specificInformation"].begin(), weather[currentDay][hasDay ? "day" : "night"]["specificInformation"].find(key));
@@ -132,8 +119,8 @@ void Layout::specificInformation(int& index, sf::RenderWindow &window, std::stri
     }
     
     Image icon(  key + ".png");
-    StaticText title(data["title"], 20, sf::Color::White);
-    StaticText value(data["value"], 18, sf::Color::White);
+    StaticText title(data["title"], 20);
+    StaticText value(data["value"], 18);
     
     title.setPosition(offset + 100.f,  index * gap + (key != "Cloudiness" ? 25.f : 35.f));
     value.setPosition(offset + 100.f,  index * gap + (key != "Cloudiness" ? 50.f : 60.f));
@@ -161,12 +148,12 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
     singleDayContainer.properties.setPosition(offsetLeft, offsetTop);
     // selected day
     if (currentDay == i) {
-        singleDayContainer.properties.setOutlineThickness(2.5f);
-        singleDayContainer.properties.setOutlineColor(sf::Color::White);
+        singleDayContainer.properties.setOutlineThickness(5.f);
+        singleDayContainer.properties.setOutlineColor(sf::Color(32, 32, 32));
     }
     singleDayContainer.draw(window);
     
-    StaticText weekday(data[isDay ? "day" : "night"]["weekday"], 18, sf::Color(255, 255, 255));
+    StaticText weekday(data[isDay ? "day" : "night"]["weekday"], 18);
     weekday.setPosition(offsetLeft + 10.f, offsetTop + 10.f);
     weekday.draw(window);
     
@@ -176,7 +163,7 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
     mainIcon.image.setScale((isCloudsIcon ? 0.6f : 0.75f), (isCloudsIcon ? 0.6f : 0.75f));
     mainIcon.draw(window);
     
-    StaticText mainTemp(data[isDay ? "day" : "night"]["temperature"][isDay ? "temp_max" : "temp_min"], 32, sf::Color::White);
+    StaticText mainTemp(data[isDay ? "day" : "night"]["temperature"][isDay ? "temp_max" : "temp_min"], 32);
     mainTemp.setPosition(offsetLeft + 90.f, offsetTop + 50.f);
     mainTemp.draw(window);
     
@@ -190,7 +177,7 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
         secondaryIcon.image.setScale((isCloudsIcon ? 0.5f : 0.6f), (isCloudsIcon ? 0.5f : 0.6f));
         secondaryIcon.draw(window);
         
-        StaticText secondaryTemp(data[isDay ? "night" : "day"]["temperature"][isDay ? "temp_min" : "temp_max"], 24, sf::Color::White);
+        StaticText secondaryTemp(data[isDay ? "night" : "day"]["temperature"][isDay ? "temp_min" : "temp_max"], 24);
         secondaryTemp.setPosition(offsetLeft + 90.f, offsetTop + 135.f);
 
         CelsiusSign celsius(window, offsetLeft + (float)secondaryTemp.text.getString().getSize() * 30 + 75.f, offsetTop + 135.f, 24);

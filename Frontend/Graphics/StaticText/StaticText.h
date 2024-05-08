@@ -12,7 +12,7 @@
 class StaticText : CustomFont {
 public:
     sf::Text text;
-    StaticText(std::string text, int fontSize = 14, sf::Color color = sf::Color::Black);
+    StaticText(std::string text, int fontSize = 14, sf::Color color = sf::Color(32, 32, 32));
     void draw(sf::RenderWindow& window);
     void setPosition(float x, float y);
     void setText(std::string& text);

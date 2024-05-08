@@ -10,19 +10,11 @@ Image::Image(std::string path) {
     } else {
         this->textureSize = this->texture.getSize();
         
-//        this->texture.setSmooth(true);
+        this->texture.setSmooth(true);
         this->image.setTexture(texture);
-//        this->image.s
-//        this->image.setPosition(10.f, 10.f);
-//        this->image.setTextureRect(sf::IntRect(100, 100, 100, 100));
-
-//        this->image.setOrigin((float)this->texture.getSize().x / 2, (float)this->texture.getSize().y / 2);
-//        this->image.rotate(180.f);
-//        this->image.setScale(1.5f, 1.5f);
     }
 }
 
 void Image::draw(sf::RenderWindow& window) {
-//    this->texture.update(window);
     window.draw(this->image);
 }

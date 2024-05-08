@@ -37,13 +37,13 @@ int main() {
     
     // Interactive part with user
     Input locationInput(width, 30.f, getLocation, 14.f, "Enter your location");
-    StaticText errorMessage(errors.at(0), 14, sf::Color::Red);
-    Div section(width + 4.f, 22.f);
     locationInput.setPosition(ui.margin, 20.f);
-    errorMessage.setPosition(ui.margin + 10.f, 57.5f);
-//    section.properties.setFillColor(sf::Color(255, 255, 255, 255 * 3/4));
-    section.properties.setPosition(ui.margin - 2, 55.f);
     
+    StaticText errorMessage(errors.at(0), 14, sf::Color::Red);
+    errorMessage.setPosition(ui.margin + 10.f, 57.5f);
+    
+    Div section(width + 4.f, 22.f);
+    section.properties.setPosition(ui.margin - 2, 55.f);
     
     while (window.isOpen())
     {
@@ -65,6 +65,7 @@ int main() {
         if (!weatherData.empty()) {
             // we got the information!
             ui.loadJson(weatherData, cityData);
+            ui.loadEvent(event);
             ui.drawLayout(window);
         } 
         locationInput.draw(window);

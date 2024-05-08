@@ -7,6 +7,7 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
 #include "Location.h"
 #include "FetchAPI.h"
 #include "HandleJson.h"

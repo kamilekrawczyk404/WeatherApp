@@ -49,12 +49,13 @@ include_directories(${CURL_INCLUDE_DIR} ${SFML_INCLUDE_DIRS})
 set(FONTS_DIR ${CMAKE_SOURCE_DIR}/Frontend/fonts)
 file(COPY ${FONTS_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 
-target_include_directories(cpp_weather_app PRIVATE ${CMAKE_SOURCE_DIR}/fonts)
+target_include_directories(cpp_weather_app PRIVATE ${CMAKE_SOURCE_DIR}/Frontend/fonts)
 
 configure_file(Frontend/Graphics/Images/background.jpg background.jpg COPYONLY)
-#configure_file(Frontend/Graphics/Images/WeatherIcons/01d.png sunny.jpg COPYONLY)
+configure_file(Frontend/Graphics/Images/WeatherIcons/sunset.png sunset.png COPYONLY)
+configure_file(Frontend/Graphics/Images/WeatherIcons/sunrise.png sunrise.png COPYONLY)
 
-file(GLOB IMAGE_FILES ${CMAKE_SOURCE_DIR}/Frontend/Graphics/Images/WeatherIcons/*.png)
+file(GLOB IMAGE_FILES ${CMAKE_SOURCE_DIR}/Frontend/Graphics/Images/**/*.*)
 file(COPY ${IMAGE_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries(cpp_weather_app PRIVATE nlohmann_json::nlohmann_json ${CURL_LIBRARIES} sfml-system sfml-window sfml-graphics sfml-audio sfml-network)

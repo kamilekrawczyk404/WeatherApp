@@ -11,6 +11,6 @@ CelsiusSign::CelsiusSign(sf::RenderWindow& window, float x, float y, int fontSiz
     degreeSymbol.setPosition(x, y + 2.f);
     cSymbol.setPosition(x + (float)fontSize / 3, y);
     
-    degreeSymbol.draw(window);
     cSymbol.draw(window);
+    degreeSymbol.draw(window);
 }

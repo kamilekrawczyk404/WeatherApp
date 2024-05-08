@@ -12,14 +12,25 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-
+#include <chrono>
 
 class Helpers {
 public:
+    template<typename T>
+    static std::string removeDecimalZeros(T number, int precision = 2) {
+        std::ostringstream oss;
+
+        oss << std::fixed << std::setprecision(precision) << number;
+
+        return oss.str();
+    };
+
+    
+    
     static int toCelsius(const double kelvins, int digits = 10);
-    static std::string replaceAll(std::string str, const std::string from, const std::string to);
     static std::string convertToClockFormat(const time_t unix);
     static std::string getWeekday(const std::string date);
+    static int getCurrentHour();
 };
 
 

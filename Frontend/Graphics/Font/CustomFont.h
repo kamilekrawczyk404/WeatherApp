@@ -11,7 +11,7 @@
 class CustomFont {
 public:
     sf::Font font;
-    CustomFont(std::string filepath = "fonts/RobotoMono-Regular.ttf");
+    CustomFont(std::string filepath = "fonts/arial.ttf");
 };
 
 

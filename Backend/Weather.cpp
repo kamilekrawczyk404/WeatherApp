@@ -13,7 +13,7 @@ Weather::Weather(std::string& location): Location(location) {
     // has day and night flags
     bool isDay, newDay;
     // count of weather information with 3h interval
-    int length = rawJson.content["list"].size(), hour, currentDay = 0;
+    int length = rawJson.content["list"].size(), hour, highestTemp, lowestTemp, currentDay = 0;
     float min, max, currentTemp;
     std::string currentDate;
     json weekdayForecast;
@@ -24,7 +24,7 @@ Weather::Weather(std::string& location): Location(location) {
         // substring for getting only date
         currentDate = item["dt_txt"].get<std::string>().substr(0, 10);
 
-        if (hour >= 6 && hour <= 21) {
+        if (hour >= 6 && hour <= 18) {
             isDay = true;
         }
         
@@ -70,22 +70,25 @@ Weather::Weather(std::string& location): Location(location) {
         if (stoi(key) == 0) {
             // current weather
             weekdayForecast[isDay ? "day" : "night"] = partial;
+            // at this point we aren't sure that we've got both values, need to be checked in another day
+//            lowestTemp = stoi(partial["temperature"]["temp_min"].get<std::string>());
+//            highestTemp = stoi(partial["temperature"]["temp_max"].get<std::string>());
+            continue;
         } else if (currentDay != 0) {
             if (newDay) {
                 min = item["main"]["temp_min"].get<float>();
                 max = item["main"]["temp_max"].get<float>();
                 weekdayForecast["night"] = partial;
                 newDay = false;
-                continue;
             }
             if (isDay) {
-                currentTemp = item["main"]["temp_max"].get<float>();
+                currentTemp = std::max(item["main"]["temp_max"].get<float>(), item["main"]["temp_min"].get<float>());
                 if (currentTemp > max) {
                     weekdayForecast["day"] = partial;
                     max = currentTemp;
                 }
             } else {
-                currentTemp = item["main"]["temp_min"].get<float>();
+                currentTemp = std::min(item["main"]["temp_max"].get<float>(), item["main"]["temp_min"].get<float>());
                 if (min < currentTemp) {
                     weekdayForecast["night"] = partial;
                     min = currentTemp;
@@ -93,6 +96,14 @@ Weather::Weather(std::string& location): Location(location) {
             }
         }
         
+        std::cout << "min " << min << std::endl;
+        
+        if (Helpers::toCelsius(min) < lowestTemp) {
+            lowestTemp = Helpers::toCelsius(min);
+        }
+        else if (Helpers::toCelsius(max) > highestTemp) {
+            highestTemp = Helpers::toCelsius(max);
+        }
         
         if (stoi(key) + 1 != length && currentDate != rawJson.content["list"].at(stoi(key) + 1)["dt_txt"].get<std::string>().substr(0, 10)) {
             // next iteration is next day
@@ -114,10 +125,12 @@ Weather::Weather(std::string& location): Location(location) {
         }
     }
     
-    locationInfo.push_back( {
+    additionalInfo.push_back( {
         {"sunrise", Helpers::convertToClockFormat(rawJson.content["city"]["sunrise"].get<time_t>())},
         {"sunset", Helpers::convertToClockFormat(rawJson.content["city"]["sunset"].get<time_t>())},
-        {"city", rawJson.content["city"]["name"].get<std::string>() + ", " + rawJson.content["city"]["country"].get<std::string>()}
+        {"city", rawJson.content["city"]["name"].get<std::string>() + ", " + rawJson.content["city"]["country"].get<std::string>()},
+        {"lowestTemp", lowestTemp},
+        {"highestTemp", highestTemp}
     });
 }
 

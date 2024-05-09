@@ -18,20 +18,18 @@
 using json = nlohmann::json;
 
 class Layout {
-    json weather, city;
+    json weather, additionalInfo;
     sf::Event event;
 public:
     float margin = 20, top = 90;
     int currentDay = 0;
     
     void drawLayout(sf::RenderWindow& window);
-    void loadJson(json weather, json city);
+    void loadJson(json weather, json additionalInfo);
     void loadEvent(sf::Event& event);
     
     void specificInformation(int& index, sf::RenderWindow& window, std::string key, json& data);
     void singleDayCard(std::string index, sf::RenderWindow& window, json& data);
-    
-    void changeData();
 };
 
 

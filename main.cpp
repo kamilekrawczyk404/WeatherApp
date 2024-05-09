@@ -10,7 +10,7 @@
 #include "Frontend/Layout/Layout.h"
 
 std::vector<std::string> errors = {""};
-nlohmann::json weatherData, cityData;
+nlohmann::json weatherData, additionalInfo;
 
 void getLocation(std::string content) {
     Weather *weather = new Weather(content);
@@ -20,7 +20,7 @@ void getLocation(std::string content) {
         delete weather;
     } else {
         weatherData = weather->weatherForecast;
-        cityData = weather->locationInfo;
+        additionalInfo = weather->additionalInfo;
     }
 }
 
@@ -64,7 +64,7 @@ int main() {
 
         if (!weatherData.empty()) {
             // we got the information!
-            ui.loadJson(weatherData, cityData);
+            ui.loadJson(weatherData, additionalInfo);
             ui.loadEvent(event);
             ui.drawLayout(window);
         } 

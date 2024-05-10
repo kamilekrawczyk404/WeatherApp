@@ -19,25 +19,14 @@ std::string Helpers::convertToClockFormat(time_t unix) {
     return buffer;
 }
 
-std::string Helpers::getWeekday(const std::string date) {
-    std::tm timeInfo = {};
-    std::istringstream ss(date);
-    ss >> std::get_time(&timeInfo, "%Y-%m-%d");
-
-    if (ss.fail()) {
-        // Parsing failed
-        return "Invalid Date";
-    }
-
-    std::time_t time = std::mktime(&timeInfo);
-    if (time == -1) {
-        // Conversion failed
-        return "Invalid Date";
-    }
+std::string Helpers::getWeekday(time_t unixSeconds, int shift) {
+    unixSeconds += shift + 3600;
+    tm* localTime = gmtime(&unixSeconds);
+    int weekdayIndex = localTime->tm_wday;
 
     const std::vector<std::string> weekdays({"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"});
-
-    return weekdays.at(timeInfo.tm_wday);
+    
+    return weekdays[weekdayIndex];
 }
 
 int Helpers::getCurrentHour() {
@@ -47,4 +36,50 @@ int Helpers::getCurrentHour() {
     int currentHour = localTime->tm_hour;
 
     return currentHour;
+}
+
+int Helpers::getHourFromUnix(time_t unixSeconds, int shift) {
+    unixSeconds += shift + 3600;
+    tm* localTime = gmtime(&unixSeconds);
+    int hour = localTime->tm_hour;
+
+    std::cout << hour << std::endl;
+    
+    return hour;
+}
+
+sf::Color Helpers::HSLtoRGB(float hue, float saturation, float lightness) {
+    float c = (1 - std::abs(2 * lightness - 1)) * saturation;
+    float x = c * (1 - std::abs(std::fmod(hue / 60, 2) - 1));
+    float m = lightness - c / 2;
+
+    float r, g, b;
+
+    if (0 <= hue && hue < 60) {
+        r = c;
+        g = x;
+        b = 0;
+    } else if (60 <= hue && hue < 120) {
+        r = x;
+        g = c;
+        b = 0;
+    } else if (120 <= hue && hue < 180) {
+        r = 0;
+        g = c;
+        b = x;
+    } else if (180 <= hue && hue < 240) {
+        r = 0;
+        g = x;
+        b = c;
+    } else if (240 <= hue && hue < 300) {
+        r = x;
+        g = 0;
+        b = c;
+    } else { // 300 <= hue && hue < 360
+        r = c;
+        g = 0;
+        b = x;
+    }
+
+    return sf::Color((r + m) * 255, (g + m) * 255, (b + m) * 255);
 }

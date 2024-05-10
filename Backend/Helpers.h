@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <cmath>
 #include <chrono>
+#include <SFML/Graphics.hpp>
 
 class Helpers {
 public:
@@ -24,13 +25,13 @@ public:
 
         return oss.str();
     };
-
-    
     
     static int toCelsius(const double kelvins, int digits = 10);
     static std::string convertToClockFormat(const time_t unix);
-    static std::string getWeekday(const std::string date);
+    static std::string getWeekday(time_t unixSeconds, int shift);
     static int getCurrentHour();
+    static int getHourFromUnix(time_t unixSeconds, int shift);
+    static sf::Color HSLtoRGB(float hue, float saturation, float lightness);
 };
 
 

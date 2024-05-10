@@ -5,14 +5,15 @@
 #ifndef CPP_WEATHER_APP_DIV_H
 #define CPP_WEATHER_APP_DIV_H
 #include <SFML/Graphics.hpp>
+#include "../../Backend/Helpers.h"
 
 class Div {
-    bool hasGradients;
+    sf::Vector2i gradientValues;
 public:
     float width, height;
     sf::RectangleShape properties;
     sf::VertexArray vertices;
-    Div(float width, float height, bool hasGradients = false);
+    Div(float width, float height, sf::Vector2i gradientValues = sf::Vector2i (0.f, 0.f));
     void draw(sf::RenderWindow& window);
 };
 

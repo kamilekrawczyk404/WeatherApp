@@ -24,6 +24,8 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     
     StaticText location(additionalInfo[0]["city"], 24);
     location.setPosition(margin + 10.f, top + 150.f);
+    location.draw(window);
+
     
     StaticText temperature("", 50);
     temperature.setPosition(margin + 120.f, top + 10.f);
@@ -64,6 +66,10 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     // both properties are set, decide which one should be main 
     else if (hasDay && hasNight) {
         // is currently day or night
+        
+        // TODO:
+        // change this 
+        
         if (abs(Helpers::getCurrentHour() - weather[currentDay]["day"]["hour"].get<int>()) < abs(Helpers::getCurrentHour() - weather[currentDay]["night"]["hour"].get<int>())) {
             iconName = weather[currentDay]["day"]["weather"]["icon"];
             temperature.text.setString(weather[currentDay]["day"]["temperature"]["main"].get<std::string>());
@@ -84,7 +90,6 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     currentIcon.image.setPosition(margin / 2, top - 20.f);
     currentIcon.draw(window);
     
-    location.draw(window);
     
     // Right side
     const float offsetRight = 730;
@@ -185,21 +190,32 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
         secondary.draw(window);
 
         // if both temperatures are set for single day
-        Div temperatureContainer(width - 20.f, 10.f);
-        temperatureContainer.properties.setPosition(offsetLeft + 10.f, offsetTop + 200.f);
-        temperatureContainer.properties.setFillColor(sf::Color(255, 255, 255, 255 ));
-        temperatureContainer.draw(window);
-
+        
         int max = std::max(additionalInfo[0]["highestTemp"].get<int>(), additionalInfo[0]["lowestTemp"].get<int>()),
             min = std::min(additionalInfo[0]["highestTemp"].get<int>(), additionalInfo[0]["lowestTemp"].get<int>()),
             size = abs(max - min);
-        
+
         float temperatureBarWidth = (stof(mainTemperature) - stof(secondaryTemperature) ) / float (size),
             barOffset = abs(std::min(stoi(mainTemperature), stoi(secondaryTemperature)) - min) / float (size);
-        
-        Div temperatureBar(temperatureBarWidth * (width - 20.f), 10.f, true);
+
+        Div temperatureContainer(width - 20.f, 10.f, sf::Vector2i(min, max));
+        temperatureContainer.properties.setPosition(offsetLeft + 10.f, offsetTop + 200.f);
+        temperatureContainer.draw(window);
+
+        Div temperatureBar(temperatureBarWidth * (width - 20.f), 10.f);
         temperatureBar.properties.setPosition(offsetLeft + 10.f + barOffset * (width - 20.f), offsetTop + 200.f);
+        temperatureBar.properties.setFillColor(sf::Color::Transparent);
         temperatureBar.draw(window);
+
+        Div leftMask(temperatureBar.properties.getPosition().x - temperatureContainer.properties.getPosition().x, 10.f);
+        leftMask.properties.setFillColor(sf::Color(108, 117, 125));
+        leftMask.properties.setPosition(offsetLeft + 10.f, offsetTop + 200.f);
+        leftMask.draw(window);
+
+        Div rightMask(width - 20.f - leftMask.width - temperatureBar.width, 10.f);
+        rightMask.properties.setFillColor(sf::Color(108, 117, 125));
+        rightMask.properties.setPosition(offsetLeft + 10.f + leftMask.width + temperatureBar.width, offsetTop + 200.f);
+        rightMask.draw(window);
     }
     
     // interaction with left mouse button on single day card

@@ -13,24 +13,25 @@ Weather::Weather(std::string& location): Location(location) {
     // has day and night flags
     bool isDay, newDay;
     // count of weather information with 3h interval
-    int length = rawJson.content["list"].size(), hour, currentDay = 0;
+    int length = rawJson.content["list"].size(), currentDay = 0;
     float min, max, currentTemp;
-    std::string currentDate, highestTemp = "null", lowestTemp = "null";
-    json weekdayForecast;
+    std::string  highestTemp = "null", lowestTemp = "null";
+    json weekdayForecast {
+        {"day", ""},
+        {"night", ""}
+    };;
+    
+    std::cout << getUrl() << std::endl;
     
     for (auto& [key, item] : rawJson.content["list"].items()) {
         isDay = false;
-        hour = stoi(item["dt_txt"].get<std::string>().substr(11, 13));
-        // substring for getting only date
-        currentDate = item["dt_txt"].get<std::string>().substr(0, 10);
-
-        if (hour >= 6 && hour <= 18) {
+        if (item["sys"]["pod"] == "d") {
             isDay = true;
         }
         
         json partial({
-            {"hour", stoi(item["dt_txt"].get<std::string>().substr(11,13))},
-            {"weekday", Helpers::getWeekday(item["dt_txt"])},
+            {"hour", Helpers::getHourFromUnix(item["dt"].get<time_t>(), (rawJson.content["city"]["timezone"].get<int>()))},
+            {"weekday", Helpers::getWeekday(item["dt"].get<time_t>(), (rawJson.content["city"]["timezone"].get<int>()))},
             {"temperature", json ({
                 {"feels_like", std::to_string(Helpers::toCelsius(item["main"]["feels_like"]))},
                 {"temp_min", std::to_string(Helpers::toCelsius(item["main"]["temp_min"]))},
@@ -61,45 +62,41 @@ Weather::Weather(std::string& location): Location(location) {
                 })},
             })},
             {"weather", json({
-                {"icon", item["weather"][0]["icon"].get<std::string>().substr(0, 2) + (isDay ? "d" : "n")  + ".png"},
+                {"icon", item["weather"][0]["icon"].get<std::string>() + ".png"},
                 {"info", item["weather"][0]["main"]},
                 {"description", item["weather"][0]["description"]}
             })}
         });
         
-        if (stoi(key) == 0) {
-            // current weather
-            weekdayForecast[isDay ? "day" : "night"] = partial;
-            continue;
-        } else if (currentDay != 0) {
-            if (newDay) {
-                min = item["main"]["temp_min"].get<float>();
-                max = item["main"]["temp_max"].get<float>();
-                
-                weekdayForecast["night"] = partial;
-                newDay = false;
+        if (newDay) {
+            min = item["main"]["temp_min"].get<float>();
+            max = item["main"]["temp_max"].get<float>();
+            
+            weekdayForecast["night"] = partial;
+            newDay = false;
+        }
+        
+        if (isDay) {
+            currentTemp = std::max(item["main"]["temp_max"].get<float>(), item["main"]["temp_min"].get<float>());
+            if (currentTemp > max) {
+                weekdayForecast["day"] = partial;
+                max = currentTemp;
             }
-            if (isDay) {
-                currentTemp = std::max(item["main"]["temp_max"].get<float>(), item["main"]["temp_min"].get<float>());
-                if (currentTemp > max) {
-                    weekdayForecast["day"] = partial;
-                    max = currentTemp;
-                }
-            } else {
-                currentTemp = std::min(item["main"]["temp_max"].get<float>(), item["main"]["temp_min"].get<float>());
-                if (min < currentTemp) {
-                    weekdayForecast["night"] = partial;
-                    min = currentTemp;
-                }
+        } else {
+            currentTemp = std::min(item["main"]["temp_max"].get<float>(), item["main"]["temp_min"].get<float>());
+            if (min < currentTemp) {
+                weekdayForecast["night"] = partial;
+                min = currentTemp;
             }
         }
         
         // next iteration is next day
-        if (stoi(key) + 1 != length && currentDate != rawJson.content["list"].at(stoi(key) + 1)["dt_txt"].get<std::string>().substr(0, 10)) {
+        if (stoi(key) + 1 != length && partial["weekday"] != Helpers::getWeekday(rawJson.content["list"][stoi(key) +  1]["dt"].get<time_t >(), rawJson.content["city"]["timezone"].get<int>())) {
             // remove unnecessary properties
-            if (weekdayForecast["day"].empty()) {
+            if (weekdayForecast["day"] == "") {
                 weekdayForecast.erase("day");
-            } else if (weekdayForecast["night"].empty()) {
+            }
+            if (weekdayForecast["night"] == "") {
                 weekdayForecast.erase("night");
             }
             
@@ -116,7 +113,7 @@ Weather::Weather(std::string& location): Location(location) {
     // getting the highest and the lowest temperature during the day
     for (auto& [key, value] : weatherForecast.items()) {
         if (value.contains("day")) {
-            std::string  current = value["day"]["temperature"]["temp_max"].get<std::string>();
+            std::string current = value["day"]["temperature"]["temp_max"].get<std::string>();
 
             if (highestTemp == "null") {
                 highestTemp = current;
@@ -136,8 +133,8 @@ Weather::Weather(std::string& location): Location(location) {
     }
     
     additionalInfo.push_back( {
-      {"sunrise", Helpers::convertToClockFormat(rawJson.content["city"]["sunrise"].get<time_t>())},
-      {"sunset", Helpers::convertToClockFormat(rawJson.content["city"]["sunset"].get<time_t>())},
+      {"sunrise", Helpers::convertToClockFormat(rawJson.content["city"]["sunrise"].get<time_t>() - rawJson.content["city"]["timezone"].get<int>())},
+      {"sunset", Helpers::convertToClockFormat(rawJson.content["city"]["sunset"].get<time_t>() - rawJson.content["city"]["timezone"].get<int>())},
       {"city", rawJson.content["city"]["name"].get<std::string>() + ", " + rawJson.content["city"]["country"].get<std::string>()},
       {"lowestTemp", stoi(lowestTemp)},
       {"highestTemp", stoi(highestTemp)}

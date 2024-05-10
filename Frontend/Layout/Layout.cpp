@@ -169,8 +169,6 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
     
     CelsiusSign(window, offsetLeft + (float)main.text.getString().getSize() * 30 + 70.f, offsetTop + 50.f, 32);
     
-    
-
     if (data.contains(isDay ? "night" : "day")) {
         std::string secondaryIconName = data[isDay ? "night" : "day"]["weather"]["icon"], secondaryTemperature = data[isDay ? "night" : "day"]["temperature"][isDay ? "temp_min" : "temp_max"];
         
@@ -189,18 +187,22 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
         // if both temperatures are set for single day
         Div temperatureContainer(width - 20.f, 10.f);
         temperatureContainer.properties.setPosition(offsetLeft + 10.f, offsetTop + 200.f);
-        temperatureContainer.properties.setFillColor(sf::Color::Black);
+        temperatureContainer.properties.setFillColor(sf::Color(255, 255, 255, 255 ));
         temperatureContainer.draw(window);
-        
-        std::cout << additionalInfo[0]["highestTemp"] << " " << additionalInfo[0]["lowestTemp"] << std::endl;
-        
-//        int barWidth = abs(additionalInfo[0]["highestTemp"].get<int>() - additionalInfo[0]["lowestTemp"].get<int>());
-//        Div temperatureBar(50.f, 10.f);
-//        temperatureBar.properties.setPosition(offsetLeft + 10.f + (width - 20.f) * std::min(stoi(secondaryTemperature), stoi(mainTemperature)) / barWidth , offsetTop + 200.f);
-//        temperatureBar.properties.setFillColor(sf::Color::Red);
-//        temperatureBar.draw(window);
-    }
 
+        int max = std::max(additionalInfo[0]["highestTemp"].get<int>(), additionalInfo[0]["lowestTemp"].get<int>()),
+            min = std::min(additionalInfo[0]["highestTemp"].get<int>(), additionalInfo[0]["lowestTemp"].get<int>()),
+            size = abs(max - min);
+        
+        float temperatureBarWidth = (stof(mainTemperature) - stof(secondaryTemperature) ) / float (size),
+            barOffset = abs(std::min(stoi(mainTemperature), stoi(secondaryTemperature)) - min) / float (size);
+        
+        Div temperatureBar(temperatureBarWidth * (width - 20.f), 10.f, true);
+        temperatureBar.properties.setPosition(offsetLeft + 10.f + barOffset * (width - 20.f), offsetTop + 200.f);
+        temperatureBar.draw(window);
+    }
+    
+    // interaction with left mouse button on single day card
     if (i != currentDay && event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2<int> mousePosition = sf::Mouse::getPosition(window);

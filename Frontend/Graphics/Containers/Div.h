@@ -7,10 +7,12 @@
 #include <SFML/Graphics.hpp>
 
 class Div {
+    bool hasGradients;
 public:
     float width, height;
     sf::RectangleShape properties;
-    Div(float width, float height);
+    sf::VertexArray vertices;
+    Div(float width, float height, bool hasGradients = false);
     void draw(sf::RenderWindow& window);
 };
 

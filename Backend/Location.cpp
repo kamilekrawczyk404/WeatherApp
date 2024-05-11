@@ -4,7 +4,14 @@
 
 #include "Location.h"
 
-Location::Location(std::string& name) : name(name) {
+Location::Location(std::string& name) {
+    // replace any spaces
+    for(char& c : name) {
+        if (c == ' ') {
+            c = '+';
+        }
+    }
+    this->name = name;
     FetchAPI api(getUrl());
     
     if (!api.errorMessage.empty()) {
@@ -18,7 +25,7 @@ Location::Location(std::string& name) : name(name) {
 }
 
 std::string Location::getUrl() {
-    std::string url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + this->name + "&key=" + GOOGLE_LOCATION_API_KEY;
+    std::string url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + this->name + "&key=" + GOOGLE_API_KEY;
     
     return url;
 }

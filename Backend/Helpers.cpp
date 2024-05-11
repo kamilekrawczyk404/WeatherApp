@@ -29,9 +29,10 @@ std::string Helpers::getWeekday(time_t unixSeconds, int shift) {
     return weekdays[weekdayIndex];
 }
 
-int Helpers::getCurrentHour() {
+int Helpers::getCurrentHour(int shift) {
     auto now = std::chrono::system_clock::now();
     auto nowC = std::chrono::system_clock::to_time_t(now);
+    nowC += timezone;
     std::tm *localTime = std::localtime(&nowC);
     int currentHour = localTime->tm_hour;
 
@@ -42,8 +43,6 @@ int Helpers::getHourFromUnix(time_t unixSeconds, int shift) {
     unixSeconds += shift + 3600;
     tm* localTime = gmtime(&unixSeconds);
     int hour = localTime->tm_hour;
-
-    std::cout << hour << std::endl;
     
     return hour;
 }

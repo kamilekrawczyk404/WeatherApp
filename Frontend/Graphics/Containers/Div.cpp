@@ -12,7 +12,7 @@ Div::Div(float width, float height, sf::Vector2i gradientValues): width(width), 
 void Div::draw(sf::RenderWindow &window) {
     
     // hls, take offset to change values easier 
-    if (this->gradientValues.x != 0 && this->gradientValues.y != 0) {
+    if (gradientValues.x != defaultValue && gradientValues.y != defaultValue) {
         vertices.setPrimitiveType(sf::Quads);
         vertices.resize(4);
         

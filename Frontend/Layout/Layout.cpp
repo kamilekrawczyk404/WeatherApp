@@ -65,12 +65,11 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     }
     // both properties are set, decide which one should be main 
     else if (hasDay && hasNight) {
-        // is currently day or night
-        
         // TODO:
         // change this 
+        int currentHour = Helpers::getCurrentHour(additionalInfo[0]["timezone"].get<int>());
         
-        if (abs(Helpers::getCurrentHour() - weather[currentDay]["day"]["hour"].get<int>()) < abs(Helpers::getCurrentHour() - weather[currentDay]["night"]["hour"].get<int>())) {
+        if (abs(currentHour - weather[currentDay]["day"]["hour"].get<int>()) < abs(currentHour - weather[currentDay]["night"]["hour"].get<int>())) {
             iconName = weather[currentDay]["day"]["weather"]["icon"];
             temperature.text.setString(weather[currentDay]["day"]["temperature"]["main"].get<std::string>());
             currentInfo.text.setString(weather[currentDay]["day"]["weather"]["info"].get<std::string>());
@@ -84,7 +83,7 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     currentInfo.draw(window);
     temperature.draw(window);
     
-    CelsiusSign(window, margin + 125.f + temperature.text.getString().getSize() * 50 / 2, top + 10.f, 50);
+    CelsiusSign(window, margin + 125.f, top + 10.f, 50, temperature.text.getString());
 
     Image currentIcon(iconName);
     currentIcon.image.setPosition(margin / 2, top - 20.f);
@@ -140,8 +139,10 @@ void Layout::specificInformation(int& index, sf::RenderWindow &window, std::stri
 void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &data) {
     int i = stoi(index);
     // "04" is the index for clouds icon
-    bool isDay = data.contains("day"), isCloudsIcon = data[isDay ? "day" : "night"]["weather"]["icon"].get<std::string>().substr(0, 2) == "04";
-    std::string mainIconName = data[isDay ? "day" : "night"]["weather"]["icon"], mainTemperature = data[isDay ? "day" : "night"]["temperature"][isDay ? "temp_max" : "temp_min"];
+    bool isDay = data.contains("day"), isCloudsIcon = data[isDay ? "day" : "night"]["weather"]["icon"].get<std::string>().substr(0, 2) == "04" || data[isDay ? "day" : "night"]["weather"]["icon"].get<std::string>().substr(0, 2) == "03";
+    std::string 
+        mainIconName = data[isDay ? "day" : "night"]["weather"]["icon"], 
+        mainTemperature = data[isDay ? "day" : "night"]["temperature"][isDay ? "temp_max" : "temp_min"];
     
     const float 
         gap = 20.f, 
@@ -162,35 +163,33 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
     weekday.setPosition(offsetLeft + 10.f, offsetTop + 10.f);
     weekday.draw(window);
     
-    
     Image mainIcon(mainIconName);
-    mainIcon.image.setPosition(offsetLeft + (isCloudsIcon ? 10.f : 0.f), offsetTop + (isCloudsIcon ? 35.f : 25.f));
-    mainIcon.image.setScale((isCloudsIcon ? 0.6f : 0.75f), (isCloudsIcon ? 0.6f : 0.75f));
+    mainIcon.image.setPosition(offsetLeft - 5.f , offsetTop + (isCloudsIcon ? 25.f : 30.f));
+    mainIcon.image.setScale(0.75f, 0.75f);
     mainIcon.draw(window);
     
     StaticText main(mainTemperature, 32);
-    main.setPosition(offsetLeft + 90.f, offsetTop + 50.f);
+    main.setPosition(offsetLeft + 90.f, offsetTop + 55.f);
     main.draw(window);
     
-    CelsiusSign(window, offsetLeft + (float)main.text.getString().getSize() * 30 + 70.f, offsetTop + 50.f, 32);
+    CelsiusSign(window, offsetLeft + 90.f, offsetTop + 55.f, 32, main.text.getString());
     
     if (data.contains(isDay ? "night" : "day")) {
         std::string secondaryIconName = data[isDay ? "night" : "day"]["weather"]["icon"], secondaryTemperature = data[isDay ? "night" : "day"]["temperature"][isDay ? "temp_min" : "temp_max"];
         
         Image secondaryIcon(secondaryIconName);
-        secondaryIcon.image.setPosition(offsetLeft + (isCloudsIcon ? 10.f : 0.f), offsetTop + (isCloudsIcon ? 120.f : 110.f));
-        secondaryIcon.image.setScale((isCloudsIcon ? 0.5f : 0.6f), (isCloudsIcon ? 0.5f : 0.6f));
+        secondaryIcon.image.setPosition(offsetLeft, offsetTop + (isCloudsIcon ? 105.f : 110.f));
+        secondaryIcon.image.setScale(0.6f,0.6f);
         secondaryIcon.draw(window);
         
         StaticText secondary(secondaryTemperature, 24);
-        secondary.setPosition(offsetLeft + 90.f, offsetTop + 135.f);
-
-        CelsiusSign celsius(window, offsetLeft + (float)secondary.text.getString().getSize() * 30 + 75.f, offsetTop + 135.f, 24);
-        
+        secondary.setPosition(offsetLeft + 70.f, offsetTop + 130.f);
         secondary.draw(window);
 
-        // if both temperatures are set for single day
+        CelsiusSign celsius(window, offsetLeft + 70.f, offsetTop + 130.f, 24, secondary.text.getString());
         
+
+        // if both temperatures are set for single day
         int max = std::max(additionalInfo[0]["highestTemp"].get<int>(), additionalInfo[0]["lowestTemp"].get<int>()),
             min = std::min(additionalInfo[0]["highestTemp"].get<int>(), additionalInfo[0]["lowestTemp"].get<int>()),
             size = abs(max - min);

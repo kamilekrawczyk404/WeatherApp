@@ -6,13 +6,11 @@
 
 using json = nlohmann::json;
 
-Weather::Weather(std::string& location): Location(location) {
+Weather::Weather(std::string& location): Location(location), LocationImage(location) {
     FetchAPI api(getUrl());
     HandleJson rawJson(api.fetchedData);
     
-    // has day and night flags
     bool isDay, newDay;
-    // count of weather information with 3h interval
     int length = rawJson.content["list"].size(), currentDay = 0;
     float min, max, currentTemp;
     std::string  highestTemp = "null", lowestTemp = "null";
@@ -20,8 +18,6 @@ Weather::Weather(std::string& location): Location(location) {
         {"day", ""},
         {"night", ""}
     };;
-    
-    std::cout << getUrl() << std::endl;
     
     for (auto& [key, item] : rawJson.content["list"].items()) {
         isDay = false;
@@ -136,6 +132,7 @@ Weather::Weather(std::string& location): Location(location) {
       {"sunrise", Helpers::convertToClockFormat(rawJson.content["city"]["sunrise"].get<time_t>() - rawJson.content["city"]["timezone"].get<int>())},
       {"sunset", Helpers::convertToClockFormat(rawJson.content["city"]["sunset"].get<time_t>() - rawJson.content["city"]["timezone"].get<int>())},
       {"city", rawJson.content["city"]["name"].get<std::string>() + ", " + rawJson.content["city"]["country"].get<std::string>()},
+      {"timezone", rawJson.content["city"]["timezone"].get<int>()},
       {"lowestTemp", stoi(lowestTemp)},
       {"highestTemp", stoi(highestTemp)}
     });

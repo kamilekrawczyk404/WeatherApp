@@ -9,12 +9,16 @@
 #include <string>
 #include "Frontend/Layout/Layout.h"
 
+Image background("background.jpg");
 std::vector<std::string> errors = {""};
 nlohmann::json weatherData, additionalInfo;
 
 void getLocation(std::string content) {
     Weather *weather = new Weather(content);
-
+//    background.image.setTexture(*(weather->sprite.getTexture()));
+//    background.image.setPosition(0.f, 0.f);
+//    background.image.setScale(1.f, 1.f);
+//    
     if (!weather->isOk()) {
         errors[0] = weather->errorMessage;
         delete weather;
@@ -31,7 +35,6 @@ int main() {
     float width = 310;
     
     // Main background
-    Image background("background.jpg");
     
     sf::RenderWindow window(sf::VideoMode(background.textureSize.x, background.textureSize.y), "Simple Forecast Application");
     
@@ -63,6 +66,7 @@ int main() {
         background.draw(window);
 
         if (!weatherData.empty()) {
+            
             // we got the information!
             ui.loadJson(weatherData, additionalInfo);
             ui.loadEvent(event);

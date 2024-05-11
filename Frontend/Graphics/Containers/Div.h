@@ -9,11 +9,13 @@
 
 class Div {
     sf::Vector2i gradientValues;
+    // abstract default values 
+    int defaultValue = 1000;
 public:
     float width, height;
     sf::RectangleShape properties;
     sf::VertexArray vertices;
-    Div(float width, float height, sf::Vector2i gradientValues = sf::Vector2i (0.f, 0.f));
+    Div(float width, float height, sf::Vector2i gradientValues = sf::Vector2i(1000, 1000));
     void draw(sf::RenderWindow& window);
 };
 

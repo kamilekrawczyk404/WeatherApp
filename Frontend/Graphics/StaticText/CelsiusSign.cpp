@@ -4,12 +4,14 @@
 
 #include "CelsiusSign.h"
 
-CelsiusSign::CelsiusSign(sf::RenderWindow& window, float x, float y, int fontSize ) {
+CelsiusSign::CelsiusSign(sf::RenderWindow& window, float x, float y, int fontSize, std::string temperature) {
     StaticText degreeSymbol("o", fontSize / 2);
     StaticText cSymbol("C", fontSize);
     
-    degreeSymbol.setPosition(x, y + 2.f);
-    cSymbol.setPosition(x + (float)fontSize / 3, y);
+    int length = temperature.length();
+    
+    degreeSymbol.setPosition(x + length * (fontSize / 1.75f), y + 2.f);
+    cSymbol.setPosition(x + length * (fontSize / 1.75f) + degreeSymbol.text.getLocalBounds().width, y);
     
     cSymbol.draw(window);
     degreeSymbol.draw(window);

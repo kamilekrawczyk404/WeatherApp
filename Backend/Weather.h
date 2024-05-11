@@ -14,8 +14,9 @@
 #include "Helpers.h"
 #include <nlohmann/json.hpp>
 #include <cmath>
+#include "LocationImage.h"
 
-class Weather : public Location {
+class Weather : public Location , public LocationImage {
 public:
     json weatherForecast = json::array(), additionalInfo;
     Weather(std::string& location);

@@ -31,6 +31,8 @@ set(SOURCE_FILES main.cpp
         Frontend/Layout/Layout.h
         Backend/Helpers.cpp
         Backend/Helpers.h
+        Backend/LocationImage.cpp
+        Backend/LocationImage.h
 )
 
 
@@ -51,7 +53,7 @@ file(COPY ${FONTS_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 
 target_include_directories(cpp_weather_app PRIVATE ${CMAKE_SOURCE_DIR}/Frontend/fonts)
 
-#configure_file(Frontend/Graphics/Images/background.jpg background.jpg COPYONLY)
+configure_file(Frontend/Graphics/Images/background.jpg background.jpg COPYONLY)
 
 file(GLOB IMAGE_FILES ${CMAKE_SOURCE_DIR}/Frontend/Graphics/Images/**/*.*)
 file(COPY ${IMAGE_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

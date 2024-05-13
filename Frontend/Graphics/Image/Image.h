@@ -15,6 +15,7 @@ public:
     sf::Vector2u textureSize;
     Image(std::string path);
     void draw(sf::RenderWindow& window);
+    void load(std::string path);
 };
 
 

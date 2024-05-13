@@ -18,7 +18,8 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     // TODO:
     // multiple languages support
     
-    Checkbox multiLanguage(window, 300.f, 80.f);
+    Checkbox languageCheckbox(window, 300.f, 80.f, isForeignLanguageChecked);
+    languageCheckbox.onClick(window, event, isForeignLanguageChecked, userReleasedButton);
     
     bool hasDay = weather[currentDay].contains("day"), hasNight = weather[currentDay].contains("night"); 
     
@@ -225,9 +226,9 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
         leftMask.properties.setPosition(offsetLeft + 10.f, offsetTop + 200.f);
         leftMask.draw(window);
 
-        Div rightMask(width - 20.f - leftMask.width - temperatureBar.width, 10.f);
+        Div rightMask(width - 20.f - leftMask.bounds.width - temperatureBar.bounds.width, 10.f);
         rightMask.properties.setFillColor(sf::Color(108, 117, 125));
-        rightMask.properties.setPosition(offsetLeft + 10.f + leftMask.width + temperatureBar.width, offsetTop + 200.f);
+        rightMask.properties.setPosition(offsetLeft + 10.f + leftMask.bounds.width + temperatureBar.bounds.width, offsetTop + 200.f);
         rightMask.draw(window);
     }
     

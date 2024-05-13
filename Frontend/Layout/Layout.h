@@ -20,6 +20,7 @@ using json = nlohmann::json;
 class Layout {
     json weather, additionalInfo;
     sf::Event event;
+    bool isForeignLanguageChecked = false, userReleasedButton = true;
 public:
     float margin = 20, top = 90;
     int currentDay = 0;

@@ -10,9 +10,13 @@
 
 
 class Checkbox {
+    Image checkboxImage;
+    Div checkboxContainer;
+    bool userClicked = false;
 public:
-    bool isChecked = false;
-    Checkbox(sf::RenderWindow &window, float x, float y);
+    sf::Vector2f position;
+    Checkbox(sf::RenderWindow &window, float x, float y, bool &isChecked);
+    void onClick(sf::RenderWindow &window, sf::Event &event, bool &isChecked, bool &userReleasedButton);
     
 };
 

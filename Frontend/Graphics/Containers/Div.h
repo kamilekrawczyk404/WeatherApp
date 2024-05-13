@@ -12,7 +12,7 @@ class Div {
     // abstract default values 
     int defaultValue = 1000;
 public:
-    float width, height;
+    sf::FloatRect bounds;
     sf::RectangleShape properties;
     sf::VertexArray vertices;
     Div(float width, float height, sf::Vector2i gradientValues = sf::Vector2i(1000, 1000));

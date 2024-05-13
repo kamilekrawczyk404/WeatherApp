@@ -15,10 +15,7 @@ nlohmann::json weatherData, additionalInfo;
 
 void getLocation(std::string content) {
     Weather *weather = new Weather(content);
-//    background.image.setTexture(*(weather->sprite.getTexture()));
-//    background.image.setPosition(0.f, 0.f);
-//    background.image.setScale(1.f, 1.f);
-//    
+    
     if (!weather->isOk()) {
         errors[0] = weather->errorMessage;
         delete weather;

@@ -3,6 +3,7 @@
 //
 
 #include "Layout.h"
+#include "../Graphics/Checkbox/Checkbox.h"
 
 void Layout::loadJson(json weather, json additionalInfo) {
     this->weather = weather;
@@ -14,7 +15,11 @@ void Layout::loadEvent(sf::Event &event) {
 }
 
 void Layout::drawLayout(sf::RenderWindow &window) {
-    std::string timeOfDay, iconName;
+    // TODO:
+    // multiple languages support
+    
+    Checkbox multiLanguage(window, 300.f, 80.f);
+    
     bool hasDay = weather[currentDay].contains("day"), hasNight = weather[currentDay].contains("night"); 
     
     // Left side
@@ -26,12 +31,14 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     location.setPosition(margin + 10.f, top + 150.f);
     location.draw(window);
 
+    StaticText feelsLike("", 20.f);
+    feelsLike.setPosition(margin + 10.f, top + 125.f);
     
     StaticText temperature("", 50);
     temperature.setPosition(margin + 120.f, top + 10.f);
     
     StaticText currentInfo("", 40);
-    currentInfo.setPosition(margin + 10.f, top + 100.f);
+    currentInfo.setPosition(margin + 10.f, top + 80.f);
     
     Image sunrise("sunrise.png");
     sunrise.image.setPosition(margin, top + 175.f);
@@ -50,38 +57,45 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     StaticText sunsetInfo(additionalInfo[0]["sunset"], 24);
     sunsetInfo.text.setPosition(margin + 170.f, top + 260.f);
     sunsetInfo.draw(window);
-    
+
+    std::string iconName;
     // only day property is set
     if (hasDay && !hasNight) {
         iconName = weather[currentDay]["day"]["weather"]["icon"];
         temperature.text.setString(weather[currentDay]["day"]["temperature"]["main"].get<std::string>());
         currentInfo.text.setString(weather[currentDay]["day"]["weather"]["info"].get<std::string>());
+        feelsLike.text.setString("Feels like: " + weather[currentDay]["day"]["temperature"]["feels_like"].get<std::string>());
     } 
     // only night property is set
     else if (!hasDay && hasNight) {
         iconName = weather[currentDay]["night"]["weather"]["icon"];
         temperature.text.setString(weather[currentDay]["night"]["temperature"]["main"].get<std::string>());
         currentInfo.text.setString(weather[currentDay]["night"]["weather"]["info"].get<std::string>());
+        feelsLike.text.setString("Feels like: " + weather[currentDay]["night"]["temperature"]["feels_like"].get<std::string>());
+        
     }
     // both properties are set, decide which one should be main 
     else if (hasDay && hasNight) {
-        // TODO:
-        // change this 
         int currentHour = Helpers::getCurrentHour(additionalInfo[0]["timezone"].get<int>());
         
         if (abs(currentHour - weather[currentDay]["day"]["hour"].get<int>()) < abs(currentHour - weather[currentDay]["night"]["hour"].get<int>())) {
             iconName = weather[currentDay]["day"]["weather"]["icon"];
             temperature.text.setString(weather[currentDay]["day"]["temperature"]["main"].get<std::string>());
             currentInfo.text.setString(weather[currentDay]["day"]["weather"]["info"].get<std::string>());
+            feelsLike.text.setString("Feels like: " + weather[currentDay]["day"]["temperature"]["feels_like"].get<std::string>());
         } else {
             iconName = weather[currentDay]["night"]["weather"]["icon"];
             temperature.text.setString(weather[currentDay]["night"]["temperature"]["main"].get<std::string>());
             currentInfo.text.setString(weather[currentDay]["night"]["weather"]["info"].get<std::string>());
+            feelsLike.text.setString("Feels like: " + weather[currentDay]["night"]["temperature"]["feels_like"].get<std::string>());
         }
     }
     
+    CelsiusSign(window, margin + 110.f, top + 125.f, 20, feelsLike.text.getString().substring(12, feelsLike.text.getString().getSize() - 12));
+    
     currentInfo.draw(window);
     temperature.draw(window);
+    feelsLike.draw(window);
     
     CelsiusSign(window, margin + 125.f, top + 10.f, 50, temperature.text.getString());
 

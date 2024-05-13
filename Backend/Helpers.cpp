@@ -10,7 +10,10 @@ int Helpers::toCelsius(const double kelvins, int digits) {
     return round((kelvins - 273.15));
 }
 
-std::string Helpers::convertToClockFormat(time_t unix) {
+std::string Helpers::convertToClockFormat(time_t unix, int shift,  int currentGMTOffset) {
+    unix -= currentGMTOffset;
+    unix += shift;
+    
     struct tm * timeinfo;
     timeinfo = localtime(&unix);
     char buffer[6];
@@ -19,8 +22,10 @@ std::string Helpers::convertToClockFormat(time_t unix) {
     return buffer;
 }
 
-std::string Helpers::getWeekday(time_t unixSeconds, int shift) {
-    unixSeconds += shift + 3600;
+std::string Helpers::getWeekday(time_t unixSeconds, int shift, int currentGMTOffset) {
+    unixSeconds -= currentGMTOffset;
+    unixSeconds += shift;
+    
     tm* localTime = gmtime(&unixSeconds);
     int weekdayIndex = localTime->tm_wday;
 
@@ -29,23 +34,29 @@ std::string Helpers::getWeekday(time_t unixSeconds, int shift) {
     return weekdays[weekdayIndex];
 }
 
-int Helpers::getCurrentHour(int shift) {
+int Helpers::getCurrentHour(int shift, int currentGMTOffset) {
     auto now = std::chrono::system_clock::now();
     auto nowC = std::chrono::system_clock::to_time_t(now);
-    nowC += timezone;
+    nowC -= currentGMTOffset;
+    nowC += shift;
+    
     std::tm *localTime = std::localtime(&nowC);
     int currentHour = localTime->tm_hour;
 
     return currentHour;
 }
 
-int Helpers::getHourFromUnix(time_t unixSeconds, int shift) {
-    unixSeconds += shift + 3600;
+int Helpers::getHourFromUnix(time_t unixSeconds, int shift, int currentGMTOffset) {
+    unixSeconds -= currentGMTOffset;
+    unixSeconds += shift;
+    
     tm* localTime = gmtime(&unixSeconds);
     int hour = localTime->tm_hour;
     
     return hour;
 }
+
+
 
 sf::Color Helpers::HSLtoRGB(float hue, float saturation, float lightness) {
     float c = (1 - std::abs(2 * lightness - 1)) * saturation;

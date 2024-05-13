@@ -26,11 +26,12 @@ public:
         return oss.str();
     };
     
+    // currentGMTOffset- current user time zone
     static int toCelsius(const double kelvins, int digits = 10);
-    static std::string convertToClockFormat(const time_t unix);
-    static std::string getWeekday(time_t unixSeconds, int shift);
-    static int getCurrentHour(int shift = 0);
-    static int getHourFromUnix(time_t unixSeconds, int shift);
+    static int getHourFromUnix(time_t unixSeconds, int shift, int currentGMTOffset = 7200);
+    static std::string convertToClockFormat(time_t unix, int shift = 0,  int currentGMTOffset = 7200);
+    static std::string getWeekday(time_t unixSeconds, int shift, int currentGMTOffset = 7200);
+    static int getCurrentHour(int shift = 0, int currentGMTOffset = 7200);
     static sf::Color HSLtoRGB(float hue, float saturation, float lightness);
 };
 

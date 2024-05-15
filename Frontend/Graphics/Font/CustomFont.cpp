@@ -8,4 +8,5 @@ CustomFont::CustomFont(std::string filepath) {
     if (!this->font.loadFromFile(filepath)) {
         std::cerr << "Failed to load font package" << std::endl;
     }
+    this->font.setSmooth(true);
 }

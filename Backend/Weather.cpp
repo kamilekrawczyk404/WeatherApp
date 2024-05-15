@@ -27,7 +27,7 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
         
         json partial({
             {"hour", Helpers::getHourFromUnix(item["dt"].get<time_t>(), (rawJson.content["city"]["timezone"].get<int>()))},
-            {"weekday", Helpers::getWeekday(item["dt"].get<time_t>(), (rawJson.content["city"]["timezone"].get<int>()))},
+            {"weekday", Helpers::getDate(item["dt"].get<time_t>(), (rawJson.content["city"]["timezone"].get<int>()))},
             {"temperature", json ({
                 {"feels_like", std::to_string(Helpers::toCelsius(item["main"]["feels_like"]))},
                 {"temp_min", std::to_string(Helpers::toCelsius(item["main"]["temp_min"]))},
@@ -36,30 +36,30 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
             })},
             {"specificInformation", json({
                 {"Humidity", json({
-                    {"title", "Humidity"},
+                    {"title", json({{"english", "Humidity"}, {"polish", "Wilgotność"}})},
                     {"value", std::to_string(item["main"]["humidity"].get<int>()) + "%"}
                 })},
                 {"Pressure", json({
-                    {"title", "Air Pressure"},
-                    {"value", std::to_string(item["main"]["pressure"].get<int>()) + "PS"}
+                    {"title", json({{"english", "Air pressure"}, {"polish", "Ciśnienie"}})},
+                    {"value", std::to_string(item["main"]["pressure"].get<int>()) + "hPa"}
                 })},
                 {"Cloudiness", json({
-                    {"title", "Cloudiness"},
+                    {"title", json({{"english", "Cloudiness"}, {"polish", "Zachmurzenie"}})},
                     {"value", std::to_string(item["clouds"]["all"].get<int>()) + "%"}
                 })},
                 {"Wind", json({
-                    {"title", "Wind speed"},
+                    {"title", json({{"english", "Wind"}, {"polish", "Wiatr"}})},
                     {"value", Helpers::removeDecimalZeros<float>(item["wind"]["speed"].get<float>()) + "m/s"},
                     {"deg", item["wind"]["deg"].get<float>()}
                 })},
                 {"Visibility", json({
-                    {"title", "Visibility"},
+                    {"title", json({{"english", "Visibility"}, {"polish", "Widoczność"}})},
                     {"value", item.contains("visibility") ? (std::to_string(item["visibility"].get<int>() / 1000)  + "km") : "No data"}
                 })},
             })},
             {"weather", json({
                 {"icon", item["weather"][0]["icon"].get<std::string>() + ".png"},
-                {"info", item["weather"][0]["main"]},
+                {"info", Helpers::translate(item["weather"][0]["main"].get<std::string>())},
                 {"description", item["weather"][0]["description"]}
             })}
         });
@@ -87,7 +87,7 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
         }
         
         // next iteration is next day
-        if (stoi(key) + 1 != length && partial["weekday"] != Helpers::getWeekday(rawJson.content["list"][stoi(key) +  1]["dt"].get<time_t >(), rawJson.content["city"]["timezone"].get<int>())) {
+        if (stoi(key) + 1 != length && partial["weekday"] != Helpers::getDate(rawJson.content["list"][stoi(key) +  1]["dt"].get<time_t >(), rawJson.content["city"]["timezone"].get<int>())) {
             // remove unnecessary properties
             if (weekdayForecast["day"] == "") {
                 weekdayForecast.erase("day");

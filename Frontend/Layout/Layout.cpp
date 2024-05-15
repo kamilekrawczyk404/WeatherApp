@@ -15,46 +15,70 @@ void Layout::loadEvent(sf::Event &event) {
 }
 
 void Layout::drawLayout(sf::RenderWindow &window) {
-    // TODO:
-    // multiple languages support
-    
-    Checkbox languageCheckbox(window, 300.f, 80.f, isForeignLanguageChecked);
+    Checkbox languageCheckbox(window, 350.f, margin, isForeignLanguageChecked ? "English version" : "Wersja angielska", isForeignLanguageChecked);
     languageCheckbox.onClick(window, event, isForeignLanguageChecked, userReleasedButton);
+
+    chart(window);
     
-    bool hasDay = weather[currentDay].contains("day"), hasNight = weather[currentDay].contains("night"); 
+    leftSide(window);
     
-    // Left side
-    Div mainSectionContainer(250.f, 310.f);
+    rightSide(window);
+
+    bottomSide(window);
+}
+
+void Layout::chart(sf::RenderWindow &window) {
+    Div chartContainer(window.getSize().x - leftContainerWidth - rightContainerWidth - (4 * margin), leftContainerHeight);
+    chartContainer.properties.setPosition(leftContainerWidth + 2 * margin, top - margin / 2.f);
+    chartContainer.draw(window);
+    
+    const float lineThickness = 2.5f;
+    Div horizontalLine(chartContainer.bounds.width - margin, lineThickness);
+    horizontalLine.properties.setFillColor(sf::Color(32, 32, 32));
+    horizontalLine.properties.setPosition(chartContainer.properties.getPosition().x + margin / 2, chartContainer.properties.getPosition().y + chartContainer.bounds.height - margin / 2);
+    horizontalLine.draw(window);
+    
+    Div verticalLine(lineThickness, chartContainer.bounds.height - margin);
+    verticalLine.properties.setFillColor(sf::Color(32, 32, 32));
+    verticalLine.properties.setPosition(chartContainer.properties.getPosition().x + margin / 2, chartContainer.properties.getPosition().y + margin / 2);
+    verticalLine.draw(window);
+    
+}
+
+void Layout::leftSide(sf::RenderWindow &window) {
+    bool hasDay = weather[currentDay].contains("day"), hasNight = weather[currentDay].contains("night");
+    
+    Div mainSectionContainer(leftContainerWidth, leftContainerHeight);
     mainSectionContainer.properties.setPosition(margin - 2.f, top - 10.f);
     mainSectionContainer.draw(window);
-    
+
     StaticText location(additionalInfo[0]["city"], 24);
     location.setPosition(margin + 10.f, top + 150.f);
     location.draw(window);
 
     StaticText feelsLike("", 20.f);
     feelsLike.setPosition(margin + 10.f, top + 125.f);
-    
+
     StaticText temperature("", 50);
     temperature.setPosition(margin + 120.f, top + 10.f);
-    
+
     StaticText currentInfo("", 40);
     currentInfo.setPosition(margin + 10.f, top + 80.f);
-    
+
     Image sunrise("sunrise.png");
     sunrise.image.setPosition(margin, top + 175.f);
     sunrise.image.setScale(0.75f, 0.75f);
     sunrise.draw(window);
-    
+
     StaticText sunriseInfo(additionalInfo[0]["sunrise"], 24);
     sunriseInfo.text.setPosition(margin + 20.f, top + 260.f);
     sunriseInfo.draw(window);
-    
+
     Image sunset("sunset.png");
     sunset.image.setPosition(margin + 150.f, top + 175.f);
     sunset.image.setScale(0.75f, 0.75f);
     sunset.draw(window);
-    
+
     StaticText sunsetInfo(additionalInfo[0]["sunset"], 24);
     sunsetInfo.text.setPosition(margin + 170.f, top + 260.f);
     sunsetInfo.draw(window);
@@ -64,86 +88,87 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     if (hasDay && !hasNight) {
         iconName = weather[currentDay]["day"]["weather"]["icon"];
         temperature.text.setString(weather[currentDay]["day"]["temperature"]["main"].get<std::string>());
-        currentInfo.text.setString(weather[currentDay]["day"]["weather"]["info"].get<std::string>());
+        currentInfo.text.setString(weather[currentDay]["day"]["weather"]["info"][isForeignLanguageChecked ? "english" : "polish"].get<std::string>());
         feelsLike.text.setString("Feels like: " + weather[currentDay]["day"]["temperature"]["feels_like"].get<std::string>());
-    } 
-    // only night property is set
+    }
+        // only night property is set
     else if (!hasDay && hasNight) {
         iconName = weather[currentDay]["night"]["weather"]["icon"];
         temperature.text.setString(weather[currentDay]["night"]["temperature"]["main"].get<std::string>());
-        currentInfo.text.setString(weather[currentDay]["night"]["weather"]["info"].get<std::string>());
+        currentInfo.text.setString(weather[currentDay]["night"]["weather"]["info"][isForeignLanguageChecked ? "english" : "polish"].get<std::string>());
         feelsLike.text.setString("Feels like: " + weather[currentDay]["night"]["temperature"]["feels_like"].get<std::string>());
-        
+
     }
-    // both properties are set, decide which one should be main 
+        // both properties are set, decide which one should be main 
     else if (hasDay && hasNight) {
         int currentHour = Helpers::getCurrentHour(additionalInfo[0]["timezone"].get<int>());
-        
+
         if (abs(currentHour - weather[currentDay]["day"]["hour"].get<int>()) < abs(currentHour - weather[currentDay]["night"]["hour"].get<int>())) {
             iconName = weather[currentDay]["day"]["weather"]["icon"];
             temperature.text.setString(weather[currentDay]["day"]["temperature"]["main"].get<std::string>());
-            currentInfo.text.setString(weather[currentDay]["day"]["weather"]["info"].get<std::string>());
+            currentInfo.text.setString(weather[currentDay]["day"]["weather"]["info"][isForeignLanguageChecked ? "english" : "polish"].get<std::string>());
             feelsLike.text.setString("Feels like: " + weather[currentDay]["day"]["temperature"]["feels_like"].get<std::string>());
         } else {
             iconName = weather[currentDay]["night"]["weather"]["icon"];
             temperature.text.setString(weather[currentDay]["night"]["temperature"]["main"].get<std::string>());
-            currentInfo.text.setString(weather[currentDay]["night"]["weather"]["info"].get<std::string>());
+            currentInfo.text.setString(weather[currentDay]["night"]["weather"]["info"][isForeignLanguageChecked ? "english" : "polish"].get<std::string>());
             feelsLike.text.setString("Feels like: " + weather[currentDay]["night"]["temperature"]["feels_like"].get<std::string>());
         }
     }
-    
+
     CelsiusSign(window, margin + 110.f, top + 125.f, 20, feelsLike.text.getString().substring(12, feelsLike.text.getString().getSize() - 12));
-    
+
     currentInfo.draw(window);
     temperature.draw(window);
     feelsLike.draw(window);
-    
+
     CelsiusSign(window, margin + 125.f, top + 10.f, 50, temperature.text.getString());
 
     Image currentIcon(iconName);
     currentIcon.image.setPosition(margin / 2, top - 20.f);
     currentIcon.draw(window);
-    
-    
-    // Right side
-    const float offsetRight = 730;
+}
 
-    Div rightSection(250.f, 370.f);
-    rightSection.properties.setPosition(offsetRight, margin);
+void Layout::rightSide(sf::RenderWindow &window) {
+    bool hasDay = weather[currentDay].contains("day");
+    
+    Div rightSection (rightContainerWidth, rightContainerHeight);
+    rightSection.properties.setPosition(window.getSize().x - rightContainerWidth - margin, margin);
     rightSection.draw(window);
 
     for(auto& [key, value] : weather[currentDay][hasDay ? "day" : "night"]["specificInformation"].items()) {
         int index = std::distance(weather[currentDay][hasDay ? "day" : "night"]["specificInformation"].begin(), weather[currentDay][hasDay ? "day" : "night"]["specificInformation"].find(key));
-        specificInformation(index, window, key, value);
+        specificInformation(index, window, key, value, rightSection.properties.getPosition());
     }
+}
 
+void Layout::bottomSide(sf::RenderWindow &window) {
     for(auto& [key, item] : weather.items()) {
         singleDayCard(key, window, item);
     }
-
 }
 
-void Layout::specificInformation(int& index, sf::RenderWindow &window, std::string key, json& data) {
+void Layout::specificInformation(int& index, sf::RenderWindow &window, std::string key, json& data, sf::Vector2f position) {
     // gap between elements in a column
     // offset from the right side
-    const float gap = 75, offset = 730;
+    const float gap = 75;
     
     if (key == "Wind") {
         Image windDirection(key + "_direction.png");
         windDirection.image.setOrigin(windDirection.image.getLocalBounds().width / 2, windDirection.image.getLocalBounds().height / 2);
         windDirection.image.setRotation(-45.f + (float)data["deg"]);
-        windDirection.image.setPosition(offset + 190.f, index * gap + 62.5f);
+        windDirection.image.setPosition(position.x + 200.f, position.y + index * gap + 30.f);
         windDirection.image.setScale(0.3f, 0.3f);
         windDirection.draw(window);
     }
     
     Image icon(  key + ".png");
-    StaticText title(data["title"], 20);
+    StaticText title(data["title"][isForeignLanguageChecked ? "english" : "polish"], 20);
     StaticText value(data["value"], 18);
     
-    title.setPosition(offset + 100.f,  index * gap + (key != "Cloudiness" ? 25.f : 35.f));
-    value.setPosition(offset + 100.f,  index * gap + (key != "Cloudiness" ? 50.f : 60.f));
-    icon.image.setPosition(offset + (key != "Cloudiness" ? 10.f : -5.f), index * gap + (key != "Cloudiness" ? 17.5f : 10.f));
+    title.setPosition(position.x + 100.f,  position.y + index * gap + (key != "Cloudiness" ? 10.f : 20.f));
+    value.setPosition(position.x + 100.f,  position.y + index * gap + (key != "Cloudiness" ? 30.f : 40.f));
+    icon.image.setPosition(position.x + (key != "Cloudiness" ? 10.f : -5.f), position.y + index * gap + (key != "Cloudiness" ? 0.f : -10.f));
     icon.image.setScale(key != "Cloudiness" ? 0.5f : 0.75f, key != "Cloudiness" ? 0.5f : 0.75f);
         
     title.draw(window);
@@ -154,18 +179,20 @@ void Layout::specificInformation(int& index, sf::RenderWindow &window, std::stri
 void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &data) {
     int i = stoi(index);
     // "04" is the index for clouds icon
-    bool isDay = data.contains("day"), isCloudsIcon = data[isDay ? "day" : "night"]["weather"]["icon"].get<std::string>().substr(0, 2) == "04" || data[isDay ? "day" : "night"]["weather"]["icon"].get<std::string>().substr(0, 2) == "03";
+    bool isDay = data.contains("day"), 
+         isCloudsIcon = data[isDay ? "day" : "night"]["weather"]["icon"].get<std::string>().substr(0, 2) == "04" || data[isDay ? "day" : "night"]["weather"]["icon"].get<std::string>().substr(0, 2) == "03";
     std::string 
         mainIconName = data[isDay ? "day" : "night"]["weather"]["icon"], 
         mainTemperature = data[isDay ? "day" : "night"]["temperature"][isDay ? "temp_max" : "temp_min"];
     
     const float 
         gap = 20.f, 
-        width = (960.f - (gap * 4.f))/ 5.f, 
+        height = 220.f,
+        width = (window.getSize().x - (gap * 6.f)) / 5.f, 
         offsetLeft = width * i + (i == 0 ? 0 : gap * i) + gap,
-        offsetTop = 420.f;
+        offsetTop = window.getSize().y - height - margin;
 
-    Div singleDayContainer(width, 220.f);
+    Div singleDayContainer(width, height);
     singleDayContainer.properties.setPosition(offsetLeft, offsetTop);
     // selected day
     if (currentDay == i) {
@@ -174,7 +201,7 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
     }
     singleDayContainer.draw(window);
     
-    StaticText weekday(data[isDay ? "day" : "night"]["weekday"], 18);
+    StaticText weekday(data[isDay ? "day" : "night"]["weekday"][isForeignLanguageChecked ? "english" : "polish"], currentDay == i ? 22 : 20);
     weekday.setPosition(offsetLeft + 10.f, offsetTop + 10.f);
     weekday.draw(window);
     

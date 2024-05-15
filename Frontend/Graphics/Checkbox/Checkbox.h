@@ -7,17 +7,17 @@
 #include <SFML/Graphics.hpp>
 #include "../Image/Image.h"
 #include "../Containers/Div.h"
+#include "../StaticText/StaticText.h"
 
 
 class Checkbox {
     Image checkboxImage;
     Div checkboxContainer;
-    bool userClicked = false;
+    StaticText label;
 public:
     sf::Vector2f position;
-    Checkbox(sf::RenderWindow &window, float x, float y, bool &isChecked);
+    Checkbox(sf::RenderWindow &window, float x, float y, std::string  text, bool &isChecked);
     void onClick(sf::RenderWindow &window, sf::Event &event, bool &isChecked, bool &userReleasedButton);
-    
 };
 
 

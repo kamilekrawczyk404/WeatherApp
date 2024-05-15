@@ -14,6 +14,7 @@
 #include <cmath>
 #include <chrono>
 #include <SFML/Graphics.hpp>
+#include <nlohmann/json.hpp>
 
 class Helpers {
 public:
@@ -30,9 +31,10 @@ public:
     static int toCelsius(const double kelvins, int digits = 10);
     static int getHourFromUnix(time_t unixSeconds, int shift, int currentGMTOffset = 7200);
     static std::string convertToClockFormat(time_t unix, int shift = 0,  int currentGMTOffset = 7200);
-    static std::string getWeekday(time_t unixSeconds, int shift, int currentGMTOffset = 7200);
+    static nlohmann::json getDate(time_t unixSeconds, int shift, int currentGMTOffset = 7200);
     static int getCurrentHour(int shift = 0, int currentGMTOffset = 7200);
     static sf::Color HSLtoRGB(float hue, float saturation, float lightness);
+    static nlohmann::json translate(std::string text);
 };
 
 

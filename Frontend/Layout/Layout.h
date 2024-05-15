@@ -20,7 +20,12 @@ using json = nlohmann::json;
 class Layout {
     json weather, additionalInfo;
     sf::Event event;
-    bool isForeignLanguageChecked = false, userReleasedButton = true;
+    bool isForeignLanguageChecked = true, userReleasedButton = true;
+    float 
+        leftContainerWidth = 250.f,
+        leftContainerHeight = 310.f,
+        rightContainerWidth = 250.f,
+        rightContainerHeight = 370.f;
 public:
     float margin = 20, top = 90;
     int currentDay = 0;
@@ -29,7 +34,12 @@ public:
     void loadJson(json weather, json additionalInfo);
     void loadEvent(sf::Event& event);
     
-    void specificInformation(int& index, sf::RenderWindow& window, std::string key, json& data);
+    void leftSide(sf::RenderWindow& window);
+    void rightSide(sf::RenderWindow& window);
+    void bottomSide(sf::RenderWindow& window);
+    void chart(sf::RenderWindow& window);
+    
+    void specificInformation(int& index, sf::RenderWindow& window, std::string key, json& data, sf::Vector2f position);
     void singleDayCard(std::string index, sf::RenderWindow& window, json& data);
 };
 

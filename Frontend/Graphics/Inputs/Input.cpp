@@ -6,7 +6,7 @@
 
 Input::Input(float width, float height, fncPtr func, float fontSize, std::string placeholder) : onEnterHandler(func), placeholder(placeholder), fontSize(fontSize), width(width), height(height), customFont(), background(sf::Vector2<float>(width, height)), inputText("", customFont.font, (int)fontSize) {
     this->background.setFillColor(sf::Color(255, 255, 255, 255 / 2));
-    this->background.setOutlineColor(sf::Color(32, 32, 32));
+    this->background.setOutlineColor(sf::Color::White);
     this->background.setOutlineThickness(2.f);
     
     this->inputText.setFillColor(sf::Color(32, 32, 32));

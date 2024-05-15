@@ -22,16 +22,26 @@ std::string Helpers::convertToClockFormat(time_t unix, int shift,  int currentGM
     return buffer;
 }
 
-std::string Helpers::getWeekday(time_t unixSeconds, int shift, int currentGMTOffset) {
+nlohmann::json Helpers::getDate(time_t unixSeconds, int shift, int currentGMTOffset) {
     unixSeconds -= currentGMTOffset;
     unixSeconds += shift;
     
     tm* localTime = gmtime(&unixSeconds);
-    int weekdayIndex = localTime->tm_wday;
-
-    const std::vector<std::string> weekdays({"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"});
+    int weekdayIndex = localTime->tm_wday,
+        dayOfMonthIndex = localTime->tm_mday,
+        monthIndex = localTime->tm_mon;
     
-    return weekdays[weekdayIndex];
+
+    const std::vector<std::string> 
+            weekdaysInEnglish({"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}),
+            weekdaysInPolish({"Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"}),
+            monthsInEnglish({"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}),
+            monthsInPolish({"Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"});
+    
+    return nlohmann::json({
+          {"english", weekdaysInEnglish[weekdayIndex] + ", " + std::to_string(dayOfMonthIndex) + " " + monthsInEnglish[monthIndex]}, 
+          {"polish", weekdaysInPolish[weekdayIndex] + ", " + std::to_string(dayOfMonthIndex) + " " + monthsInPolish[monthIndex]}
+    });
 }
 
 int Helpers::getCurrentHour(int shift, int currentGMTOffset) {
@@ -92,4 +102,23 @@ sf::Color Helpers::HSLtoRGB(float hue, float saturation, float lightness) {
     }
 
     return sf::Color((r + m) * 255, (g + m) * 255, (b + m) * 255);
+}
+
+nlohmann::json Helpers::translate(std::string text) {
+    
+    if (text == "Clouds") {
+        return nlohmann::json ({{"english", text}, {"polish", "Pochmurnie"}});
+    } else if (text == "Rain") {
+        return nlohmann::json ({{"english", text}, {"polish", "Deszcz"}});
+    } else if (text == "Snow") {
+        return nlohmann::json ({{"english", text}, {"polish", "Śnieg"}});
+    } else if (text == "Clear") {
+        return nlohmann::json ({{"english", text}, {"polish", "Bezchmurnie"}});
+    } else if (text == "Drizzle") {
+        return nlohmann::json ({{"english", text}, {"polish", "Mżawka"}});
+    } else if (text == "Thunderstorm") {
+        return nlohmann::json ({{"english", text}, {"polish", "Burza"}});
+    } else {
+        return nlohmann::json ({{"english", text}, {"polish", text}});
+    }
 }

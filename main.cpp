@@ -9,6 +9,7 @@
 #include <string>
 #include "Frontend/Layout/Layout.h"
 
+
 Image background("background.jpg");
 std::vector<std::string> errors = {""};
 nlohmann::json weatherData, additionalInfo;
@@ -26,6 +27,8 @@ void getLocation(std::string content) {
 }
 
 int main() {
+    setlocale(LC_ALL, "pl_PL");
+    std::cout << "ą" << std::endl;
     Layout ui;
     
     // Input width

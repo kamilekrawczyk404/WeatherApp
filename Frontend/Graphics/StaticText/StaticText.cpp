@@ -4,8 +4,9 @@
 
 #include "StaticText.h"
 
-StaticText::StaticText(std::string content, int fontSize, sf::Color color) : CustomFont(), text(content, font, (int)fontSize){
+StaticText::StaticText(std::string content, int fontSize, sf::Color color) : CustomFont(), text(content, font, (int)fontSize), fontSize(fontSize){
     this->text.setFillColor(color);
+    this->text.setFont(font);
 }
 
 void StaticText::draw(sf::RenderWindow &window) {

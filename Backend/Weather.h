@@ -18,7 +18,7 @@
 
 class Weather : public Location , public LocationImage {
 public:
-    json weatherForecast = json::array(), additionalInfo;
+    json weatherForecast, additionalInfo;
     Weather(std::string& location);
 protected:
     std::string getUrl() override;

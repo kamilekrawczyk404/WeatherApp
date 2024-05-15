@@ -10,17 +10,25 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
     FetchAPI api(getUrl());
     HandleJson rawJson(api.fetchedData);
     
-    bool isDay, newDay;
-    int length = rawJson.content["list"].size(), currentDay = 0;
-    float min, max, currentTemp;
-    std::string  highestTemp = "null", lowestTemp = "null";
-    json weekdayForecast {
-        {"day", ""},
-        {"night", ""}
-    };;
+    bool 
+        isDay, 
+        newDay;
+    int 
+        length = rawJson.content["list"].size(), 
+        currentDay = 0, 
+        minIndex = -1, 
+        maxIndex = -1, 
+        dayIndex = 0, 
+        nightIndex = 0;
+    float 
+        min, 
+        max, 
+        currentTemp;
+    json singleDay;
     
     for (auto& [key, item] : rawJson.content["list"].items()) {
         isDay = false;
+        
         if (item["sys"]["pod"] == "d") {
             isDay = true;
         }
@@ -68,73 +76,72 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
             min = item["main"]["temp_min"].get<float>();
             max = item["main"]["temp_max"].get<float>();
             
-            weekdayForecast["night"] = partial;
             newDay = false;
         }
         
         if (isDay) {
+            singleDay["day"].push_back(partial);
             currentTemp = std::max(item["main"]["temp_max"].get<float>(), item["main"]["temp_min"].get<float>());
             if (currentTemp > max) {
-                weekdayForecast["day"] = partial;
+                maxIndex = dayIndex;
                 max = currentTemp;
             }
+            dayIndex++;
         } else {
+            singleDay["night"].push_back(partial);
             currentTemp = std::min(item["main"]["temp_max"].get<float>(), item["main"]["temp_min"].get<float>());
             if (min < currentTemp) {
-                weekdayForecast["night"] = partial;
                 min = currentTemp;
+                minIndex = nightIndex;
             }
+            nightIndex++;
         }
         
         // next iteration is next day
         if (stoi(key) + 1 != length && partial["weekday"] != Helpers::getDate(rawJson.content["list"][stoi(key) +  1]["dt"].get<time_t >(), rawJson.content["city"]["timezone"].get<int>())) {
-            // remove unnecessary properties
-            if (weekdayForecast["day"] == "") {
-                weekdayForecast.erase("day");
-            }
-            if (weekdayForecast["night"] == "") {
-                weekdayForecast.erase("night");
-            }
-            
+            weatherForecast.push_back({
+                {"data", singleDay},
+                {"max", maxIndex},
+                {"min", minIndex}
+            });
+
             currentDay++;
             newDay = true;
-            weatherForecast.push_back(weekdayForecast);
-            weekdayForecast = {
-                {"day", ""},
-                {"night", ""}
-            };
+            singleDay = {};
+            dayIndex = nightIndex = 0;
+            maxIndex = minIndex = -1;
         }
     }
     
     // getting the highest and the lowest temperature during the day
-    for (auto& [key, value] : weatherForecast.items()) {
-        if (value.contains("day")) {
-            std::string current = value["day"]["temperature"]["temp_max"].get<std::string>();
+    std::string lowest = "", highest = "";
+    
+    for(json singleDay : weatherForecast) {
+        if (singleDay["min"].get<int>() != -1) {
 
-            if (highestTemp == "null") {
-                highestTemp = current;
-            } else {
-                highestTemp = (stoi(highestTemp) < stoi(current)) ? current : highestTemp; 
-            }
-        } 
-        if (value.contains("night")){
-            std::string current = value["night"]["temperature"]["temp_min"].get<std::string>();
+            std::string current = singleDay["data"]["night"][singleDay["min"].get<int>()]["temperature"]["temp_min"].get<std::string>();
+            if (lowest.empty())
+                lowest = current;
+            else
+                lowest = stoi(current) < stoi(lowest) ? current : lowest;
+        }
 
-            if (lowestTemp == "null") {
-                lowestTemp = current;
-            } else {
-                lowestTemp = (stoi(lowestTemp) > stoi(current)) ? current : lowestTemp;
-            }
+        if (singleDay["max"].get<int>() != -1) {
+            std::string current = singleDay["data"]["day"][singleDay["max"].get<int>()]["temperature"]["temp_max"].get<std::string>();
+            if (highest.empty())
+                highest = current;
+            else
+                highest = stoi(current) > stoi(highest) ? current : highest;
         }
     }
-
+    
     additionalInfo.push_back( {
       {"sunrise", Helpers::convertToClockFormat(rawJson.content["city"]["sunrise"].get<time_t>(), rawJson.content["city"]["timezone"].get<int>())},
       {"sunset", Helpers::convertToClockFormat(rawJson.content["city"]["sunset"].get<time_t>(), rawJson.content["city"]["timezone"].get<int>())},
       {"city", rawJson.content["city"]["name"].get<std::string>() + ", " + rawJson.content["city"]["country"].get<std::string>()},
       {"timezone", rawJson.content["city"]["timezone"].get<int>()},
-      {"lowestTemp", stoi(lowestTemp)},
-      {"highestTemp", stoi(highestTemp)}
+      {"lowestTemp", stoi(lowest)},
+      {"highestTemp", stoi(highest)}
     });
 }
 

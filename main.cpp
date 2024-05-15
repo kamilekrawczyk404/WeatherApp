@@ -27,8 +27,6 @@ void getLocation(std::string content) {
 }
 
 int main() {
-    setlocale(LC_ALL, "pl_PL");
-    std::cout << "ą" << std::endl;
     Layout ui;
     
     // Input width
@@ -66,8 +64,7 @@ int main() {
         background.draw(window);
 
         if (!weatherData.empty()) {
-            
-            // we got the information!
+            // we've got the information!
             ui.loadJson(weatherData, additionalInfo);
             ui.loadEvent(event);
             ui.drawLayout(window);

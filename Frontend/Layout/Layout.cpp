@@ -20,11 +20,11 @@ void Layout::drawLayout(sf::RenderWindow &window) {
 
     chart(window);
     
-    leftSide(window);
+//    leftSide(window);
     
-    rightSide(window);
+//    rightSide(window);
 
-    bottomSide(window);
+//    bottomSide(window);
 }
 
 void Layout::chart(sf::RenderWindow &window) {
@@ -33,6 +33,7 @@ void Layout::chart(sf::RenderWindow &window) {
     chartContainer.draw(window);
     
     const float lineThickness = 2.5f;
+    
     Div horizontalLine(chartContainer.bounds.width - margin, lineThickness);
     horizontalLine.properties.setFillColor(sf::Color(32, 32, 32));
     horizontalLine.properties.setPosition(chartContainer.properties.getPosition().x + margin / 2, chartContainer.properties.getPosition().y + chartContainer.bounds.height - margin / 2);

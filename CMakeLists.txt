@@ -35,6 +35,8 @@ set(SOURCE_FILES main.cpp
         Backend/LocationImage.h
         Frontend/Graphics/Checkbox/Checkbox.cpp
         Frontend/Graphics/Checkbox/Checkbox.h
+        Frontend/Graphics/Containers/Circle.cpp
+        Frontend/Graphics/Containers/Circle.h
 )
 
 

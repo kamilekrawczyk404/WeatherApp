@@ -26,6 +26,9 @@ class Layout {
         leftContainerHeight = 310.f,
         rightContainerWidth = 250.f,
         rightContainerHeight = 370.f;
+    int 
+        highestTemperature, 
+        lowestTemperature;
 public:
     float margin = 20, top = 90;
     int currentDay = 0;

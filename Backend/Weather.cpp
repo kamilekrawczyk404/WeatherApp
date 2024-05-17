@@ -11,7 +11,7 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
     HandleJson rawJson(api.fetchedData);
     
     bool 
-        newDay;
+        newDay = true;
     int 
         length = rawJson.content["list"].size(), 
         currentDay = 0, 
@@ -19,20 +19,21 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
         maxIndex = -1, 
         index = 0;
     float
-        lowest,
-        highest,
-        min, 
-        max,
+        minDuringDay, 
+        maxDuringDay,
         currentMax, 
-        currentMin;
+        currentMin,
+        lowest,
+        highest;
+        
     json singleDay;
     
     for (auto& [key, item] : rawJson.content["list"].items()) {
-        
         std::string  description = item["weather"][0]["description"];
         std::replace(description.begin(), description.end(), ' ', '\n');
         
         json partial({
+            {"partOfDay", item["sys"]["pod"]},
             {"hour", Helpers::getHourFromUnix(item["dt"].get<time_t>(), (rawJson.content["city"]["timezone"].get<int>()))},
             {"weekday", Helpers::getDate(item["dt"].get<time_t>(), (rawJson.content["city"]["timezone"].get<int>()))},
             {"temperature", json ({
@@ -42,7 +43,6 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
                 {"main", std::to_string(Helpers::toCelsius(item["main"]["temp"]))},
             })},
             {"specificInformation", json({
-                {"precipitation", std::to_string(item["pop"].get<int>() * 100) + "%"},
                 {"Humidity", json({
                     {"title", json({{"english", "Humidity"}, {"polish", "Wilgotność"}})},
                     {"value", std::to_string(item["main"]["humidity"].get<int>()) + "%"}
@@ -69,51 +69,52 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
                 {"icon", item["weather"][0]["icon"].get<std::string>() + ".png"},
                 {"info", Helpers::translate(item["weather"][0]["main"].get<std::string>())},
                 {"description", description},
+                {"precipitation", Helpers::removeDecimalZeros(item["pop"].get<float>() * 100) + "%"},
+                {"fall", item.contains("rain") ? (std::to_string(item["rain"]["3h"].get<int>()) + " mm/3h") : (item.contains("snow") ? std::to_string(item["snow"]["3h"].get<int>()) + " mm/3h" : "")}
             })},
-//            {"rain"}
         });
         
         singleDay.push_back(partial);
 
         currentMax = std::max(item["main"]["temp_max"].get<float>(), item["main"]["temp_min"].get<float>());
         currentMin = std::min(item["main"]["temp_max"].get<float>(), item["main"]["temp_min"].get<float>());
-        
-        if (stoi(key) == 0) {
-            highest = currentMax;
-            lowest = currentMin;
-        }
-        
+
         if (newDay) {
-            min = currentMin;
-            max = currentMax;
+            minDuringDay = currentMin;
+            maxDuringDay = currentMax;
+            maxIndex = minIndex = index;
             newDay = false;
         }
         
-        if (currentMax >= max) {
-            max = currentMax;
-            maxIndex = index;
+        if (!stoi(key)) {
+            highest = currentMax;
+            lowest = currentMin;
+        }
+
+        if (highest < currentMax) {
+            highest = currentMax;
+        } else if (lowest > currentMin) {
+            lowest = currentMin;
         }
         
-        if (currentMin <= min) {
-            min = currentMin;
+        if (currentMax >= maxDuringDay) {
+            maxDuringDay = currentMax;
+            maxIndex = index;
+        } else if (currentMin <= minDuringDay) {
+            minDuringDay = currentMin;
             minIndex = index;
         }
         
-        if (highest <= max) {
-            highest = max;
-        }
         
-        if (lowest >= min) {
-            lowest = min;
-        } 
-        
+
         // next iteration is next day
         if (stoi(key) + 1 != length && partial["weekday"] != Helpers::getDate(rawJson.content["list"][stoi(key) +  1]["dt"].get<time_t >(), rawJson.content["city"]["timezone"].get<int>())) {
+            
             weatherForecast.push_back({
-                {"data", singleDay},
-                // if condition is true, both temperatures are equal
-                {"max", maxIndex == -1 ? minIndex : maxIndex},
-                {"min", minIndex == -1 ? maxIndex : minIndex}
+                  {"data", singleDay},
+                  // if condition is true, both temperatures are equal
+                  {"max", maxIndex == -1 ? minIndex : maxIndex},
+                  {"min", minIndex == -1 ? maxIndex : minIndex}
             });
 
             currentDay++;
@@ -121,8 +122,21 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
             singleDay = {};
             index = 0;
             maxIndex = minIndex = -1;
+
+            continue;
         }
+        
         index++;
+    }
+
+    // to prevent situation that first day has lack of information take them from the next day
+    const int infoPacketsPerDay = 8;
+    
+    if (weatherForecast[0]["data"].size() < infoPacketsPerDay) {
+        int lastIndexFromApiList = weatherForecast[0]["data"].size() - 1, i = 0;
+        while (lastIndexFromApiList++ < infoPacketsPerDay - 1) {
+            weatherForecast[0]["data"].push_back(weatherForecast[1]["data"][i++]);
+        }
     }
     
     additionalInfo = {

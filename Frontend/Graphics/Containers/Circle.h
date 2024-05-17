@@ -5,11 +5,13 @@
 #ifndef CPP_WEATHER_APP_CIRCLE_H
 #define CPP_WEATHER_APP_CIRCLE_H
 #include <SFML/Graphics.hpp>
+#include "../../../Backend/Helpers.h"
 
 class Circle {
 public:
     sf::CircleShape properties;
     Circle(float radius, sf::Color fillColor = sf::Color(32, 32, 32));
+    void addFillColorBasedOnTemperature(float temp);
     void draw(sf::RenderWindow &window);
 };
 

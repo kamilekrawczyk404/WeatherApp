@@ -9,7 +9,10 @@
 void Layout::loadJson(json weather, json additionalInfo) {
     this->weather = weather;
     this->additionalInfo = additionalInfo;
+    this->lowestTemperature = stoi(additionalInfo["lowestTemp"].get<std::string>());
+    this->highestTemperature = stoi(additionalInfo["highestTemp"].get<std::string>());
 }
+
 
 void Layout::loadEvent(sf::Event &event) {
     this->event = event;
@@ -23,9 +26,9 @@ void Layout::drawLayout(sf::RenderWindow &window) {
     
 //    leftSide(window);
     
-//    rightSide(window);
+    rightSide(window);
 
-//    bottomSide(window);
+    bottomSide(window);
 }
 
 void Layout::chart(sf::RenderWindow &window) {
@@ -42,8 +45,8 @@ void Layout::chart(sf::RenderWindow &window) {
     
     // getting the lowest and the highest temperature of the current day
     int
-        lowestTemp = stoi(weather[currentDay]["data"][weather[currentDay]["min"].get<int>()]["temperature"]["tempMin"].get<std::string>()),
-        highestTemp = stoi(weather[currentDay]["data"][weather[currentDay]["max"].get<int>()]["temperature"]["tempMax"].get<std::string>());
+        lowestTempDuringDay = stoi(weather[currentDay]["data"][weather[currentDay]["min"].get<int>()]["temperature"]["tempMin"].get<std::string>()),
+        highestTempDuringDay = stoi(weather[currentDay]["data"][weather[currentDay]["max"].get<int>()]["temperature"]["tempMax"].get<std::string>());
 
     Div horizontalLine(chartContainer.bounds.width - lineThickness * 2 * margin, lineThickness);
     horizontalLine.properties.setFillColor(sf::Color(32, 32, 32));
@@ -55,7 +58,6 @@ void Layout::chart(sf::RenderWindow &window) {
     verticalLine.properties.setPosition(chartContainer.properties.getPosition().x + lineThickness * margin, chartContainer.properties.getPosition().y + lineThickness * margin);
     verticalLine.draw(window);
     
-    
     // horizontal section of the chart
     // rainfall and snowfall charts, description
     const int denominator = weather[currentDay]["data"].size();
@@ -63,36 +65,54 @@ void Layout::chart(sf::RenderWindow &window) {
     // storing position of hours
     std::vector<float> xPos;
     
-    for(int i = 0; i < denominator; i++) {
-        Div hourIndicator(lineThickness, 4.f * lineThickness);
-        
-        float 
-            x = horizontalLine.properties.getPosition().x + i * (horizontalLine.bounds.width / denominator) + (horizontalLine.bounds.width / denominator) / 2,
+    for(auto& [key, value] : weather[currentDay]["data"].items()) {
+        int index = stoi(key);
+        float
+            x = horizontalLine.properties.getPosition().x + index * (horizontalLine.bounds.width / denominator) + (horizontalLine.bounds.width / denominator) / 2,
             y = horizontalLine.properties.getPosition().y - lineThickness;
         
+        Div hourIndicator(lineThickness, 4.f * lineThickness);
+
         xPos.push_back(x);
-        
+
         hourIndicator.properties.setFillColor(sf::Color(32, 32, 32));
         hourIndicator.properties.setPosition(x, y);
         hourIndicator.draw(window);
+
+        std::string
+            hourValue = std::to_string(value["hour"].get<int>()),
+            popValueAsString = value["weather"]["precipitation"].get<std::string>();
         
-        std::string  popValueAsString = weather[currentDay]["data"][i]["specificInformation"]["precipitation"].get<std::string>();
-        int popValue = stoi(popValueAsString.substr(0, popValueAsString.find('%')));
+        int 
+            popValue = stoi(popValueAsString.substr(0, popValueAsString.find('%')));
+        
+        StaticText hour(hourValue + ":00", 16);
+        hour.setPosition(hourIndicator.properties.getPosition().x - hour.text.getString().getSize() * 16 / 4, chartContainer.properties.getPosition().y + margin);
+        hour.draw(window);
         
         StaticText precipitation(popValueAsString, 16);
-        precipitation.setPosition(hourIndicator.properties.getPosition().x - precipitation.fontSize / 4 * precipitation.text.getString().getSize(), hourIndicator.properties.getPosition().y - (popValue == 0 ? 2 * precipitation.text.getGlobalBounds().height : popValue / 100 * verticalLine.bounds.height - precipitation.text.getLocalBounds().height / 2));
-        precipitation.draw(window);
-        
+
         // rain or snow % container
         if (popValue != 0) {
             // we've got some precipitation
-            Div precipitationContainer(horizontalLine.bounds.width / denominator / 2, float (popValue) / 100.f * verticalLine.bounds.height - 2 * precipitation.text.getLocalBounds().height);
+            
+            Div precipitationContainer(horizontalLine.bounds.width / denominator / 2, float (popValue) / 100.f * verticalLine.bounds.height * 0.85f);
             precipitationContainer.properties.setFillColor(sf::Color(72, 202, 228, 255.f / 2));
             precipitationContainer.properties.setPosition(hourIndicator.properties.getPosition().x - precipitationContainer.bounds.width / 2, hourIndicator.properties.getPosition().y - precipitationContainer.bounds.height + margin / 4 - lineThickness);
             precipitationContainer.draw(window);
+            
+            StaticText fallValue(value["weather"]["fall"], 16);
+            fallValue.setPosition(precipitationContainer.properties.getPosition().x - fallValue.text.getString().getSize() / 2 , precipitationContainer.properties.getPosition().y - fallValue.text.getLocalBounds().height - 1.25f * margin);
+            fallValue.draw(window);
+
+            precipitation.setPosition(hourIndicator.properties.getPosition().x - precipitation.fontSize / 4 * precipitation.text.getString().getSize(), precipitationContainer.properties.getPosition().y - precipitation.text.getLocalBounds().height - margin / 2.5f);
+        } else {
+            precipitation.setPosition(hourIndicator.properties.getPosition().x - precipitation.fontSize / 4 * precipitation.text.getString().getSize(), hourIndicator.properties.getPosition().y - 2 * precipitation.text.getGlobalBounds().height);
         }
         
-        StaticText description(weather[currentDay]["data"][i]["weather"]["description"].get<std::string>(), 14);
+        precipitation.draw(window);
+
+        StaticText description(value["weather"]["description"].get<std::string>(), 14);
         description.setPosition(hourIndicator.properties.getPosition().x - precipitation.fontSize / 1.75f * precipitation.text.getString().getSize(), hourIndicator.properties.getPosition().y + precipitation.text.getGlobalBounds().height);
         description.draw(window);
     }
@@ -100,18 +120,19 @@ void Layout::chart(sf::RenderWindow &window) {
     // vertical section of the chart
     // temperatures, graph
     const int jump = 5;
+//    const int jump = highestTemp - lowestTemp / 4;
     int 
         min, 
         max,
         length = 1;
 
-    min = lowestTemp - (lowestTemp < 0 ? jump + (lowestTemp % jump) : (lowestTemp % jump));
-    max = highestTemp + (highestTemp < 0 ? -(highestTemp % jump) : jump - (highestTemp % jump));
+    min = lowestTempDuringDay - (lowestTempDuringDay < 0 ? jump + (lowestTempDuringDay % jump) : (lowestTempDuringDay % jump));
+    max = highestTempDuringDay + (highestTempDuringDay < 0 ? -(highestTempDuringDay % jump) : jump - (highestTempDuringDay % jump));
     
     // getting length of the temperature bar
     // if between the lowest and the highest temperature are also other temperatures which are higher by the step
     int pom = min;
-    while(pom < max) {
+    while (pom < max) {
         length++;
         pom += jump;
     }
@@ -119,7 +140,7 @@ void Layout::chart(sf::RenderWindow &window) {
     for (int i = 0; i < length; i++) {
         std::string value = std::to_string(min + i * jump);
         float
-            x = chartContainer.properties.getPosition().x + margin / 2,
+            x = chartContainer.properties.getPosition().x + margin / 2.5f,
             y = chartContainer.properties.getPosition().y + chartContainer.bounds.height - i * verticalLine.bounds.height / (length) - verticalLine.bounds.height / length - 1.5f * margin;
 
         StaticText temperature(value, 16);
@@ -140,33 +161,35 @@ void Layout::chart(sf::RenderWindow &window) {
     
     for (auto& [key, value] : weather[currentDay]["data"].items()) {
         const int
-                density = 5,
-                index = stoi(key),
-                currentTemp = stoi(value["temperature"]["main"].get<std::string>());
+            density = horizontalLine.bounds.width / denominator,
+            index = stoi(key),
+            currentTemp = stoi(value["temperature"]["main"].get<std::string>());
         const float 
-            radius = 5.f,
+            radius = 2.5f,
             height = abs(highestTempY - lowestTempY),
             x = xPos[stoi(key)] - radius / 2,
-            y =  lowestTempY - height * ((float) currentTemp / float (max + min));
+            y = lowestTempY - height * ((float) currentTemp / float (max + min));
         
         Circle mainDot(radius);
         
         mainDot.properties.setPosition(x, y);
+        mainDot.addFillColorBasedOnTemperature(currentTemp);
         mainDot.draw(window);
         
-//        std::cout << xPos.size() << " " << yPos.size() << std::endl;
+        if (index + 1 != xPos.size()) {
+            float
+                nextDotTemp = std::stof(weather[currentDay]["data"][index + 1]["temperature"]["main"].get<std::string>()),
+                nextDotX = xPos.at(index + 1),
+                nextDotY = lowestTempY - height * nextDotTemp / float (max + min);
+            
+            for (int i = 1; i <= density; ++i) {
+                Circle dotBetween(radius);
 
-//        if (index + 1 <= xPos.size()) {
-//            for (int i = 1; i <= density; ++i) {
-//                float
-//                        nextDotX = xPos.at(index),
-//                        nextDotY = ;
-//                    Circle dotBetween(radius);
-//
-//                    dotBetween.properties.setPosition(nextDotX - x + i, nextDotY - y + i);
-//                    dotBetween.draw(window);
-//            }
-//        }
+                dotBetween.properties.setPosition(mainDot.properties.getPosition().x + (nextDotX - x) * i / density, mainDot.properties.getPosition().y + (nextDotY - y) * i / density);
+                dotBetween.addFillColorBasedOnTemperature(currentTemp + i * (nextDotTemp - currentTemp) / (float) density);
+                dotBetween.draw(window);
+            }
+        }
     }
 }
 
@@ -261,8 +284,9 @@ void Layout::rightSide(sf::RenderWindow &window) {
     rightSection.properties.setPosition(window.getSize().x - rightContainerWidth - margin, margin);
     rightSection.draw(window);
 
-    for(auto& [key, value] : weather[currentDay][hasDay ? "day" : "night"]["specificInformation"].items()) {
-        int index = std::distance(weather[currentDay][hasDay ? "day" : "night"]["specificInformation"].begin(), weather[currentDay][hasDay ? "day" : "night"]["specificInformation"].find(key));
+    // tapping on hour in the chart could change the specific information for that part of the day
+    for(auto& [key, value] : weather[currentDay]["data"][0]["specificInformation"].items()) {
+        int index = std::distance(weather[currentDay]["data"][0]["specificInformation"].begin(), weather[currentDay]["data"][0]["specificInformation"].find(key));
         specificInformation(index, window, key, value, rightSection.properties.getPosition());
     }
 }
@@ -303,13 +327,20 @@ void Layout::specificInformation(int& index, sf::RenderWindow &window, std::stri
 
 void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &data) {
     int i = stoi(index);
-    // "04" is the index for clouds icon
-    bool isDay = data.contains("day"), 
-         isCloudsIcon = data[isDay ? "day" : "night"]["weather"]["icon"].get<std::string>().substr(0, 2) == "04" || data[isDay ? "day" : "night"]["weather"]["icon"].get<std::string>().substr(0, 2) == "03";
-    std::string 
-        mainIconName = data[isDay ? "day" : "night"]["weather"]["icon"], 
-        mainTemperature = data[isDay ? "day" : "night"]["temperature"][isDay ? "tempMax" : "tempMin"];
     
+//    std::cout << data["min"] << " " << data["max"] << std::endl;
+    json 
+        lowestTempItem = data["data"][data["min"].get<int>()],
+        highestTempItem = data["data"][data["max"].get<int>()];
+    std::string 
+        mainIconName = highestTempItem["weather"]["icon"], 
+        mainTemperature = highestTempItem["temperature"]["tempMax"],
+        secondaryIconName = lowestTempItem["weather"]["icon"],
+        secondaryTemperature = lowestTempItem["temperature"]["tempMin"];
+
+    // "04" is the index for clouds icon
+    bool isCloudsIcon = highestTempItem["weather"]["icon"].get<std::string>().substr(0, 2) == "04" || lowestTempItem["weather"]["icon"].get<std::string>().substr(0, 2) == "03";
+//    
     const float 
         gap = 20.f, 
         height = 220.f,
@@ -319,77 +350,71 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
 
     Div singleDayContainer(width, height);
     singleDayContainer.properties.setPosition(offsetLeft, offsetTop);
-    // selected day
+    
+    // selected day styling
     if (currentDay == i) {
         singleDayContainer.properties.setOutlineThickness(5.f);
         singleDayContainer.properties.setOutlineColor(sf::Color(32, 32, 32));
     }
     singleDayContainer.draw(window);
-    
-    StaticText weekday(data[isDay ? "day" : "night"]["weekday"][isForeignLanguageChecked ? "english" : "polish"], currentDay == i ? 22 : 20);
+
+    StaticText weekday(highestTempItem["weekday"][isForeignLanguageChecked ? "english" : "polish"], currentDay == i ? 22 : 20);
     weekday.setPosition(offsetLeft + 10.f, offsetTop + 10.f);
     weekday.draw(window);
-    
+
     Image mainIcon(mainIconName);
     mainIcon.image.setPosition(offsetLeft - 5.f , offsetTop + (isCloudsIcon ? 25.f : 30.f));
     mainIcon.image.setScale(0.75f, 0.75f);
     mainIcon.draw(window);
-    
+
     StaticText main(mainTemperature, 32);
     main.setPosition(offsetLeft + 90.f, offsetTop + 55.f);
     main.draw(window);
-    
+
     CelsiusSign(window, offsetLeft + 90.f, offsetTop + 55.f, 32, main.text.getString());
     
-    if (data.contains(isDay ? "night" : "day")) {
-        std::string secondaryIconName = data[isDay ? "night" : "day"]["weather"]["icon"], secondaryTemperature = data[isDay ? "night" : "day"]["temperature"][isDay ? "tempMin" : "tempMax"];
-        
-        Image secondaryIcon(secondaryIconName);
-        secondaryIcon.image.setPosition(offsetLeft, offsetTop + (isCloudsIcon ? 105.f : 110.f));
-        secondaryIcon.image.setScale(0.6f,0.6f);
-        secondaryIcon.draw(window);
-        
-        StaticText secondary(secondaryTemperature, 24);
-        secondary.setPosition(offsetLeft + 70.f, offsetTop + 130.f);
-        secondary.draw(window);
+    Image secondaryIcon(secondaryIconName);
+    secondaryIcon.image.setPosition(offsetLeft, offsetTop + (isCloudsIcon ? 105.f : 110.f));
+    secondaryIcon.image.setScale(0.6f,0.6f);
+    secondaryIcon.draw(window);
 
-        CelsiusSign celsius(window, offsetLeft + 70.f, offsetTop + 130.f, 24, secondary.text.getString());
+    StaticText secondary(secondaryTemperature, 24);
+    secondary.setPosition(offsetLeft + 70.f, offsetTop + 130.f);
+    secondary.draw(window);
 
-        // if both temperatures are set for single day
-        int max = std::max(additionalInfo[0]["highestTemp"].get<int>(), additionalInfo[0]["lowestTemp"].get<int>()),
-            min = std::min(additionalInfo[0]["highestTemp"].get<int>(), additionalInfo[0]["lowestTemp"].get<int>()),
-            size = abs(max - min);
+    CelsiusSign celsius(window, offsetLeft + 70.f, offsetTop + 130.f, 24, secondary.text.getString());
 
-        float temperatureBarWidth = (stof(mainTemperature) - stof(secondaryTemperature) ) / float (size),
-            barOffset = abs(std::min(stoi(mainTemperature), stoi(secondaryTemperature)) - min) / float (size);
+    int size = abs(highestTemperature - lowestTemperature);
 
-        Div temperatureContainer(width - 20.f, 10.f, sf::Vector2i(min, max));
-        temperatureContainer.properties.setPosition(offsetLeft + 10.f, offsetTop + 200.f);
-        temperatureContainer.draw(window);
+    float temperatureBarWidth = (stof(mainTemperature) - stof(secondaryTemperature) ) / float (size),
+        barOffset = abs(std::min(stoi(mainTemperature), stoi(secondaryTemperature)) - lowestTemperature) / float (size);
 
-        Div temperatureBar(temperatureBarWidth * (width - 20.f), 10.f);
-        temperatureBar.properties.setPosition(offsetLeft + 10.f + barOffset * (width - 20.f), offsetTop + 200.f);
-        temperatureBar.properties.setFillColor(sf::Color::Transparent);
-        temperatureBar.draw(window);
+    Div temperatureContainer(width - 20.f, 10.f, sf::Vector2i(highestTemperature, lowestTemperature));
+    temperatureContainer.properties.setPosition(offsetLeft + 10.f, offsetTop + 200.f);
+    temperatureContainer.draw(window);
 
-        Div leftMask(temperatureBar.properties.getPosition().x - temperatureContainer.properties.getPosition().x, 10.f);
-        leftMask.properties.setFillColor(sf::Color(108, 117, 125));
-        leftMask.properties.setPosition(offsetLeft + 10.f, offsetTop + 200.f);
-        leftMask.draw(window);
+    Div temperatureBar(temperatureBarWidth * (width - 20.f), 10.f);
+    temperatureBar.properties.setPosition(offsetLeft + 10.f + barOffset * (width - 20.f), offsetTop + 200.f);
+    temperatureBar.properties.setFillColor(sf::Color::Transparent);
+    temperatureBar.draw(window);
 
-        Div rightMask(width - 20.f - leftMask.bounds.width - temperatureBar.bounds.width, 10.f);
-        rightMask.properties.setFillColor(sf::Color(108, 117, 125));
-        rightMask.properties.setPosition(offsetLeft + 10.f + leftMask.bounds.width + temperatureBar.bounds.width, offsetTop + 200.f);
-        rightMask.draw(window);
-    }
-    
+    Div leftMask(temperatureBar.properties.getPosition().x - temperatureContainer.properties.getPosition().x, 10.f);
+    leftMask.properties.setFillColor(sf::Color(108, 117, 125));
+    leftMask.properties.setPosition(offsetLeft + 10.f, offsetTop + 200.f);
+    leftMask.draw(window);
+
+    Div rightMask(width - 20.f - leftMask.bounds.width - temperatureBar.bounds.width, 10.f);
+    rightMask.properties.setFillColor(sf::Color(108, 117, 125));
+    rightMask.properties.setPosition(offsetLeft + 10.f + leftMask.bounds.width + temperatureBar.bounds.width, offsetTop + 200.f);
+    rightMask.draw(window);
+
     // interaction with left mouse button on single day card
     if (i != currentDay && event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2<int> mousePosition = sf::Mouse::getPosition(window);
             sf::Vector2<float> rectPosition = singleDayContainer.properties.getPosition();
             sf::FloatRect rectBounds = singleDayContainer.properties.getLocalBounds();
-            
+
             if (mousePosition.x >= rectPosition.x && mousePosition.x <= rectPosition.x + rectBounds.width && mousePosition.y >= rectPosition.y && mousePosition.y <= rectPosition.y + rectBounds.height) {
                 currentDay = i;
             }

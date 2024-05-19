@@ -35,6 +35,9 @@ public:
     static int getCurrentHour(int shift = 0, int currentGMTOffset = 7200);
     static sf::Color HSLtoRGB(float hue, float saturation, float lightness);
     static nlohmann::json translate(std::string text);
+    static float LagrangeBasis(const std::vector<float>& x, int i, double xPoint);
+    static float LagrangePolynomial(const std::vector<float>& x, const std::vector<float>& y, float xPoint);
+    static sf::Color convertTemperatureToColor(float temp);
 };
 
 

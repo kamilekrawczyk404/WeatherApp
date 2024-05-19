@@ -122,3 +122,31 @@ nlohmann::json Helpers::translate(std::string text) {
         return nlohmann::json ({{"english", text}, {"polish", text}});
     }
 }
+
+float Helpers::LagrangeBasis(const std::vector<float>& x, int i, double xPoint) {
+    float result = 1.0f;
+    
+    for(size_t j = 0; j < x.size(); j++) {
+        if (j != i) {
+            result *= (xPoint - x[j]) / (x[i] - x[j]);
+        } 
+    }
+    
+    return result;
+}
+
+float Helpers::LagrangePolynomial(const std::vector<float>& x, const std::vector<float>& y, float xPoint) {
+    float result = 0.0f;
+    
+    for(size_t i = 0; i < x.size(); i++) {
+        result += y[i] * Helpers::LagrangeBasis(x, i, xPoint);
+    }
+    
+    return result;
+}
+
+sf::Color Helpers::convertTemperatureToColor(float temp) {
+    const int tMin = -80, tMax = 50;
+
+    return sf::Color(Helpers::HSLtoRGB(360 - (temp - tMin) / (tMax - tMin) * 360, 1, 0.5));
+}

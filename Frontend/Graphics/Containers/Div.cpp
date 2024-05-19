@@ -17,8 +17,8 @@ void Div::draw(sf::RenderWindow &window) {
         vertices.setPrimitiveType(sf::Quads);
         vertices.resize(4);
         
-        sf::Color leftColor = Helpers::HSLtoRGB(- (this->gradientValues.x * (255.f / 70.f)) + (255.f / 1.5f), 1, 0.5);
-        sf::Color rightColor = Helpers::HSLtoRGB(- (this->gradientValues.y * (255.f / 70.f)) + (255.f / 2.f), 1, 0.5);
+        sf::Color leftColor = Helpers::convertTemperatureToColor(gradientValues.y);
+        sf::Color rightColor = Helpers::convertTemperatureToColor(gradientValues.x);
 
         vertices[0].position = this->properties.getPosition();
         vertices[3].position = sf::Vector2f(this->properties.getPosition().x, this->properties.getPosition().y + this->bounds.height);

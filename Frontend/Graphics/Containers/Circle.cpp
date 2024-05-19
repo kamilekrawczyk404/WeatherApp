@@ -10,7 +10,7 @@ Circle::Circle(float radius, sf::Color fillColor) {
 }
 
 void Circle::addFillColorBasedOnTemperature(float temp) {
-    properties.setFillColor(Helpers::HSLtoRGB(- (temp * (255.f / 70.f)) + (255.f / 1.9f), 1, 0.5));
+    properties.setFillColor(Helpers::convertTemperatureToColor(temp));
 }
 
 void Circle::draw(sf::RenderWindow &window) {

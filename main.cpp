@@ -9,8 +9,6 @@
 #include <string>
 #include "Frontend/Layout/Layout.h"
 
-
-Image background("background.jpg");
 std::vector<std::string> errors = {""};
 nlohmann::json weatherData, additionalInfo;
 
@@ -29,15 +27,15 @@ void getLocation(std::string content) {
 int main() {
     Layout ui;
     
-    // Input width
-    float width = 310;
+    float inputWidth = 310;
     
     // Main background
+    Image background("background.jpg");
     
     sf::RenderWindow window(sf::VideoMode(background.textureSize.x, background.textureSize.y), "Simple Forecast Application");
     
     // Interactive part with user
-    Input locationInput(width, 30.f, getLocation, 16.f, "Enter your location");
+    Input locationInput(inputWidth, 30.f, getLocation, 16.f, "Enter your location");
     locationInput.setPosition(ui.margin, 20.f);
     
     StaticText errorMessage(errors.at(0), 14, sf::Color::Red);

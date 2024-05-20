@@ -18,20 +18,29 @@
 using json = nlohmann::json;
 
 class Layout {
-    json weather, additionalInfo;
     sf::Event event;
-    bool isForeignLanguageChecked = true, userReleasedButton = true;
-    float 
+    bool 
+        isForeignLanguageChecked = true,
+        userReleasedButton = true;
+    int 
+        highestTemperature, 
+        lowestTemperature;
+protected:
+    float
         leftContainerWidth = 250.f,
         leftContainerHeight = 310.f,
         rightContainerWidth = 250.f,
         rightContainerHeight = 370.f;
-    int 
-        highestTemperature, 
-        lowestTemperature;
+    json 
+        weather, 
+        additionalInfo;
 public:
-    float margin = 20, top = 90;
-    int currentDay = 0;
+    float 
+        margin = 20.f, 
+        top = 90.f;
+    int 
+        currentDay = 0,
+        currentHour = 0;
     
     void drawLayout(sf::RenderWindow& window);
     void loadJson(json weather, json additionalInfo);

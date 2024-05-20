@@ -37,6 +37,8 @@ set(SOURCE_FILES main.cpp
         Frontend/Graphics/Checkbox/Checkbox.h
         Frontend/Graphics/Containers/Circle.cpp
         Frontend/Graphics/Containers/Circle.h
+        Frontend/Layout/Chart.cpp
+        Frontend/Layout/Chart.h
 )
 
 

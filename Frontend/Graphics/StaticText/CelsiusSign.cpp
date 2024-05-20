@@ -8,10 +8,10 @@ CelsiusSign::CelsiusSign(sf::RenderWindow& window, float x, float y, int fontSiz
     StaticText degreeSymbol("o", fontSize / 2);
     StaticText cSymbol("C", fontSize);
     
-    int length = temperature.length();
+    int length = temperature[0] == '-' ? temperature.substr(1, temperature.length()).length() : temperature.length();
     
-    degreeSymbol.setPosition(x + length * (fontSize / 1.75f), y + 2.f);
-    cSymbol.setPosition(x + length * (fontSize / 1.75f) + degreeSymbol.text.getLocalBounds().width, y);
+    degreeSymbol.setPosition(x + length * (fontSize / 1.75f) + fontSize / 8, y + 2.f);
+    cSymbol.setPosition(x + length * (fontSize / 1.75f) + degreeSymbol.text.getLocalBounds().width + fontSize / 4, y);
     
     cSymbol.draw(window);
     degreeSymbol.draw(window);

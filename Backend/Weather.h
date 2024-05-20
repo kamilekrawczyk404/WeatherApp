@@ -22,6 +22,7 @@ public:
     Weather(std::string& location);
 protected:
     std::string getUrl() override;
+    json formatData(json &content, json &item);
 };
 
 #endif //CPP_WEATHER_APP_WEATHER_H

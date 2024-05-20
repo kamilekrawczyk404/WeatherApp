@@ -6,7 +6,58 @@
 
 using json = nlohmann::json;
 
-Weather::Weather(std::string& location): Location(location), LocationImage(location) {
+json Weather::formatData(json &content, json &item) {
+    std::string  description = item["weather"][0]["description"];
+    std::replace(description.begin(), description.end(), ' ', '\n');
+    
+    json partial({
+         {"partOfDay", item["sys"]["pod"]},
+         {"hour", Helpers::getHourFromUnix(item["dt"].get<time_t>(), (content["city"]["timezone"].get<int>()))},
+         {"weekday", Helpers::getDate(item["dt"].get<time_t>(), (content["city"]["timezone"].get<int>()))},
+         {"temperature", json ({
+               {"feelsLike", std::to_string(Helpers::toCelsius(item["main"]["feels_like"]))},
+               {"tempMin", std::to_string(Helpers::toCelsius(item["main"]["temp_min"]))},
+               {"tempMax", std::to_string(Helpers::toCelsius(item["main"]["temp_max"]))},
+               {"main", std::to_string(Helpers::toCelsius(item["main"]["temp"]))},
+                               })},
+         {"specificInformation", json({
+            {"Humidity", json({
+                {"title", json({{"english", "Humidity"}, {"polish", "Wilgotność"}})},
+                {"value", std::to_string(item["main"]["humidity"].get<int>()) + "%"}
+            })},
+            {"Pressure", json({
+                {"title", json({{"english", "Air pressure"}, {"polish", "Ciśnienie"}})},
+                {"value", std::to_string(item["main"]["grnd_level"].get<int>()) + "hPa"}
+            })},
+            {"Cloudiness", json({
+                {"title", json({{"english", "Cloudiness"}, {"polish", "Zachmurzenie"}})},
+                {"value", std::to_string(item["clouds"]["all"].get<int>()) + "%"}
+            })},
+            {"Wind", json({
+                {"title", json({{"english", "Wind"}, {"polish", "Wiatr"}})},
+                {"value", Helpers::removeDecimalZeros<float>(item["wind"]["speed"].get<float>()) + "m/s"},
+                {"deg", item["wind"]["deg"].get<float>()}
+            })},
+            {"Visibility", json({
+                {"title", json({{"english", "Visibility"}, {"polish", "Widoczność"}})},
+                {"value", item.contains("visibility") ? (std::to_string(item["visibility"].get<int>() / 1000)  + "km") : "No data"}
+            })},
+        })},
+    {"weather", json({
+        {"icon", item["weather"][0]["icon"].get<std::string>() + ".png"},
+        {"info", Helpers::translate(item["weather"][0]["main"].get<std::string>())},
+        {"description", description},
+        {"precipitation", Helpers::removeDecimalZeros(item["pop"].get<float>() * 100) + "%"},
+        {"fall", item.contains("rain") ? (std::to_string(item["rain"]["3h"].get<int>()) + " mm/3h") : (item.contains("snow") ? std::to_string(item["snow"]["3h"].get<int>()) + " mm/3h" : "")}
+    })},
+    });
+    
+    return partial;
+}
+
+Weather::Weather(std::string& location): 
+    Location(location), 
+    LocationImage(location) {
     FetchAPI api(getUrl());
     HandleJson rawJson(api.fetchedData);
     
@@ -29,51 +80,7 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
     json singleDay;
     
     for (auto& [key, item] : rawJson.content["list"].items()) {
-        std::string  description = item["weather"][0]["description"];
-        std::replace(description.begin(), description.end(), ' ', '\n');
-        
-        json partial({
-            {"partOfDay", item["sys"]["pod"]},
-            {"hour", Helpers::getHourFromUnix(item["dt"].get<time_t>(), (rawJson.content["city"]["timezone"].get<int>()))},
-            {"weekday", Helpers::getDate(item["dt"].get<time_t>(), (rawJson.content["city"]["timezone"].get<int>()))},
-            {"temperature", json ({
-                {"feelsLike", std::to_string(Helpers::toCelsius(item["main"]["feels_like"]))},
-                {"tempMin", std::to_string(Helpers::toCelsius(item["main"]["temp_min"]))},
-                {"tempMax", std::to_string(Helpers::toCelsius(item["main"]["temp_max"]))},
-                {"main", std::to_string(Helpers::toCelsius(item["main"]["temp"]))},
-            })},
-            {"specificInformation", json({
-                {"Humidity", json({
-                    {"title", json({{"english", "Humidity"}, {"polish", "Wilgotność"}})},
-                    {"value", std::to_string(item["main"]["humidity"].get<int>()) + "%"}
-                })},
-                {"Pressure", json({
-                    {"title", json({{"english", "Air pressure"}, {"polish", "Ciśnienie"}})},
-                    {"value", std::to_string(item["main"]["grnd_level"].get<int>()) + "hPa"}
-                })},
-                {"Cloudiness", json({
-                    {"title", json({{"english", "Cloudiness"}, {"polish", "Zachmurzenie"}})},
-                    {"value", std::to_string(item["clouds"]["all"].get<int>()) + "%"}
-                })},
-                {"Wind", json({
-                    {"title", json({{"english", "Wind"}, {"polish", "Wiatr"}})},
-                    {"value", Helpers::removeDecimalZeros<float>(item["wind"]["speed"].get<float>()) + "m/s"},
-                    {"deg", item["wind"]["deg"].get<float>()}
-                })},
-                {"Visibility", json({
-                    {"title", json({{"english", "Visibility"}, {"polish", "Widoczność"}})},
-                    {"value", item.contains("visibility") ? (std::to_string(item["visibility"].get<int>() / 1000)  + "km") : "No data"}
-                })},
-            })},
-            {"weather", json({
-                {"icon", item["weather"][0]["icon"].get<std::string>() + ".png"},
-                {"info", Helpers::translate(item["weather"][0]["main"].get<std::string>())},
-                {"description", description},
-                {"precipitation", Helpers::removeDecimalZeros(item["pop"].get<float>() * 100) + "%"},
-                {"fall", item.contains("rain") ? (std::to_string(item["rain"]["3h"].get<int>()) + " mm/3h") : (item.contains("snow") ? std::to_string(item["snow"]["3h"].get<int>()) + " mm/3h" : "")}
-            })},
-        });
-        
+        json  partial = Weather::formatData(rawJson.content, item);
         singleDay.push_back(partial);
 
         currentMax = std::max(item["main"]["temp_max"].get<float>(), item["main"]["temp_min"].get<float>());
@@ -104,11 +111,34 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
             minDuringDay = currentMin;
             minIndex = index;
         }
-        
-        
 
         // next iteration is next day
         if (stoi(key) + 1 != length && partial["weekday"] != Helpers::getDate(rawJson.content["list"][stoi(key) +  1]["dt"].get<time_t >(), rawJson.content["city"]["timezone"].get<int>())) {
+
+            // to prevent situation that first day has lack of information take them from the next day
+            const int infoPacketsPerDay = 8;
+            int startingFrom = singleDay.size();
+
+            if (startingFrom < infoPacketsPerDay) {
+                while (startingFrom < infoPacketsPerDay) {
+                    partial = Weather::formatData(rawJson.content, rawJson.content["list"][startingFrom]);
+                    
+                    float 
+                        nextMaxTemp = rawJson.content["list"][startingFrom]["main"]["temp_max"].get<float>(),
+                        nextMinTemp = rawJson.content["list"][startingFrom]["main"]["temp_min"].get<float>();
+                     
+                    if (currentMax < nextMaxTemp) {
+                        maxDuringDay = nextMaxTemp;
+                        maxIndex = startingFrom;
+                    } else if (currentMin > nextMinTemp) {
+                        minDuringDay = nextMinTemp;
+                        minIndex = startingFrom;
+                    }
+                    
+                    singleDay.push_back(partial);
+                    startingFrom++;
+                }
+            }
             
             weatherForecast.push_back({
                   {"data", singleDay},
@@ -125,18 +155,7 @@ Weather::Weather(std::string& location): Location(location), LocationImage(locat
 
             continue;
         }
-        
         index++;
-    }
-
-    // to prevent situation that first day has lack of information take them from the next day
-    const int infoPacketsPerDay = 8;
-    
-    if (weatherForecast[0]["data"].size() < infoPacketsPerDay) {
-        int lastIndexFromApiList = weatherForecast[0]["data"].size() - 1, i = 0;
-        while (lastIndexFromApiList++ < infoPacketsPerDay - 1) {
-            weatherForecast[0]["data"].push_back(weatherForecast[1]["data"][i++]);
-        }
     }
     
     additionalInfo = {

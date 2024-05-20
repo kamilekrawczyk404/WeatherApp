@@ -12,13 +12,12 @@
 
 class Checkbox {
     Image checkboxImage;
-    Div checkboxContainer;
     StaticText label;
 public:
+    Div checkboxContainer;
     sf::Vector2f position;
     Checkbox(sf::RenderWindow &window, float x, float y, std::string  text, bool &isChecked);
-    void onClick(sf::RenderWindow &window, sf::Event &event, bool &isChecked, bool &userReleasedButton);
+    static void onClick(sf::RenderWindow &window, sf::Event &event, Checkbox &obj, bool &isChecked, bool &userReleasedButton);
 };
-
 
 #endif //CPP_WEATHER_APP_CHECKBOX_H

@@ -57,7 +57,6 @@ void Input::draw(sf::RenderWindow& window) {
 
 void Input::onEnter() {
     onEnterHandler(this->inputText.getString());
-//    std::cout << content << std::endl;
 }
 
 

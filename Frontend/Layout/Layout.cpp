@@ -7,6 +7,8 @@
 #include "../Graphics/Containers/Circle.h"
 #include "Chart.h"
 
+Layout::Layout(std::vector<std::string> countries) : countries(countries) {}
+
 void Layout::loadJson(json weather, json additionalInfo) {
     this->weather = weather;
     this->additionalInfo = additionalInfo;
@@ -19,10 +21,12 @@ void Layout::loadEvent(sf::Event &event) {
 }
 
 void Layout::drawLayout(sf::RenderWindow &window) {
-    Checkbox languageCheckbox(window, 350.f, margin, isForeignLanguageChecked ? "English version" : "Wersja angielska", isForeignLanguageChecked);
-    languageCheckbox.onClick(window, event, languageCheckbox, isForeignLanguageChecked, userReleasedButton);
+//    Checkbox languageCheckbox(window, 350.f, margin, isForeignLanguageChecked ? "English version" : "Wersja angielska", isForeignLanguageChecked);
+//    languageCheckbox.onClick(window, event, languageCheckbox, isForeignLanguageChecked, userReleasedButton);
 
     chart(window);
+
+    foreignLanguages(window);
     
     leftSide(window);
     
@@ -32,9 +36,35 @@ void Layout::drawLayout(sf::RenderWindow &window) {
 }
 
 void Layout::chart(sf::RenderWindow &window) {
-    Chart chart(window, this->event, window.getSize().x - leftContainerWidth - rightContainerWidth - (4 * margin), leftContainerHeight, leftContainerWidth + 2 * margin, top - margin / 2, currentDay, currentHour, weather);
+    Chart chart(window, this->event, window.getSize().x - leftContainerWidth - rightContainerWidth - (4 * margin), leftContainerHeight, leftContainerWidth + 2 * margin, top - margin / 2, currentDay, currentHour, currentLanguage, weather, countries);
     
     this->currentHour = chart.currentHour;
+}
+
+void Layout::foreignLanguages(sf::RenderWindow &window) {
+    
+    for (int i = 0; i < countries.size(); i++) {
+        const float scale = 0.75f;
+        
+        Image flag(countries.at(i) + ".png");
+        flag.image.setScale(scale, scale);
+        
+        const float     
+            flagWidth = flag.image.getGlobalBounds().width,
+            flagHeight = flag.image.getGlobalBounds().height;
+
+        Div container(flagWidth, flagHeight);
+        container.properties.setFillColor(sf::Color::Transparent);
+        container.properties.setPosition(i * (container.bounds.width + margin) + leftContainerWidth + margin * 2, margin - 3.f);
+        container.onClick(window, event, currentLanguage, i);
+
+        const sf::Vector2f containerPos = container.properties.getPosition();
+
+        flag.image.setPosition(containerPos.x, containerPos.y );
+        
+        container.draw(window);
+        flag.draw(window);
+    }
 }
 
 void Layout::leftSide(sf::RenderWindow &window) {

@@ -25,6 +25,7 @@ class Layout {
     int 
         highestTemperature, 
         lowestTemperature;
+    std::vector<std::string> countries;
 protected:
     float
         leftContainerWidth = 250.f,
@@ -40,7 +41,10 @@ public:
         top = 90.f;
     int 
         currentDay = 0,
-        currentHour = 0;
+        currentHour = 0,
+        currentLanguage = 0;
+    
+    Layout(std::vector<std::string> countries);
     
     void drawLayout(sf::RenderWindow& window);
     void loadJson(json weather, json additionalInfo);
@@ -50,6 +54,7 @@ public:
     void rightSide(sf::RenderWindow& window);
     void bottomSide(sf::RenderWindow& window);
     void chart(sf::RenderWindow& window);
+    void foreignLanguages(sf::RenderWindow &window);
     
     void specificInformation(int& index, sf::RenderWindow& window, std::string key, json& data, sf::Vector2f position);
     void singleDayCard(std::string index, sf::RenderWindow& window, json& data);

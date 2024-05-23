@@ -28,8 +28,6 @@ void Checkbox::onClick(sf::RenderWindow &window, sf::Event &event, Checkbox &obj
             sf::FloatRect objBounds = obj.checkboxContainer.bounds;
             
             if (mousePosition.x >= objPosition.x && mousePosition.x <= objPosition.x + objBounds.width && mousePosition.y >= objPosition.y && mousePosition.y <= objPosition.y + objBounds.height) {
-                std::cout << mousePosition.x << " " <<mousePosition.y << std::endl;
-                
                 isChecked = !isChecked;
             }
         }

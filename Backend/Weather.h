@@ -10,19 +10,21 @@
 #include <sstream>
 #include "Location.h"
 #include "FetchAPI.h"
-#include "HandleJson.h"
 #include "Helpers.h"
+#include "TranslationAPI.h"
 #include <nlohmann/json.hpp>
 #include <cmath>
 #include "LocationImage.h"
 
+
 class Weather : public Location , public LocationImage {
 public:
-    json weatherForecast, additionalInfo;
-    Weather(std::string& location);
+    nlohmann::json weatherForecast, additionalInfo, translatedDescriptions;
+    std::vector<std::string> countries, descriptions;
+    Weather(std::string& location, std::vector<std::string> &countries);
 protected:
     std::string getUrl() override;
-    json formatData(json &content, json &item);
+    nlohmann::json formatData(nlohmann::json &content, nlohmann::json &item);
 };
 
 #endif //CPP_WEATHER_APP_WEATHER_H

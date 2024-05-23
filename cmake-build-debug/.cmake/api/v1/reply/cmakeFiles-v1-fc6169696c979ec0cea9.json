@@ -231,6 +231,15 @@
 		},
 		{
 			"path" : "Frontend/Graphics/Images/Components/unchecked.png"
+		},
+		{
+			"path" : "Frontend/Graphics/Images/CountriesFlags/pl.png"
+		},
+		{
+			"path" : "Frontend/Graphics/Images/CountriesFlags/de.png"
+		},
+		{
+			"path" : "Frontend/Graphics/Images/CountriesFlags/en.png"
 		}
 	],
 	"kind" : "cmakeFiles",

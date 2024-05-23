@@ -10,13 +10,13 @@ LocationImage::LocationImage(std::string name) {
 //    HandleJson data(api.fetchedData);
     
 //    std::string  imageUrl = data.content["items"][0]["link"];
-    sf::Http::Request request("biala-tarnowska.org/wp-content/uploads/2019/01/slajd7.jpg", sf::Http::Request::Get);
-    sf::Http http("http://i0.wp.com");
-    sf::Http::Response response = http.sendRequest(request);
+//    sf::Http::Request request("biala-tarnowska.org/wp-content/uploads/2019/01/slajd7.jpg", sf::Http::Request::Get);
+//    sf::Http http("http://i0.wp.com");
+//    sf::Http::Response response = http.sendRequest(request);
 
     // check the status
-    if (response.getStatus() == sf::Http::Response::Ok)
-    {
+//    if (response.getStatus() == sf::Http::Response::Ok)
+//    {
         // check the contents of the response
 
         
@@ -29,11 +29,11 @@ LocationImage::LocationImage(std::string name) {
 //        if (!image.loadFromFile("x.jpg")) {
 //            // error handling
 //        }
-        sf::Texture texture;
-        if (!texture.loadFromMemory(response.getBody().c_str(), response.getBody().size())) {
-            // error handling
-        }
-        sprite.setTexture(texture);
-        
-    }
+//        sf::Texture texture;
+//        if (!texture.loadFromMemory(response.getBody().c_str(), response.getBody().size())) {
+//            // error handling
+//        }
+//        sprite.setTexture(texture);
+//        
+//    }
 }

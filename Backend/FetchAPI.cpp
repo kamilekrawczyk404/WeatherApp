@@ -5,8 +5,12 @@
 #include "FetchAPI.h"
 
 FetchAPI::FetchAPI(std::string url): apiUrl(url) {
+    curl_easy_setopt(curl, CURLOPT_URL, this->apiUrl.c_str());
+    
     this->fetchData();
 }
+
+FetchAPI::FetchAPI() {}
 
 size_t FetchAPI::writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
     data->append((char*) ptr, size * nmemb);
@@ -14,9 +18,7 @@ size_t FetchAPI::writeFunction(void *ptr, size_t size, size_t nmemb, std::string
 };
 
 void FetchAPI::fetchData() {
-    auto curl = curl_easy_init();
     if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, this->apiUrl.c_str());
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
         curl_easy_setopt(curl, CURLOPT_USERPWD, "user:pass");
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "curl/7.42.0");
@@ -37,14 +39,21 @@ void FetchAPI::fetchData() {
         curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &elapsed);
         curl_easy_getinfo(curl, CURLINFO_EFFECTIVE_URL, &url);
 
-        curl_easy_perform(curl);
+        CURLcode res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
         curl = NULL;
-
-        if (nlohmann::json::parse(response_string)["status"] == "ZERO_RESULTS") {
-            this->errorMessage = "We can't find provided location";
-        } else {
-            this->fetchedData = response_string;
+        
+        if (res != CURLE_OK) {
+            this->errorMessage = "Check your network connection";
+            
+            throw this->errorMessage;
         }
+//        if (nlohmann::json::parse(response_string)["status"] == "ZERO_RESULTS") {
+//            this->errorMessage = "We can't find provided location";
+//
+//            throw this->errorMessage;
+//        }
+
+        this->fetchedData = nlohmann::json::parse(response_string);
     }
 }

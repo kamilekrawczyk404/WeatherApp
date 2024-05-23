@@ -4,7 +4,7 @@
 
 #include "Chart.h"
 
-Chart::Chart(sf::RenderWindow &window, sf::Event &event, float width, float height, float x, float y, int &currentDay, int currentHour, json &weather) :
+Chart::Chart(sf::RenderWindow &window, sf::Event &event, float width, float height, float x, float y, int &currentDay, int currentHour, int &currentLanguage, json &weather, std::vector<std::string> &countries) :
     chartContainer(width, height),
     horizontalLine(width - 2 * margin * lineThickness, lineThickness),
     verticalLine(lineThickness, height - 2 * lineThickness * margin),
@@ -13,7 +13,9 @@ Chart::Chart(sf::RenderWindow &window, sf::Event &event, float width, float heig
     step(5),
     currentDay(currentDay),
     currentHour(currentHour),
-    weather(weather) {
+    weather(weather),
+    currentLanguage(currentLanguage),
+    countries(countries) {
     
     // Main layout of the chart
     chartContainer.properties.setPosition(x, y);
@@ -132,8 +134,7 @@ void Chart::drawPrecipitation(sf::RenderWindow &window, json &item, int &index) 
 void Chart::drawHourIndicator(sf::RenderWindow &window, sf::Event &event, json &item, int &index) {
     std::string
         hourValue = std::to_string(item["hour"].get<int>()),
-        descriptionText = item["weather"]["description"].get<std::string>();
-
+        descriptionText = item["weather"]["description"][currentLanguage][countries[currentLanguage]].get<std::string>();
     float
         hourX = horizontalLine.properties.getPosition().x + index * (horizontalLine.bounds.width / denominator) + lineThickness + 2.5f * margin,
         hourY = horizontalLine.properties.getPosition().y - lineThickness;

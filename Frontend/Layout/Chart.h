@@ -18,6 +18,7 @@ class Chart {
         maxTempY;
     sf::Color linesColor = sf::Color(32, 32, 32);
     std::vector<float> tempYPositions, dotXPositions, dotYPositions;
+    std::vector<std::string> countries;
     json weather;
     
     void drawTemperatureBar(sf::RenderWindow &window);
@@ -26,9 +27,9 @@ class Chart {
     void drawPolynomialLine(sf::RenderWindow &window, int &index);
     void setDotYPositions();
 public:
-    int currentHour;
+    int currentHour, currentLanguage;
     Div chartContainer, verticalLine, horizontalLine;
-    Chart(sf::RenderWindow &window, sf::Event &event, float width, float height, float x, float y, int &currentDay, int currentHour, json &weather);
+    Chart(sf::RenderWindow &window, sf::Event &event, float width, float height, float x, float y, int &currentDay, int currentHour, int &currentLanguage, json &weather, std::vector<std::string> &countries);
 };
 
 

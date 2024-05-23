@@ -11,9 +11,12 @@
 
 class FetchAPI {
 public:
-    std::string fetchedData = "", errorMessage = "", apiUrl = "";
+    std::string errorMessage = "", apiUrl = "";
+    nlohmann::json fetchedData;
+    CURL* curl = curl_easy_init();
     
     FetchAPI(std::string url);
+    FetchAPI();
     void fetchData();
     static size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data);
 };

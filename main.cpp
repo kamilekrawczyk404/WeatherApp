@@ -9,12 +9,14 @@
 #include <string>
 #include "Frontend/Layout/Layout.h"
 
-std::vector<std::string> errors = {""};
+std::vector<std::string> 
+    errors = {""},
+    countries = {"pl", "en", "de"};
 nlohmann::json weatherData, additionalInfo;
 
 void getLocation(std::string content) {
-    Weather *weather = new Weather(content);
-    
+    Weather *weather = new Weather(content, countries);
+
     if (!weather->isOk()) {
         errors[0] = weather->errorMessage;
         delete weather;
@@ -25,25 +27,25 @@ void getLocation(std::string content) {
 }
 
 int main() {
-    Layout ui;
-    
-    float inputWidth = 310;
-    
+    Layout ui(countries);
+
+    float inputWidth = 250.f;
+
     // Main background
     Image background("background.jpg");
-    
+
     sf::RenderWindow window(sf::VideoMode(background.textureSize.x, background.textureSize.y), "Simple Forecast Application");
-    
+
     // Interactive part with user
     Input locationInput(inputWidth, 30.f, getLocation, 16.f, "Enter your location");
     locationInput.setPosition(ui.margin, 20.f);
-    
+
     StaticText errorMessage(errors.at(0), 14, sf::Color::Red);
     errorMessage.setPosition(ui.margin + 10.f, 57.5f);
-    
-    Div section(width + 4.f, 22.f);
+
+    Div section(inputWidth + 4.f, 22.f);
     section.properties.setPosition(ui.margin - 2, 55.f);
-    
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -58,7 +60,6 @@ int main() {
         }
 
         window.clear();
-        
         background.draw(window);
 
         if (!weatherData.empty()) {
@@ -68,15 +69,17 @@ int main() {
             ui.drawLayout(window);
         } 
         locationInput.draw(window);
-        
+
         if (errors[0] != "") {
             section.draw(window);
             errorMessage.setText(errors.at(0));
             errorMessage.draw(window);
         }
-        
+
         window.display();
     }
-    
+
     return 0;
 }
+
+

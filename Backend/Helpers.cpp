@@ -106,21 +106,39 @@ sf::Color Helpers::HSLtoRGB(float hue, float saturation, float lightness) {
 
 nlohmann::json Helpers::translate(std::string text) {
     
+    std::string inEnglish = text, inPolish = "";
+    
     if (text == "Clouds") {
-        return nlohmann::json ({{"english", text}, {"polish", "Pochmurnie"}});
+        inPolish = "Zachmurzenie";
     } else if (text == "Rain") {
-        return nlohmann::json ({{"english", text}, {"polish", "Deszcz"}});
+        inPolish = "Deszcz";
     } else if (text == "Snow") {
-        return nlohmann::json ({{"english", text}, {"polish", "Śnieg"}});
+        inPolish = "Snieg";
     } else if (text == "Clear") {
-        return nlohmann::json ({{"english", text}, {"polish", "Bezchmurnie"}});
+        inPolish = "Bezchmurnie";
     } else if (text == "Drizzle") {
-        return nlohmann::json ({{"english", text}, {"polish", "Mżawka"}});
+        inPolish = "Mzawka";
     } else if (text == "Thunderstorm") {
-        return nlohmann::json ({{"english", text}, {"polish", "Burza"}});
-    } else {
-        return nlohmann::json ({{"english", text}, {"polish", text}});
-    }
+        inPolish = "Burza";
+    } else if (text == "few clouds") {
+        inPolish = "male\nzachmurzenie";
+    } else if (text == "scattered clouds") {
+        inPolish = "przejsciowe\nzachmurzenie";
+    } else if (text == "broken clouds") {
+        inPolish = "przebijace\nchmury";
+    } else if (text == "clear sky") {
+        inPolish = "bezchmurnie";
+    } else if (text == "overcast clouds") {
+        inPolish = "duze\nzachmurzenie";
+    } else if (text == "light rain") {
+        inPolish = "lekki\ndeszcz";
+    } 
+    
+    std::replace(inEnglish.begin(), inEnglish.end(), ' ', '\n');
+    return nlohmann::json({
+        {"english", inEnglish},
+        {"polish", inPolish}
+    });
 }
 
 float Helpers::LagrangeBasis(const std::vector<float>& x, int i, double xPoint) {

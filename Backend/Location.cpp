@@ -11,17 +11,22 @@ Location::Location(std::string& name) {
             c = '+';
         }
     }
-    this->name = name;
-    FetchAPI api(getUrl());
     
-    if (!api.errorMessage.empty()) {
-       this->errorMessage = api.errorMessage;
-    } else {
-        HandleJson json(api.fetchedData);
+    this->name = name;
+    
+    try {
+        FetchAPI api(getUrl());
 
-        this->lat = json.content["results"][0]["geometry"]["location"]["lat"].get<double>();
-        this->lon = json.content["results"][0]["geometry"]["location"]["lng"].get<double>();
+        if (!api.errorMessage.empty()) {
+            this->errorMessage = api.errorMessage;
+        } else {
+            this->lat = api.fetchedData["results"][0]["geometry"]["location"]["lat"].get<double>();
+            this->lon = api.fetchedData["results"][0]["geometry"]["location"]["lng"].get<double>();
+        }
+    } catch (std::string& error) {
+        this->errorMessage = error;
     }
+    
 }
 
 std::string Location::getUrl() {

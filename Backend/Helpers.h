@@ -15,6 +15,10 @@
 #include <chrono>
 #include <SFML/Graphics.hpp>
 #include <nlohmann/json.hpp>
+#include "FetchAPI.h"
+#include "KEYS.h"
+#include <curl/curl.h>
+
 
 class Helpers {
 public:
@@ -38,6 +42,28 @@ public:
     static float LagrangeBasis(const std::vector<float>& x, int i, double xPoint);
     static float LagrangePolynomial(const std::vector<float>& x, const std::vector<float>& y, float xPoint);
     static sf::Color convertTemperatureToColor(float temp);
+
+//    template<typename T>
+//    static std::vector<T> removeDuplicates(std::vector<T> &array) {
+//        std::vector<T> newArray;
+//        
+//        for(T element : array) {
+//            bool contains = false;
+//            for (int i = 0; i < newArray.size(); i++) {
+//                if (!contains) {
+//                    contains = newArray[i] == element;
+//                    continue;
+//                }
+//                break;
+//            }
+//            
+//            if (!contains) {
+//                newArray.push_back(element);
+//            }
+//        }
+//        
+//        return newArray;
+//    }
 };
 
 

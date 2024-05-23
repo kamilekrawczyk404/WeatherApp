@@ -162,7 +162,7 @@ void Chart::drawHourIndicator(sf::RenderWindow &window, sf::Event &event, json &
     hour.draw(window);
 
     StaticText description(descriptionText, 14);
-    description.setPosition(hourIndicator.properties.getPosition().x - description.text.getLocalBounds().width / 2, hourIndicator.properties.getPosition().y + description.text.getLocalBounds().height / 2);
+    description.setPosition(hourIndicator.properties.getPosition().x - description.text.getLocalBounds().width / 2, hourIndicator.properties.getPosition().y + margin / 2 );
     description.draw(window);
     
     hourContainer.onClick(window, event, currentHour, index);
@@ -178,10 +178,11 @@ void Chart::drawPolynomialLine(sf::RenderWindow &window, int &index) {
                 dotBetweenY = Helpers::LagrangePolynomial(dotXPositions, dotYPositions, dotBetweenX),
                 temperature = lowerLimit + (abs(minTempY - dotBetweenY) / minTempY) * upperLimit;
 
-            Circle dotBetween(radius);
-            dotBetween.properties.setPosition(dotBetweenX, dotBetweenY);
-            dotBetween.addFillColorBasedOnTemperature(temperature);
-            dotBetween.draw(window);
+            // a single line instead of linear gradient
+//            Circle dotBetween(radius);
+//            dotBetween.properties.setPosition(dotBetweenX, dotBetweenY);
+//            dotBetween.addFillColorBasedOnTemperature(temperature);
+//            dotBetween.draw(window);
 
             Div gradientBox(radius, horizontalLine.properties.getPosition().y + horizontalLine.bounds.height - dotBetweenY - lineThickness, sf::Vector2f(temperature, temperature));
             gradientBox.fadeIn = true;

@@ -43,27 +43,38 @@ public:
     static float LagrangePolynomial(const std::vector<float>& x, const std::vector<float>& y, float xPoint);
     static sf::Color convertTemperatureToColor(float temp);
 
-//    template<typename T>
-//    static std::vector<T> removeDuplicates(std::vector<T> &array) {
-//        std::vector<T> newArray;
-//        
-//        for(T element : array) {
-//            bool contains = false;
-//            for (int i = 0; i < newArray.size(); i++) {
-//                if (!contains) {
-//                    contains = newArray[i] == element;
-//                    continue;
-//                }
-//                break;
-//            }
-//            
-//            if (!contains) {
-//                newArray.push_back(element);
-//            }
-//        }
-//        
-//        return newArray;
-//    }
+    template<typename T>
+    static int findIndex(std::vector<T> &array, T &seeking) {
+        int i = 0;
+        for (T item : array) {
+            if (item == seeking)
+                return i;
+            i++;
+        }
+        return -1;
+    }
+
+    template<typename T>
+    static std::vector<T> removeDuplicates(std::vector<T> &array) {
+        std::vector<T> newArray;
+
+        for(T element : array) {
+            bool contains = false;
+            for (int i = 0; i < newArray.size(); i++) {
+                if (!contains) {
+                    contains = newArray[i] == element;
+                    continue;
+                }
+                break;
+            }
+
+            if (!contains) {
+                newArray.push_back(element);
+            }
+        }
+
+        return newArray;
+    }
 };
 
 

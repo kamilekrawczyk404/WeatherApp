@@ -27,20 +27,24 @@ nlohmann::json Helpers::getDate(time_t unixSeconds, int shift, int currentGMTOff
     unixSeconds += shift;
     
     tm* localTime = gmtime(&unixSeconds);
+    
     int weekdayIndex = localTime->tm_wday,
         dayOfMonthIndex = localTime->tm_mday,
         monthIndex = localTime->tm_mon;
     
-
     const std::vector<std::string> 
-            weekdaysInEnglish({"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}),
-            weekdaysInPolish({"Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"}),
-            monthsInEnglish({"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}),
-            monthsInPolish({"Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"});
+        weekdaysInEnglish({"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}),
+        weekdaysInPolish({"Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"}),
+        weekdaysInGerman({"Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"}),
+        
+        monthsInEnglish({"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}),
+        monthsInPolish({"Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"}),
+        monthsInGerman({ "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"});
     
     return nlohmann::json({
-          {"english", weekdaysInEnglish[weekdayIndex] + ", " + std::to_string(dayOfMonthIndex) + " " + monthsInEnglish[monthIndex]}, 
-          {"polish", weekdaysInPolish[weekdayIndex] + ", " + std::to_string(dayOfMonthIndex) + " " + monthsInPolish[monthIndex]}
+        {"pl", weekdaysInPolish[weekdayIndex] + ", " + std::to_string(dayOfMonthIndex) + " " + monthsInPolish[monthIndex]},
+        {"en", weekdaysInEnglish[weekdayIndex] + ", " + std::to_string(dayOfMonthIndex) + " " + monthsInEnglish[monthIndex]}, 
+        {"de", weekdaysInGerman[weekdayIndex] + ", " + std::to_string(dayOfMonthIndex) + " " + monthsInGerman[monthIndex]}, 
     });
 }
 

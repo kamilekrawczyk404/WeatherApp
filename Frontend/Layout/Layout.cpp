@@ -68,6 +68,8 @@ void Layout::foreignLanguages(sf::RenderWindow &window) {
 }
 
 void Layout::leftSide(sf::RenderWindow &window) {
+    std::vector<std::string> translatedFeelsLike = {"Odczuwalna", "Feels like", "Abonnieren"};
+    
     Div mainSectionContainer(leftContainerWidth, leftContainerHeight);
     mainSectionContainer.properties.setPosition(margin - 2.f, top - 10.f);
     mainSectionContainer.draw(window);
@@ -79,7 +81,7 @@ void Layout::leftSide(sf::RenderWindow &window) {
     StaticText feelsLike("", 20.f);
     feelsLike.setPosition(margin + 10.f, top + 125.f);
 
-    StaticText temperature("", 50);
+    StaticText temperature("", 44);
     temperature.setPosition(margin + 120.f, top + 10.f);
 
     StaticText currentInfo("", 40);
@@ -108,16 +110,16 @@ void Layout::leftSide(sf::RenderWindow &window) {
     std::string
         iconName = weather[currentDay]["data"][currentHour]["weather"]["icon"];
         temperature.text.setString(weather[currentDay]["data"][currentHour]["temperature"]["main"].get<std::string>());
-        currentInfo.text.setString(weather[currentDay]["data"][currentHour]["weather"]["info"][isForeignLanguageChecked ? "english" : "polish"].get<std::string>());
-        feelsLike.text.setString("Feels like: " + weather[currentDay]["data"][currentHour]["temperature"]["feelsLike"].get<std::string>());
+        currentInfo.text.setString(weather[currentDay]["data"][currentHour]["weather"]["info"][currentLanguage][countries[currentLanguage]].get<std::string>());
+        feelsLike.text.setString(translatedFeelsLike[currentLanguage] + ": " + weather[currentDay]["data"][currentHour]["temperature"]["feelsLike"].get<std::string>());
         
-    CelsiusSign(window, margin + 110.f, top + 125.f, 20, feelsLike.text.getString().substring(12, feelsLike.text.getString().getSize() - 12));
+    CelsiusSign(window, feelsLike.text.getPosition().x + feelsLike.text.getLocalBounds().width - 20.f, top + 125.f, 20, feelsLike.text.getString().substring(12, feelsLike.text.getString().getSize() - 12));
 
     currentInfo.draw(window);
     temperature.draw(window);
     feelsLike.draw(window);
 
-    CelsiusSign(window, margin + 125.f, top + 10.f, 50, temperature.text.getString());
+    CelsiusSign(window, margin + 125.f, top + 10.f, 44, temperature.text.getString());
 
     Image currentIcon(iconName);
     currentIcon.image.setPosition(margin / 2, top - 20.f);
@@ -157,7 +159,7 @@ void Layout::specificInformation(int& index, sf::RenderWindow &window, std::stri
     }
     
     Image icon(  key + ".png");
-    StaticText title(data["title"][isForeignLanguageChecked ? "english" : "polish"], 20);
+    StaticText title(data["title"][countries[currentLanguage]], 20);
     StaticText value(data["value"], 18);
     
     title.setPosition(position.x + 100.f,  position.y + index * gap + (key != "Cloudiness" ? 10.f : 20.f));
@@ -202,7 +204,7 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
     }
     singleDayContainer.draw(window);
 
-    StaticText weekday(highestTempItem["weekday"][isForeignLanguageChecked ? "english" : "polish"], currentDay == i ? 22 : 20);
+    StaticText weekday(highestTempItem["weekday"][countries[currentLanguage]], currentDay == i ? 22 : 20);
     weekday.setPosition(offsetLeft + 10.f, offsetTop + 10.f);
     weekday.draw(window);
 

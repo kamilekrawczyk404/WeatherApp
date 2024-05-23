@@ -19,8 +19,15 @@
 
 class Weather : public Location , public LocationImage {
 public:
-    nlohmann::json weatherForecast, additionalInfo, translatedDescriptions;
-    std::vector<std::string> countries, descriptions;
+    nlohmann::json 
+        weatherForecast, 
+        additionalInfo, 
+        translatedDescriptions, 
+        translatedWeatherInfo;
+    std::vector<std::string> 
+        countries, 
+        descriptions, 
+        weatherInfo;
     Weather(std::string& location, std::vector<std::string> &countries);
 protected:
     std::string getUrl() override;

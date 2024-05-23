@@ -19,36 +19,37 @@ json Weather::formatData(json &content, json &item) {
          })},
          {"specificInformation", json({
             {"Humidity", json({
-                {"title", json({{"english", "Humidity"}, {"polish", "Wilgotność"}})},
+                {"title", json({{"en", "Humidity"}, {"pl", "Wilgotność"}, {"de", "Feuchtigkeit"}})},
                 {"value", std::to_string(item["main"]["humidity"].get<int>()) + "%"}
             })},
             {"Pressure", json({
-                {"title", json({{"english", "Air pressure"}, {"polish", "Ciśnienie"}})},
+                {"title", json({{"en", "Air pressure"}, {"pl", "Ciśnienie"}, {"de", "Druck"}})},
                 {"value", std::to_string(item["main"]["grnd_level"].get<int>()) + "hPa"}
             })},
             {"Cloudiness", json({
-                {"title", json({{"english", "Cloudiness"}, {"polish", "Zachmurzenie"}})},
+                {"title", json({{"en", "Cloudiness"}, {"pl", "Zachmurzenie"}, {"de", "Wolkig"}})},
                 {"value", std::to_string(item["clouds"]["all"].get<int>()) + "%"}
             })},
             {"Wind", json({
-                {"title", json({{"english", "Wind"}, {"polish", "Wiatr"}})},
+                {"title", json({{"en", "Wind"}, {"pl", "Wiatr"}, {"de", "Wind"}})},
                 {"value", Helpers::removeDecimalZeros<float>(item["wind"]["speed"].get<float>()) + "m/s"},
                 {"deg", item["wind"]["deg"].get<float>()}
             })},
             {"Visibility", json({
-                {"title", json({{"english", "Visibility"}, {"polish", "Widoczność"}})},
+                {"title", json({{"en", "Visibility"}, {"pl", "Widoczność"}, {"de", "Sichtweite"}})},
                 {"value", item.contains("visibility") ? (std::to_string(item["visibility"].get<int>() / 1000)  + "km") : "No data"}
             })},
         })},
         {"weather", json({
             {"icon", item["weather"][0]["icon"].get<std::string>() + ".png"},
-            {"info", Helpers::translate(item["weather"][0]["main"].get<std::string>())},
-            {"description", Helpers::translate(item["weather"][0]["description"])},
+            {"info", item["weather"][0]["main"]},
+            {"description", item["weather"][0]["description"]},
             {"precipitation", Helpers::removeDecimalZeros(item["pop"].get<float>() * 100) + "%"},
             {"fall", item.contains("rain") ? (std::to_string(item["rain"]["3h"].get<int>()) + " mm/3h") : (item.contains("snow") ? std::to_string(item["snow"]["3h"].get<int>()) + " mm/3h" : "")}
         })},
     });
 
+    weatherInfo.push_back(item["weather"][0]["main"]);
     descriptions.push_back(item["weather"][0]["description"]);
     
     return partial;
@@ -123,13 +124,13 @@ Weather::Weather(std::string& location, std::vector<std::string> &countries):
                         partial = Weather::formatData(api.fetchedData, api.fetchedData["list"][startingFrom]);
 
                         float
-                                nextMaxTemp = api.fetchedData["list"][startingFrom]["main"]["temp_max"].get<float>(),
-                                nextMinTemp = api.fetchedData["list"][startingFrom]["main"]["temp_min"].get<float>();
+                            nextMaxTemp = api.fetchedData["list"][startingFrom]["main"]["temp_max"].get<float>(),
+                            nextMinTemp = api.fetchedData["list"][startingFrom]["main"]["temp_min"].get<float>();
 
-                        if (currentMax < nextMaxTemp) {
+                        if (maxDuringDay <= nextMaxTemp) {
                             maxDuringDay = nextMaxTemp;
                             maxIndex = startingFrom;
-                        } else if (currentMin > nextMinTemp) {
+                        } else if (minDuringDay >= nextMinTemp) {
                             minDuringDay = nextMinTemp;
                             minIndex = startingFrom;
                         }
@@ -157,16 +158,23 @@ Weather::Weather(std::string& location, std::vector<std::string> &countries):
             index++;
         }
         
+        descriptions = Helpers::removeDuplicates<std::string>(descriptions);
+        weatherInfo = Helpers::removeDuplicates<std::string>(weatherInfo);
+        
         nlohmann::json descriptionsAsJson = descriptions;
-
+        nlohmann::json weatherInfoAsJson = weatherInfo;
+        
         int j = 0;
         while(j < countries.size()) {
             std::string lang = countries[j++];
 
             // skip getting translations from english, because weather api already responds data in that language
             if (lang != "en") {
-                TranslationAPI translationApi(descriptionsAsJson, lang);
-                translatedDescriptions.push_back({{lang, translationApi.fetchedData}});
+                TranslationAPI translateDescriptions(descriptionsAsJson, lang);
+                translatedDescriptions.push_back({{lang, translateDescriptions.fetchedData}});
+                
+                TranslationAPI translateWeatherInfo(weatherInfoAsJson, lang);
+                translatedWeatherInfo.push_back({{lang, translateWeatherInfo.fetchedData}});
             } else {
                 // description in english still includes spaces, replace them using the new line character
                 for (auto &item : descriptionsAsJson) {
@@ -175,20 +183,34 @@ Weather::Weather(std::string& location, std::vector<std::string> &countries):
                     item = text;
                 }
                 translatedDescriptions.push_back({{lang, descriptionsAsJson}});
+                translatedWeatherInfo.push_back({{lang, weatherInfoAsJson}});
             }
         }
         
         for (auto &[singleDayKey, singleDay] : weatherForecast.items()) {
             for (auto &[hourlyKey, item] : singleDay["data"].items()) {
-                nlohmann::json newDescription;
-                int countryIndex = 0;
+                nlohmann::json 
+                    newDescription,
+                    newWeatherInfo;
+                std::string 
+                    oldDescription = item["weather"]["description"].get<std::string>(),
+                    oldWeatherInfo = item["weather"]["info"].get<std::string>();
+                
+                int 
+                    countryIndex = 0,
+                    // indexes located in arrays returned from apis
+                    descriptionIndex = Helpers::findIndex<std::string>(descriptions, oldDescription),
+                    weatherInfoIndex = Helpers::findIndex<std::string>(weatherInfo, oldWeatherInfo);
                 
                 // old description need to replaced with translated values
                 for (std::string country : countries) {
-                    newDescription.push_back(nlohmann::json ({{country, translatedDescriptions[countryIndex++][country][stoi(singleDayKey) * singleDay["data"].size() + stoi(hourlyKey)]}}));
+                    newDescription.push_back(nlohmann::json ({{country, translatedDescriptions[countryIndex][country][descriptionIndex]}}));
+                    newWeatherInfo.push_back(nlohmann::json({{country, translatedWeatherInfo[countryIndex][country][weatherInfoIndex]}}));
+                    countryIndex++;
                 }
                 
                 item["weather"]["description"] = newDescription;
+                item["weather"]["info"] = newWeatherInfo;
             }
         }
         

@@ -1,13 +1,13 @@
 #include <SFML/Graphics.hpp>
-#include "Backend/Weather.h"
-#include "Frontend/Graphics/Inputs/Input.h"
-#include "Frontend/Graphics/StaticText/StaticText.h"
-#include "Frontend/Graphics/Image/Image.h"
-#include "Frontend/Graphics/Containers/Div.h"
+#include "Controller/Weather.h"
+#include "View/Graphics/Inputs/Input.h"
+#include "View/Graphics/StaticText/StaticText.h"
+#include "View/Graphics/Image/Image.h"
+#include "View/Graphics/Containers/Div.h"
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <string>
-#include "Frontend/Layout/Layout.h"
+#include "View/Layout/Layout.h"
 
 std::vector<std::string> 
     errors = {""},

@@ -48,11 +48,11 @@ void FetchAPI::fetchData() {
             
             throw this->errorMessage;
         }
-//        if (nlohmann::json::parse(response_string)["status"] == "ZERO_RESULTS") {
-//            this->errorMessage = "We can't find provided location";
-//
-//            throw this->errorMessage;
-//        }
+        if (nlohmann::json::parse(response_string)["status"] == "ZERO_RESULTS") {
+            this->errorMessage = "We can't find provided location";
+
+            throw this->errorMessage;
+        }
 
         this->fetchedData = nlohmann::json::parse(response_string);
     }

@@ -5,7 +5,7 @@
 #ifndef CPP_WEATHER_APP_CIRCLE_H
 #define CPP_WEATHER_APP_CIRCLE_H
 #include <SFML/Graphics.hpp>
-#include "../../../Backend/Helpers.h"
+#include "../../../Controller/Helpers.h"
 
 class Circle {
 public:

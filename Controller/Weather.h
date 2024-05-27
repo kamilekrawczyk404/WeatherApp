@@ -16,7 +16,6 @@
 #include <cmath>
 #include "LocationImage.h"
 
-
 class Weather : public Location , public LocationImage {
 public:
     nlohmann::json 

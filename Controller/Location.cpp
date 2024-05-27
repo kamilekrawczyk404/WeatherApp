@@ -17,6 +17,7 @@ Location::Location(std::string& name) {
     try {
         FetchAPI api(getUrl());
 
+        std::cout << api.fetchedData << std::endl;
         if (!api.errorMessage.empty()) {
             this->errorMessage = api.errorMessage;
         } else {

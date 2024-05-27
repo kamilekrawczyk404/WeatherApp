@@ -5,7 +5,7 @@
 #ifndef CPP_WEATHER_APP_DIV_H
 #define CPP_WEATHER_APP_DIV_H
 #include <SFML/Graphics.hpp>
-#include "../../Backend/Helpers.h"
+#include "../../../Controller/Helpers.h"
 #include "../../Layout/Layout.h"
 
 class Div {

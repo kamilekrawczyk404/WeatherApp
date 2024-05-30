@@ -43,15 +43,11 @@ set(SOURCE_FILES main.cpp
 
 add_executable(cpp_weather_app ${SOURCE_FILES})
 
-#include_directories(/usr/local/include)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 find_package(CURL REQUIRED)
 find_package(nlohmann_json 3.2.0 REQUIRED)
-
-#include_directories(${SFML_INCLUDE_DIRS})
-#include_directories(${CURL_INCLUDE_DIR} ${SFML_INCLUDE_DIRS})
 
 set(FONTS_DIR ${CMAKE_SOURCE_DIR}/View/fonts)
 file(COPY ${FONTS_DIR} DESTINATION ${CMAKE_BINARY_DIR})

@@ -61,7 +61,7 @@ configure_file(View/Graphics/Images/CountriesFlags/pl.png pl.png COPYONLY)
 configure_file(View/Graphics/Images/CountriesFlags/de.png ge.png COPYONLY)
 configure_file(View/Graphics/Images/CountriesFlags/en.png gb.png COPYONLY)
 
-file(GLOB IMAGE_FILES ${CMAKE_SOURCE_DIR}/Frontend/Graphics/Images/**/*.*)
+file(GLOB IMAGE_FILES ${CMAKE_SOURCE_DIR}/View/Graphics/Images/**/*.*)
 file(COPY ${IMAGE_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries(cpp_weather_app PRIVATE nlohmann_json::nlohmann_json ${CURL_LIBRARIES} sfml-system sfml-window sfml-graphics sfml-audio sfml-network)

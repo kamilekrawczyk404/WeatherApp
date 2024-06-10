@@ -5,7 +5,6 @@
 #include "FetchAPI.h"
 
 FetchAPI::FetchAPI(std::string url): apiUrl(url) {
-    std::cout << url << std::endl;
     // initialize curl with previously prepared request link
     curl_easy_setopt(curl, CURLOPT_URL, this->apiUrl.c_str());
 

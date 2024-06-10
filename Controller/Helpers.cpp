@@ -10,6 +10,9 @@ int Helpers::toCelsius(const double kelvins, int digits) {
     return round((kelvins - 273.15));
 }
 
+// format is like "HH:MM"
+// H - hours
+// M - minutes
 std::string Helpers::convertToClockFormat(time_t unix, int shift,  int currentGMTOffset) {
     unix -= currentGMTOffset;
     unix += shift;
@@ -22,6 +25,7 @@ std::string Helpers::convertToClockFormat(time_t unix, int shift,  int currentGM
     return buffer;
 }
 
+// returns full date based on a unix time
 nlohmann::json Helpers::getDate(time_t unixSeconds, int shift, int currentGMTOffset) {
     unixSeconds -= currentGMTOffset;
     unixSeconds += shift;
@@ -48,18 +52,6 @@ nlohmann::json Helpers::getDate(time_t unixSeconds, int shift, int currentGMTOff
     });
 }
 
-int Helpers::getCurrentHour(int shift, int currentGMTOffset) {
-    auto now = std::chrono::system_clock::now();
-    auto nowC = std::chrono::system_clock::to_time_t(now);
-    nowC -= currentGMTOffset;
-    nowC += shift;
-    
-    std::tm *localTime = std::localtime(&nowC);
-    int currentHour = localTime->tm_hour;
-
-    return currentHour;
-}
-
 int Helpers::getHourFromUnix(time_t unixSeconds, int shift, int currentGMTOffset) {
     unixSeconds -= currentGMTOffset;
     unixSeconds += shift;
@@ -69,8 +61,6 @@ int Helpers::getHourFromUnix(time_t unixSeconds, int shift, int currentGMTOffset
     
     return hour;
 }
-
-
 
 sf::Color Helpers::HSLtoRGB(float hue, float saturation, float lightness) {
     float c = (1 - std::abs(2 * lightness - 1)) * saturation;
@@ -108,43 +98,6 @@ sf::Color Helpers::HSLtoRGB(float hue, float saturation, float lightness) {
     return sf::Color((r + m) * 255, (g + m) * 255, (b + m) * 255);
 }
 
-nlohmann::json Helpers::translate(std::string text) {
-    
-    std::string inEnglish = text, inPolish = "";
-    
-    if (text == "Clouds") {
-        inPolish = "Zachmurzenie";
-    } else if (text == "Rain") {
-        inPolish = "Deszcz";
-    } else if (text == "Snow") {
-        inPolish = "Snieg";
-    } else if (text == "Clear") {
-        inPolish = "Bezchmurnie";
-    } else if (text == "Drizzle") {
-        inPolish = "Mzawka";
-    } else if (text == "Thunderstorm") {
-        inPolish = "Burza";
-    } else if (text == "few clouds") {
-        inPolish = "male\nzachmurzenie";
-    } else if (text == "scattered clouds") {
-        inPolish = "przejsciowe\nzachmurzenie";
-    } else if (text == "broken clouds") {
-        inPolish = "przebijace\nchmury";
-    } else if (text == "clear sky") {
-        inPolish = "bezchmurnie";
-    } else if (text == "overcast clouds") {
-        inPolish = "duze\nzachmurzenie";
-    } else if (text == "light rain") {
-        inPolish = "lekki\ndeszcz";
-    } 
-    
-    std::replace(inEnglish.begin(), inEnglish.end(), ' ', '\n');
-    return nlohmann::json({
-        {"english", inEnglish},
-        {"polish", inPolish}
-    });
-}
-
 float Helpers::LagrangeBasis(const std::vector<float>& x, int i, double xPoint) {
     float result = 1.0f;
     
@@ -171,4 +124,25 @@ sf::Color Helpers::convertTemperatureToColor(float temp) {
     const int tMin = -80, tMax = 50;
 
     return sf::Color(Helpers::HSLtoRGB(360 - (temp - tMin) / (tMax - tMin) * 360, 1, 0.5));
+}
+
+std::string Helpers::urlEncode(const std::string &value) {
+    std::ostringstream escaped;
+    escaped.fill('0');
+    escaped << std::hex;
+
+    for (char c : value) {
+        // keep alphanumeric and other accepted characters intact
+        if (isalnum(static_cast<unsigned char>(c)) || c == '-' || c == '_' || c == '.' || c == '~') {
+            escaped << c;
+        } else if (c == ' ') {
+            // encode space as %20
+            escaped << "%20";
+        } else {
+            // any other characters are percent-encoded
+            escaped << '%' << std::setw(2) << std::uppercase << int(static_cast<unsigned char>(c));
+        }
+    }
+
+    return escaped.str();
 }

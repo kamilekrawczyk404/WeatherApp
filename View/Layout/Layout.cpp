@@ -3,7 +3,6 @@
 //
 
 #include "Layout.h"
-#include "../Graphics/Checkbox/Checkbox.h"
 #include "../Graphics/Containers/Circle.h"
 #include "Chart.h"
 
@@ -21,9 +20,6 @@ void Layout::loadEvent(sf::Event &event) {
 }
 
 void Layout::drawLayout(sf::RenderWindow &window) {
-//    Checkbox languageCheckbox(window, 350.f, margin, isForeignLanguageChecked ? "English version" : "Wersja angielska", isForeignLanguageChecked);
-//    languageCheckbox.onClick(window, event, languageCheckbox, isForeignLanguageChecked, userReleasedButton);
-
     chart(window);
 
     foreignLanguages(window);
@@ -53,14 +49,20 @@ void Layout::foreignLanguages(sf::RenderWindow &window) {
             flagWidth = flag.image.getGlobalBounds().width,
             flagHeight = flag.image.getGlobalBounds().height;
 
-        Div container(flagWidth, flagHeight);
+        Div container(flagWidth, flagHeight - 10.f);
         container.properties.setFillColor(sf::Color::Transparent);
-        container.properties.setPosition(i * (container.bounds.width + margin) + leftContainerWidth + margin * 2, margin - 3.f);
-        container.onClick(window, event, currentLanguage, i);
+        container.properties.setPosition(i * (container.bounds.width + margin) + leftContainerWidth + margin * 2, margin + 2.5f);
+        container.onClick<int>(window, event, currentLanguage, i);
+
+        // mark out the chosen language
+        if (currentLanguage == i) {
+            container.properties.setOutlineColor(sf::Color(255, 255, 255));
+            container.properties.setOutlineThickness(3.f);
+        }
 
         const sf::Vector2f containerPos = container.properties.getPosition();
 
-        flag.image.setPosition(containerPos.x, containerPos.y );
+        flag.image.setPosition(containerPos.x, containerPos.y - 5.5f);
         
         container.draw(window);
         flag.draw(window);
@@ -113,13 +115,13 @@ void Layout::leftSide(sf::RenderWindow &window) {
         currentInfo.text.setString(weather[currentDay]["data"][currentHour]["weather"]["info"][currentLanguage][countries[currentLanguage]].get<std::string>());
         feelsLike.text.setString(translatedFeelsLike[currentLanguage] + ": " + weather[currentDay]["data"][currentHour]["temperature"]["feelsLike"].get<std::string>());
         
-    CelsiusSign(window, feelsLike.text.getPosition().x + feelsLike.text.getLocalBounds().width - 20.f, top + 125.f, 20, feelsLike.text.getString().substring(12, feelsLike.text.getString().getSize() - 12));
+    CelsiusSign(window, 20, feelsLike.text);
 
     currentInfo.draw(window);
     temperature.draw(window);
     feelsLike.draw(window);
 
-    CelsiusSign(window, margin + 125.f, top + 10.f, 44, temperature.text.getString());
+    CelsiusSign(window, 44, temperature.text);
 
     Image currentIcon(iconName);
     currentIcon.image.setPosition(margin / 2, top - 20.f);
@@ -146,7 +148,6 @@ void Layout::bottomSide(sf::RenderWindow &window) {
 
 void Layout::specificInformation(int& index, sf::RenderWindow &window, std::string key, json& data, sf::Vector2f position) {
     // gap between elements in a column
-    // offset from the right side
     const float gap = 75;
     
     if (key == "Wind") {
@@ -184,9 +185,9 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
         secondaryIconName = lowestTempItem["weather"]["icon"],
         secondaryTemperature = lowestTempItem["temperature"]["tempMin"];
 
-    // "04" is the index for clouds icon
+    // "04" is the index for clouds icon (is a little bit different and needs additional styling for proper displaying)
     bool isCloudsIcon = highestTempItem["weather"]["icon"].get<std::string>().substr(0, 2) == "04" || lowestTempItem["weather"]["icon"].get<std::string>().substr(0, 2) == "03";
-//    
+
     const float 
         gap = 20.f, 
         height = 220.f,
@@ -197,7 +198,7 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
     Div singleDayContainer(width, height);
     singleDayContainer.properties.setPosition(offsetLeft, offsetTop);
     
-    // selected day styling
+    // mark out the selected day
     if (currentDay == i) {
         singleDayContainer.properties.setOutlineThickness(5.f);
         singleDayContainer.properties.setOutlineColor(sf::Color(32, 32, 32));
@@ -217,7 +218,7 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
     main.setPosition(offsetLeft + 90.f, offsetTop + 55.f);
     main.draw(window);
 
-    CelsiusSign(window, offsetLeft + 90.f, offsetTop + 55.f, 32, main.text.getString());
+    CelsiusSign(window, 32, main.text);
     
     Image secondaryIcon(secondaryIconName);
     secondaryIcon.image.setPosition(offsetLeft, offsetTop + (isCloudsIcon ? 105.f : 110.f));
@@ -228,7 +229,7 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
     secondary.setPosition(offsetLeft + 70.f, offsetTop + 130.f);
     secondary.draw(window);
 
-    CelsiusSign celsius(window, offsetLeft + 70.f, offsetTop + 130.f, 24, secondary.text.getString());
+    CelsiusSign celsius(window, 24, secondary.text);
 
     int size = abs(highestTemperature - lowestTemperature);
 
@@ -256,7 +257,7 @@ void Layout::singleDayCard(std::string index, sf::RenderWindow &window, json &da
 
     // interaction with left mouse button on single day card
     if (i != currentDay) {
-        singleDayContainer.onClick(window, event, currentDay, i);
+        singleDayContainer.onClick<int>(window, event, currentDay, i);
     }
 }
 

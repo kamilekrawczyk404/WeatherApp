@@ -5,13 +5,12 @@
 #include "Location.h"
 
 Location::Location(std::string& name) {
-    // replace any spaces
+    // replace any spaces with "+"
     for(char& c : name) {
         if (c == ' ') {
             c = '+';
         }
     }
-    
     this->name = name;
     
     try {
@@ -20,6 +19,7 @@ Location::Location(std::string& name) {
         if (!api.errorMessage.empty()) {
             this->errorMessage = api.errorMessage;
         } else {
+            // assign coordinates for a location
             this->lat = api.fetchedData["results"][0]["geometry"]["location"]["lat"].get<double>();
             this->lon = api.fetchedData["results"][0]["geometry"]["location"]["lng"].get<double>();
         }

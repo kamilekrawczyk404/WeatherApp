@@ -29,16 +29,14 @@ set(SOURCE_FILES main.cpp
         View/Layout/Layout.h
         Controller/Helpers.cpp
         Controller/Helpers.h
-        Controller/LocationImage.cpp
-        Controller/LocationImage.h
-        View/Graphics/Checkbox/Checkbox.cpp
-        View/Graphics/Checkbox/Checkbox.h
         View/Graphics/Containers/Circle.cpp
         View/Graphics/Containers/Circle.h
         View/Layout/Chart.cpp
         View/Layout/Chart.h
         Controller/TranslationAPI.cpp
         Controller/TranslationAPI.h
+        Controller/PredictLocation.cpp
+        Controller/PredictLocation.h
 )
 
 add_executable(cpp_weather_app ${SOURCE_FILES})

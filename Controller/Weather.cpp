@@ -7,6 +7,7 @@
 using json = nlohmann::json;
 
 json Weather::formatData(json &content, json &item) {
+    // single object containing information about current hour 
     json partial({
          {"partOfDay", item["sys"]["pod"]},
          {"hour", Helpers::getHourFromUnix(item["dt"].get<time_t>(), (content["city"]["timezone"].get<int>()))},
@@ -57,7 +58,6 @@ json Weather::formatData(json &content, json &item) {
 
 Weather::Weather(std::string& location, std::vector<std::string> &countries): 
     Location(location), 
-    LocationImage(location),
     countries(countries) {
     try {
         FetchAPI api(getUrl());
@@ -115,7 +115,7 @@ Weather::Weather(std::string& location, std::vector<std::string> &countries):
             // next iteration is next day
             if (stoi(key) + 1 != length && partial["weekday"] != Helpers::getDate(api.fetchedData["list"][stoi(key) +  1]["dt"].get<time_t >(), api.fetchedData["city"]["timezone"].get<int>())) {
 
-                // to prevent situation that first day has lack of information take them from the next day
+                // to prevent situation that first day doesn't have eight three-hour data objects, take them from the next day
                 const int infoPacketsPerDay = 8;
                 int startingFrom = singleDay.size();
 
@@ -228,7 +228,7 @@ Weather::Weather(std::string& location, std::vector<std::string> &countries):
 }
 
 std::string Weather::getUrl() {
-    std::string url = "api.openweathermap.org/data/2.5/forecast?lat=" + std::to_string(this->lat) + "&lon=" + std::to_string(this->lon) + "&appid=" + WEATHER_API_KEY;
+    std::string url = "https://api.openweathermap.org/data/2.5/forecast?lat=" + std::to_string(this->lat) + "&lon=" + std::to_string(this->lon) + "&appid=" + WEATHER_API_KEY;
     
     return url;
 }

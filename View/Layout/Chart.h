@@ -8,16 +8,27 @@
 #include "../Graphics/Containers/Circle.h"
 
 class Chart {
-    
-    int lowestDuringDay, highestDuringDay, lowerLimit, upperLimit, currentDay, tempBarLength = 1;
-    const int denominator, density, step;
+    int 
+        lowestDuringDay, 
+        highestDuringDay, 
+        lowerLimit, 
+        upperLimit, 
+        currentDay, 
+        tempBarLength = 1;
+    const int 
+        denominator, 
+        density, 
+        step;
     float 
         lineThickness = 2.5f, 
         margin = 20.f,
         minTempY,
         maxTempY;
     sf::Color linesColor = sf::Color(32, 32, 32);
-    std::vector<float> tempYPositions, dotXPositions, dotYPositions;
+    std::vector<float> 
+        tempYPositions, 
+        dotXPositions, 
+        dotYPositions;
     std::vector<std::string> countries;
     json weather;
     

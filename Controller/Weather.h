@@ -14,9 +14,8 @@
 #include "TranslationAPI.h"
 #include <nlohmann/json.hpp>
 #include <cmath>
-#include "LocationImage.h"
 
-class Weather : public Location , public LocationImage {
+class Weather : public Location {
 public:
     nlohmann::json 
         weatherForecast, 

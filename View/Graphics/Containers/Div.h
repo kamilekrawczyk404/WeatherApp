@@ -8,19 +8,47 @@
 #include "../../../Controller/Helpers.h"
 #include "../../Layout/Layout.h"
 
+
 class Div {
     sf::Vector2i gradientValues;
-    // abstract default values 
-    int defaultValue = 1000;
-    
 public:
     bool fadeIn = false;
     sf::FloatRect bounds;
     sf::RectangleShape properties;
     sf::VertexArray vertices;
-    Div(float width, float height, sf::Vector2f gradientValues = sf::Vector2f(1000, 1000));
+    Div(float width, float height, sf::Vector2f gradientValues = sf::Vector2f());
     void draw(sf::RenderWindow& window);
-    void onClick(sf::RenderWindow &window, sf::Event event, int &toChange, int &index);
+
+    template<typename T>
+    void onClick(sf::RenderWindow &window, sf::Event &event, void (*fun)(T), T &content) {
+        if (event.type == sf::Event::MouseButtonPressed) {
+            if (event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+                sf::Vector2f divPosition = this->properties.getPosition();
+                sf::FloatRect divBounds = this->properties.getLocalBounds();
+
+                if (mousePosition.x >= divPosition.x && mousePosition.x <= divPosition.x + divBounds.width && mousePosition.y >= divPosition.y && mousePosition.y <= divPosition.y + divBounds.height) {
+                    fun(content);
+                }
+            }
+        }
+    };
+
+    template<typename T>
+    void onClick(sf::RenderWindow &window, sf::Event &event, T &oldValue ,T &newValue) {
+        if (event.type == sf::Event::MouseButtonPressed) {
+            if (event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+                sf::Vector2f divPosition = this->properties.getPosition();
+                sf::FloatRect divBounds = this->properties.getLocalBounds();
+
+                if (mousePosition.x >= divPosition.x && mousePosition.x <= divPosition.x + divBounds.width && mousePosition.y >= divPosition.y && mousePosition.y <= divPosition.y + divBounds.height) {
+//                    fun(oldValue, newValue);
+                    oldValue = newValue;
+                }
+            }
+        }
+    };
 };
 
 

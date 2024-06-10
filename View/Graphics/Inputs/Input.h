@@ -11,16 +11,9 @@
 #include "../Font/CustomFont.h"
 
 class Input : public CustomFont {
-public:
-    using fncPtr = void (*)(std::string);
+using onEnter = void (*)(std::string);
+using onKeyUp = void (*)(std::string);
 
-    sf::RectangleShape background;
-    
-    Input(float width, float height, fncPtr func, float fontSize = 14.f, std::string placeholder = "");
-    
-    void textEntered(sf::Event& event, std::vector<std::string>& errors);
-    void draw(sf::RenderWindow& window);
-    void setPosition(float x, float y);
 private:
     CustomFont customFont;
     sf::RenderWindow window;
@@ -29,8 +22,17 @@ private:
     std::string placeholder;
     
     void setPlaceholder();
-    void onEnter();
-    fncPtr onEnterHandler;
+    onEnter onEnterHandler;
+    onKeyUp onKeyUpHandler;
+
+public:
+    sf::RectangleShape background;
+    Input(float width, float height, onEnter onEnterFunction = {}, onKeyUp = {}, float fontSize = 14.f, std::string placeholder = "");
+
+    void textEntered(sf::Event& event, std::vector<std::string>& errors);
+    void draw(sf::RenderWindow& window);
+    void setPosition(float x, float y);
+
 };
 
 

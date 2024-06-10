@@ -20,7 +20,3 @@ void StaticText::setPosition(float x, float y) {
 void StaticText::setText(std::string& text) {
     this->text.setString(text);
 }
-
-void StaticText::justifyCenter(float centerX, float centerY, float offsetX, float offsetY) {
-    this->setPosition(centerX - this->text.getLocalBounds().width / 2 + offsetX, centerY - this->text.getLocalBounds().height / 2 + offsetY);
-}

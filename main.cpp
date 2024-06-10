@@ -8,14 +8,32 @@
 #include <nlohmann/json.hpp>
 #include <string>
 #include "View/Layout/Layout.h"
+#include "Controller/PredictLocation.h"
+#include <algorithm>
 
 std::vector<std::string> 
     errors = {""},
     countries = {"pl", "en", "de"};
-nlohmann::json weatherData, additionalInfo;
+nlohmann::json 
+    weatherData, 
+    additionalInfo, 
+    predictedLocations;
+
+void getPredictionsOfLocations(std::string content) {
+    const int MINIMUM_LENGTH_FOR_START_SEARCHING = 3;
+    std::string encodedString = Helpers::urlEncode(content);
+
+    predictedLocations["predictions"] = {};
+    weatherData = {};
+
+    if (content.size() >= MINIMUM_LENGTH_FOR_START_SEARCHING) {
+        auto *locations = new PredictLocation(encodedString);
+        predictedLocations = locations->fetchedData;
+    }
+}
 
 void getLocation(std::string content) {
-    Weather *weather = new Weather(content, countries);
+    auto *weather = new Weather(content, countries);
 
     if (!weather->isOk()) {
         errors[0] = weather->errorMessage;
@@ -27,17 +45,15 @@ void getLocation(std::string content) {
 }
 
 int main() {
-    Layout ui(countries);
-
     float inputWidth = 250.f;
 
-    // Main background
-    Image background("background.jpg");
 
+    Layout ui(countries);
+    Image background("background.jpg");
+    
     sf::RenderWindow window(sf::VideoMode(background.textureSize.x, background.textureSize.y), "Simple Forecast Application");
 
-    // Interactive part with user
-    Input locationInput(inputWidth, 30.f, getLocation, 16.f, "Enter your location");
+    Input locationInput(inputWidth, 30.f, getLocation, getPredictionsOfLocations, 16.f, "Enter your location");
     locationInput.setPosition(ui.margin, 20.f);
 
     StaticText errorMessage(errors.at(0), 14, sf::Color::Red);
@@ -46,6 +62,7 @@ int main() {
     Div section(inputWidth + 4.f, 22.f);
     section.properties.setPosition(ui.margin - 2, 55.f);
 
+    // main app loop
     while (window.isOpen())
     {
         sf::Event event;
@@ -61,21 +78,48 @@ int main() {
 
         window.clear();
         background.draw(window);
+        locationInput.draw(window);
+        
 
+        // weather api returned some data
         if (!weatherData.empty()) {
-            // we've got the information!
             ui.loadJson(weatherData, additionalInfo);
             ui.loadEvent(event);
             ui.drawLayout(window);
-        } 
-        locationInput.draw(window);
-
-        if (errors[0] != "") {
+        }
+        // during fetching data an error occurred
+        else if (errors[0].size() != 0) {
             section.draw(window);
             errorMessage.setText(errors.at(0));
             errorMessage.draw(window);
-        }
+        } 
+        // otherwise display predicted locations
+        else {
+            int i = 0;
+            const float height = 25.f;
 
+            for (auto item  : predictedLocations["predictions"]) {
+                std::string 
+                    locationValue = item["description"].get<std::string>(),
+                    onlyMainLocation = item["structured_formatting"]["main_text"].get<std::string>();
+                locationValue.erase(std::remove_if(locationValue.begin(), locationValue.end(), ::isspace), locationValue.end());
+                locationValue.erase(std::remove(locationValue.begin(), locationValue.end(), ','), locationValue.end());
+
+                StaticText predictedLocation(item["description"].get<std::string>(), 14);
+                predictedLocation.setPosition(locationInput.background.getPosition().x + 10.f, locationInput.background.getPosition().y + locationInput.background.getGlobalBounds().height + height / 2 + i * ( height / 4 + height));
+
+                Div predictedContainer(predictedLocation.text.getGlobalBounds().width + 20.f, height);
+                predictedContainer.properties.setFillColor(sf::Color(255, 255,255));
+                predictedContainer.properties.setPosition(predictedLocation.text.getPosition().x - 10.f, predictedLocation.text.getPosition().y - predictedLocation.text.getLocalBounds().height / 3);
+
+                predictedContainer.onClick<std::string>(window, event, getLocation, onlyMainLocation);
+                predictedContainer.draw(window);
+                predictedLocation.draw(window);
+
+                i++;
+            }
+        }
+        
         window.display();
     }
 

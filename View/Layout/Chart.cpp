@@ -17,7 +17,7 @@ Chart::Chart(sf::RenderWindow &window, sf::Event &event, float width, float heig
     currentLanguage(currentLanguage),
     countries(countries) {
     
-    // Main layout of the chart
+    // main layout of the chart
     chartContainer.properties.setPosition(x, y);
     chartContainer.draw(window);
     
@@ -29,28 +29,29 @@ Chart::Chart(sf::RenderWindow &window, sf::Event &event, float width, float heig
     horizontalLine.properties.setFillColor(linesColor);
     horizontalLine.draw(window);
 
-    // Getting the lowest and the highest temperature of the current day
+    // getting the lowest and the highest temperature of the current day
     lowestDuringDay = stoi(weather[currentDay]["data"][weather[currentDay]["min"].get<int>()]["temperature"]["tempMin"].get<std::string>());
     highestDuringDay = stoi(weather[currentDay]["data"][weather[currentDay]["max"].get<int>()]["temperature"]["tempMax"].get<std::string>());
 
-    // Calculating lowest and the highest limit of the temperature of a single day
+    // calculating lowest and the highest limit of the temperature of a single day
     lowerLimit = lowestDuringDay - (lowestDuringDay < 0 ? step + (lowestDuringDay % step) : (lowestDuringDay % step));
     upperLimit = highestDuringDay + (highestDuringDay < 0 ? -(highestDuringDay % step) : step - (highestDuringDay % step));
 
-    // Calculating how many steps should be located inside the temperature bar
+    // calculating how many steps should be located inside the temperature bar
     int pom = lowerLimit;
     while (pom < upperLimit) {
         this->tempBarLength++;
         pom += step;
     }
 
-    // Temperatures min and max y axis values
+    // min and max temperatures for y-axis values
     minTempY = verticalLine.properties.getPosition().y + verticalLine.bounds.height - 2.f * margin,
     maxTempY = verticalLine.properties.getPosition().y;
     
     drawTemperatureBar(window);
     setDotYPositions();
 
+    // rendering parts of the chart
     for(auto& [key, value] : weather[currentDay]["data"].items()) {
         int index = stoi(key);
 
@@ -62,6 +63,7 @@ Chart::Chart(sf::RenderWindow &window, sf::Event &event, float width, float heig
         
         drawPolynomialLine(window, index);
     }
+    
     for(auto& [key, value] : weather[currentDay]["data"].items()) {
         int index = stoi(key);
         
@@ -69,6 +71,7 @@ Chart::Chart(sf::RenderWindow &window, sf::Event &event, float width, float heig
     }
 };
 
+// get main dots y positions - with it we will calculate the polynomial equation
 void Chart::setDotYPositions() {
     for (auto& [key, value] : weather[currentDay]["data"].items()) {
         int currentTemp = stoi(value["temperature"]["main"].get<std::string>());
@@ -87,7 +90,7 @@ void Chart::drawTemperatureBar(sf::RenderWindow &window) {
         StaticText temperature(value, 16);
         Div temperatureIndicator(lineThickness * 4.f, lineThickness);
         
-        // Coordinates for each temperature
+        // coordinates for each temperature
         float
             x = chartContainer.properties.getPosition().x + margin / 2.5f,
             y = minTempY - i * (abs(maxTempY - minTempY) / (float) tempBarLength) - temperature.text.getLocalBounds().height;
@@ -101,7 +104,7 @@ void Chart::drawTemperatureBar(sf::RenderWindow &window) {
 
         tempYPositions.push_back(temperatureIndicator.properties.getPosition().y - temperatureIndicator.bounds.height / 2);
 
-        CelsiusSign(window, x, y, 16, value);
+        CelsiusSign(window, 16, temperature.text);
     }
 }
 
@@ -111,9 +114,9 @@ void Chart::drawPrecipitation(sf::RenderWindow &window, json &item, int &index) 
     
     StaticText precipitation(popValueAsString.substr(0, popValueAsString.find('.')) + "%", 16);
     
-    // Fall container
+    // the fall container
     if (popValue != 0) {
-        // There is some fall
+        // there is some fall
         Div precipitationContainer(horizontalLine.bounds.width / denominator / 4, float (popValue) / 100.f * verticalLine.bounds.height * 0.85f);
         precipitationContainer.properties.setFillColor(sf::Color(72, 202, 228));
         precipitationContainer.properties.setPosition(dotXPositions[index] - precipitationContainer.bounds.width / 2, horizontalLine.properties.getPosition().y - precipitationContainer.bounds.height + margin / 4 - 2 * lineThickness);
@@ -165,7 +168,7 @@ void Chart::drawHourIndicator(sf::RenderWindow &window, sf::Event &event, json &
     description.setPosition(hourIndicator.properties.getPosition().x - description.text.getLocalBounds().width / 2, hourIndicator.properties.getPosition().y + margin / 2 );
     description.draw(window);
     
-    hourContainer.onClick(window, event, currentHour, index);
+    hourContainer.onClick<int>(window, event, currentHour, index);
 }
 
 void Chart::drawPolynomialLine(sf::RenderWindow &window, int &index) {
@@ -178,6 +181,7 @@ void Chart::drawPolynomialLine(sf::RenderWindow &window, int &index) {
                 dotBetweenY = Helpers::LagrangePolynomial(dotXPositions, dotYPositions, dotBetweenX),
                 temperature = lowerLimit + (abs(minTempY - dotBetweenY) / minTempY) * upperLimit;
 
+            
             // a single line instead of linear gradient
 //            Circle dotBetween(radius);
 //            dotBetween.properties.setPosition(dotBetweenX, dotBetweenY);

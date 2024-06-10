@@ -10,7 +10,7 @@
 
 class CelsiusSign {
 public:
-    CelsiusSign(sf::RenderWindow& window, int fontSize, sf::Text &temperature);
+    CelsiusSign(sf::RenderWindow& window, float x, float y, int fontSize, std::string temperature);
 };
 
 

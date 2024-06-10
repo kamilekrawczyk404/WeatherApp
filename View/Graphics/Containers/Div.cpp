@@ -13,7 +13,7 @@ Div::Div(float width, float height, sf::Vector2f gradientValues): gradientValues
 void Div::draw(sf::RenderWindow &window) {
     
     // hls, take offset to change values easier 
-    if (gradientValues.x != defaultValue && gradientValues.y != defaultValue) {
+    if (gradientValues.x && gradientValues.y) {
         vertices.setPrimitiveType(sf::Quads);
         vertices.resize(4);
         
@@ -41,20 +41,4 @@ void Div::draw(sf::RenderWindow &window) {
    
     
     window.draw(this->properties);
-}
-
-void Div::onClick(sf::RenderWindow &window, sf::Event event, int &toChange, int &index) {
-    if (event.type == sf::Event::MouseButtonPressed) {
-        if (event.mouseButton.button == sf::Mouse::Left) {
-            sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-            sf::Vector2f divPosition = this->properties.getPosition();
-            sf::FloatRect divBounds = this->properties.getLocalBounds();
-
-            
-            if (mousePosition.x >= divPosition.x && mousePosition.x <= divPosition.x + divBounds.width && mousePosition.y >= divPosition.y && mousePosition.y <= divPosition.y + divBounds.height) {
-                
-                toChange = index;
-            }
-        }
-    } 
 }

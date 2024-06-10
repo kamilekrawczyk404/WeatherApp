@@ -17,8 +17,6 @@ using onKeyUp = void (*)(std::string);
 private:
     CustomFont customFont;
     sf::RenderWindow window;
-    sf::Text inputText;
-    float width, height, fontSize;
     std::string placeholder;
     
     void setPlaceholder();
@@ -26,6 +24,8 @@ private:
     onKeyUp onKeyUpHandler;
 
 public:
+    float width, height, fontSize;
+    sf::Text inputText;
     sf::RectangleShape background;
     Input(float width, float height, onEnter onEnterFunction = {}, onKeyUp = {}, float fontSize = 14.f, std::string placeholder = "");
 

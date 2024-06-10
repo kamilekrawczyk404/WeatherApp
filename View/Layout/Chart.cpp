@@ -101,7 +101,7 @@ void Chart::drawTemperatureBar(sf::RenderWindow &window) {
 
         tempYPositions.push_back(temperatureIndicator.properties.getPosition().y - temperatureIndicator.bounds.height / 2);
 
-        CelsiusSign(window, x, y, 16, value);
+        CelsiusSign(window, 16, temperature.text);
     }
 }
 

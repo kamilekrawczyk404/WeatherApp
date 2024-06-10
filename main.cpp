@@ -41,7 +41,6 @@ void getLocation(std::string content) {
     } else {
         weatherData = weather->weatherForecast;
         additionalInfo = weather->additionalInfo;
-        std::cout << weatherData << std::endl;
     }
 }
 

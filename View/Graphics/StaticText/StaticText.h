@@ -13,11 +13,11 @@ class StaticText : CustomFont {
 public:
     sf::Text text;
     int fontSize = 14;
-    
     StaticText(std::string text, int fontSize = 14, sf::Color color = sf::Color(32, 32, 32));
+    void draw(sf::RenderWindow& window);
     void setPosition(float x, float y);
     void setText(std::string& text);
-    void draw(sf::RenderWindow& window);
+    void justifyCenter(float centerX, float centerY, float offsetX = 0, float offsetY = 0);
 };
 
 

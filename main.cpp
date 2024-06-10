@@ -8,7 +8,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 #include "View/Layout/Layout.h"
-#include "Controller/PredictLocation.h"
+#include "Controller/SuggestLocation.h"
 #include <algorithm>
 
 std::vector<std::string> 
@@ -27,7 +27,7 @@ void getPredictionsOfLocations(std::string content) {
     weatherData = {};
 
     if (content.size() >= MINIMUM_LENGTH_FOR_START_SEARCHING) {
-        auto *locations = new PredictLocation(encodedString);
+        auto *locations = new SuggestLocation(encodedString);
         predictedLocations = locations->fetchedData;
     }
 }
@@ -41,6 +41,7 @@ void getLocation(std::string content) {
     } else {
         weatherData = weather->weatherForecast;
         additionalInfo = weather->additionalInfo;
+        std::cout << weatherData << std::endl;
     }
 }
 
@@ -86,6 +87,8 @@ int main() {
             ui.loadJson(weatherData, additionalInfo);
             ui.loadEvent(event);
             ui.drawLayout(window);
+            
+            locationInput.inputText.setString(additionalInfo["locationName"].get<std::string>());
         }
         // during fetching data an error occurred
         else if (errors[0].size() != 0) {

@@ -114,7 +114,6 @@ Weather::Weather(std::string& location, std::vector<std::string> &countries):
 
             // next iteration is next day
             if (stoi(key) + 1 != length && partial["weekday"] != Helpers::getDate(api.fetchedData["list"][stoi(key) +  1]["dt"].get<time_t >(), api.fetchedData["city"]["timezone"].get<int>())) {
-
                 // to prevent situation that first day doesn't have eight three-hour data objects, take them from the next day
                 const int infoPacketsPerDay = 8;
                 int startingFrom = singleDay.size();
@@ -215,6 +214,7 @@ Weather::Weather(std::string& location, std::vector<std::string> &countries):
         }
         
         additionalInfo = {
+            {"locationName", fullLocationName},
             {"sunrise", Helpers::convertToClockFormat(api.fetchedData["city"]["sunrise"].get<time_t>(), api.fetchedData["city"]["timezone"].get<int>())},
             {"sunset", Helpers::convertToClockFormat(api.fetchedData["city"]["sunset"].get<time_t>(), api.fetchedData["city"]["timezone"].get<int>())},
             {"city", api.fetchedData["city"]["name"].get<std::string>() + ", " + api.fetchedData["city"]["country"].get<std::string>()},

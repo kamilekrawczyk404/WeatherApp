@@ -22,6 +22,7 @@ Location::Location(std::string& name) {
             // assign coordinates for a location
             this->lat = api.fetchedData["results"][0]["geometry"]["location"]["lat"].get<double>();
             this->lon = api.fetchedData["results"][0]["geometry"]["location"]["lng"].get<double>();
+            this->fullLocationName = api.fetchedData["results"][0]["address_components"][0]["long_name"].get<std::string>();
         }
     } catch (std::string& error) {
         this->errorMessage = error;

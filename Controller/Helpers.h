@@ -25,7 +25,7 @@ public:
     static int toCelsius(const double kelvins, int digits = 10);
     static int getHourFromUnix(time_t unixSeconds, int shift, int currentGMTOffset = 7200);
     static std::string convertToClockFormat(time_t unix, int shift = 0,  int currentGMTOffset = 7200);
-    static nlohmann::json getDate(time_t unixSeconds, int shift, int currentGMTOffset = 7200);
+    static nlohmann::json getDate(time_t unixSeconds, int shift = 0, int currentGMTOffset = 7200);
     static sf::Color HSLtoRGB(float hue, float saturation, float lightness);
     static float LagrangeBasis(const std::vector<float>& x, int i, double xPoint);
     static float LagrangePolynomial(const std::vector<float>& x, const std::vector<float>& y, float xPoint);

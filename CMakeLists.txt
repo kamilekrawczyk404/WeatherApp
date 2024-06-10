@@ -35,8 +35,8 @@ set(SOURCE_FILES main.cpp
         View/Layout/Chart.h
         Controller/TranslationAPI.cpp
         Controller/TranslationAPI.h
-        Controller/PredictLocation.cpp
-        Controller/PredictLocation.h
+        Controller/SuggestLocation.cpp
+        Controller/SuggestLocation.h
 )
 
 add_executable(cpp_weather_app ${SOURCE_FILES})
@@ -52,14 +52,14 @@ file(COPY ${FONTS_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 
 target_include_directories(cpp_weather_app PRIVATE ${CMAKE_SOURCE_DIR}/View/fonts)
 
-configure_file(View/Graphics/Images/background.jpg background.jpg COPYONLY)
-configure_file(View/Graphics/Images/Components/checked.png checked.png COPYONLY)
-configure_file(View/Graphics/Images/Components/unchecked.png unchecked.png COPYONLY)
-configure_file(View/Graphics/Images/CountriesFlags/pl.png pl.png COPYONLY)
-configure_file(View/Graphics/Images/CountriesFlags/de.png ge.png COPYONLY)
-configure_file(View/Graphics/Images/CountriesFlags/en.png gb.png COPYONLY)
+#configure_file(public/images/background.jpg background.jpg COPYONLY)
+#configure_file(public/images/Components/checked.png checked.png COPYONLY)
+#configure_file(public/images/Components/unchecked.png unchecked.png COPYONLY)
+#configure_file(public/images/CountriesFlags/pl.png pl.png COPYONLY)
+#configure_file(public/images/CountriesFlags/de.png ge.png COPYONLY)
+#configure_file(public/images/CountriesFlags/en.png gb.png COPYONLY)
 
-file(GLOB IMAGE_FILES ${CMAKE_SOURCE_DIR}/View/Graphics/Images/**/*.*)
+file(GLOB IMAGE_FILES ${CMAKE_SOURCE_DIR}/public/Images/**/*.*)
 file(COPY ${IMAGE_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries(cpp_weather_app PRIVATE nlohmann_json::nlohmann_json ${CURL_LIBRARIES} sfml-system sfml-window sfml-graphics sfml-audio sfml-network)

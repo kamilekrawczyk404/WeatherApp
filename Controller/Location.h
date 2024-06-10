@@ -14,7 +14,9 @@
 class Location  {
     std::string name;
 public:
-    std::string errorMessage = "";
+    std::string 
+        fullLocationName,
+        errorMessage = "";
     
     Location(std::string& name);
     bool isOk();

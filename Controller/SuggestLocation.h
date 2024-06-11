@@ -11,6 +11,7 @@
 class SuggestLocation : public FetchAPI {
 public:
     explicit SuggestLocation(std::string &locationPrefix);
+    bool isOk();
 };
 
 

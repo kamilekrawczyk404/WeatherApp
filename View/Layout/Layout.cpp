@@ -70,7 +70,7 @@ void Layout::foreignLanguages(sf::RenderWindow &window) {
 }
 
 void Layout::leftSide(sf::RenderWindow &window) {
-    std::vector<std::string> translatedFeelsLike = {"Odczuwalna", "Feels like", "Abonnieren"};
+    std::vector<std::string> translatedFeelsLike = {"Feels like", "Odczuwalna", "Abonnieren"};
     
     Div mainSectionContainer(leftContainerWidth, leftContainerHeight);
     mainSectionContainer.properties.setPosition(margin - 2.f, top - 10.f);

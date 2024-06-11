@@ -13,7 +13,7 @@
 
 std::vector<std::string> 
     errors = {""},
-    countries = {"pl", "en", "de"};
+    countries = {"en", "pl", "de"};
 nlohmann::json 
     weatherData, 
     additionalInfo, 
@@ -28,7 +28,15 @@ void getPredictionsOfLocations(std::string content) {
 
     if (content.size() >= MINIMUM_LENGTH_FOR_START_SEARCHING) {
         auto *locations = new SuggestLocation(encodedString);
-        predictedLocations = locations->fetchedData;
+
+//        std::cout << "mm";
+        if (!locations->isOk()) {
+            std::cout << "error" << std::endl;
+            errors[0] = locations->errorMessage;
+            delete locations;
+        } else {
+            predictedLocations = locations->fetchedData;
+        }
     }
 }
 
@@ -79,22 +87,21 @@ int main() {
         window.clear();
         background.draw(window);
         locationInput.draw(window);
-        
 
+        // while fetching data an error occurred
+        if (errors[0].size() != 0) {
+            section.draw(window);
+            errorMessage.setText(errors.at(0));
+            errorMessage.draw(window);
+        }
         // weather api returned some data
-        if (!weatherData.empty()) {
+        else if (!weatherData.empty()) {
             ui.loadJson(weatherData, additionalInfo);
             ui.loadEvent(event);
             ui.drawLayout(window);
             
             locationInput.inputText.setString(additionalInfo["locationName"].get<std::string>());
         }
-        // during fetching data an error occurred
-        else if (errors[0].size() != 0) {
-            section.draw(window);
-            errorMessage.setText(errors.at(0));
-            errorMessage.draw(window);
-        } 
         // otherwise display predicted locations
         else {
             int i = 0;

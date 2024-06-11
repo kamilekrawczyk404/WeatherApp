@@ -102,7 +102,7 @@ float Helpers::LagrangeBasis(const std::vector<float>& x, int i, double xPoint) 
     float result = 1.0f;
     
     for(size_t j = 0; j < x.size(); j++) {
-        if (j != i) {
+        if (j != i) {   
             result *= (xPoint - x[j]) / (x[i] - x[j]);
         } 
     }

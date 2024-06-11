@@ -1,14 +1,14 @@
 #include <SFML/Graphics.hpp>
-#include "Controller/Weather.h"
-#include "View/Graphics/Inputs/Input.h"
-#include "View/Graphics/StaticText/StaticText.h"
-#include "View/Graphics/Image/Image.h"
-#include "View/Graphics/Containers/Div.h"
+#include "src/Controller/Weather.h"
+#include "src/View/Graphics/Inputs/Input.h"
+#include "src/View/Graphics/StaticText/StaticText.h"
+#include "src/View/Graphics/Image/Image.h"
+#include "src/View/Graphics/Containers/Div.h"
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <string>
-#include "View/Layout/Layout.h"
-#include "Controller/SuggestLocation.h"
+#include "src/View/Layout/Layout.h"
+#include "src/Controller/SuggestLocation.h"
 #include <algorithm>
 
 std::vector<std::string> 
@@ -29,9 +29,7 @@ void getPredictionsOfLocations(std::string content) {
     if (content.size() >= MINIMUM_LENGTH_FOR_START_SEARCHING) {
         auto *locations = new SuggestLocation(encodedString);
 
-//        std::cout << "mm";
         if (!locations->isOk()) {
-            std::cout << "error" << std::endl;
             errors[0] = locations->errorMessage;
             delete locations;
         } else {
@@ -54,10 +52,9 @@ void getLocation(std::string content) {
 
 int main() {
     float inputWidth = 250.f;
-
-
+    
     Layout ui(countries);
-    Image background("background.jpg");
+    Image background(Helpers::getPath("/images/background.jpg"));
     
     sf::RenderWindow window(sf::VideoMode(background.textureSize.x, background.textureSize.y), "Simple Forecast Application");
 

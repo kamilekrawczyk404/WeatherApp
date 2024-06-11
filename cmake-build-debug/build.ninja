@@ -52,121 +52,128 @@ build cmake_object_order_depends_target_cpp_weather_app: phony || CMakeFiles/cpp
 build CMakeFiles/cpp_weather_app.dir/main.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/main.cpp || cmake_object_order_depends_target_cpp_weather_app
   DEP_FILE = CMakeFiles/cpp_weather_app.dir/main.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
   OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir
 
-build CMakeFiles/cpp_weather_app.dir/Controller/Weather.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/Controller/Weather.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/Controller/Weather.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/Controller/FetchAPI.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/Controller/FetchAPI.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/Controller/FetchAPI.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/Controller
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/Controller
 
-build CMakeFiles/cpp_weather_app.dir/Controller/Location.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/Controller/Location.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/Controller/Location.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/Controller/Helpers.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/Controller/Helpers.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/Controller/Helpers.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/Controller
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/Controller
 
-build CMakeFiles/cpp_weather_app.dir/Controller/FetchAPI.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/Controller/FetchAPI.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/Controller/FetchAPI.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/Controller/KEYS.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/Controller/KEYS.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/Controller/KEYS.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/Controller
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/Controller
 
-build CMakeFiles/cpp_weather_app.dir/Controller/KEYS.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/Controller/KEYS.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/Controller/KEYS.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/Controller/Location.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/Controller/Location.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/Controller/Location.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/Controller
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/Controller
 
-build CMakeFiles/cpp_weather_app.dir/View/Graphics/Inputs/Input.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/View/Graphics/Inputs/Input.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/View/Graphics/Inputs/Input.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/Controller/SuggestLocation.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/Controller/SuggestLocation.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/Controller/SuggestLocation.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/View/Graphics/Inputs
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/Controller
 
-build CMakeFiles/cpp_weather_app.dir/View/Graphics/StaticText/StaticText.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/View/Graphics/StaticText/StaticText.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/View/Graphics/StaticText/StaticText.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/Controller/TranslationAPI.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/Controller/TranslationAPI.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/Controller/TranslationAPI.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/View/Graphics/StaticText
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/Controller
 
-build CMakeFiles/cpp_weather_app.dir/View/Graphics/Font/CustomFont.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/View/Graphics/Font/CustomFont.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/View/Graphics/Font/CustomFont.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/Controller/Weather.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/Controller/Weather.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/Controller/Weather.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/View/Graphics/Font
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/Controller
 
-build CMakeFiles/cpp_weather_app.dir/View/Graphics/Image/Image.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/View/Graphics/Image/Image.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/View/Graphics/Image/Image.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Checkbox/Checkbox.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/View/Graphics/Checkbox/Checkbox.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Checkbox/Checkbox.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/View/Graphics/Image
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Checkbox
 
-build CMakeFiles/cpp_weather_app.dir/View/Graphics/Containers/Div.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/View/Graphics/Containers/Div.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/View/Graphics/Containers/Div.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Containers/Circle.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/View/Graphics/Containers/Circle.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Containers/Circle.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/View/Graphics/Containers
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Containers
 
-build CMakeFiles/cpp_weather_app.dir/View/Graphics/StaticText/CelsiusSign.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/View/Graphics/StaticText/CelsiusSign.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/View/Graphics/StaticText/CelsiusSign.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Containers/Div.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/View/Graphics/Containers/Div.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Containers/Div.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/View/Graphics/StaticText
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Containers
 
-build CMakeFiles/cpp_weather_app.dir/View/Layout/Layout.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/View/Layout/Layout.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/View/Layout/Layout.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Font/CustomFont.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/View/Graphics/Font/CustomFont.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Font/CustomFont.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/View/Layout
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Font
 
-build CMakeFiles/cpp_weather_app.dir/Controller/Helpers.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/Controller/Helpers.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/Controller/Helpers.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Image/Image.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/View/Graphics/Image/Image.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Image/Image.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/Controller
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Image
 
-build CMakeFiles/cpp_weather_app.dir/View/Graphics/Containers/Circle.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/View/Graphics/Containers/Circle.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/View/Graphics/Containers/Circle.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Inputs/Input.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/View/Graphics/Inputs/Input.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Inputs/Input.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/View/Graphics/Containers
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Inputs
 
-build CMakeFiles/cpp_weather_app.dir/View/Layout/Chart.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/View/Layout/Chart.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/View/Layout/Chart.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/View/Graphics/StaticText/CelsiusSign.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/View/Graphics/StaticText/CelsiusSign.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/StaticText/CelsiusSign.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/View/Layout
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/StaticText
 
-build CMakeFiles/cpp_weather_app.dir/Controller/TranslationAPI.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/Controller/TranslationAPI.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/Controller/TranslationAPI.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/View/Graphics/StaticText/StaticText.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/View/Graphics/StaticText/StaticText.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/StaticText/StaticText.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/Controller
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/View/Graphics/StaticText
 
-build CMakeFiles/cpp_weather_app.dir/Controller/SuggestLocation.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/Controller/SuggestLocation.cpp || cmake_object_order_depends_target_cpp_weather_app
-  DEP_FILE = CMakeFiles/cpp_weather_app.dir/Controller/SuggestLocation.cpp.o.d
+build CMakeFiles/cpp_weather_app.dir/src/View/Layout/Chart.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/View/Layout/Chart.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/View/Layout/Chart.cpp.o.d
   FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/include -I/Users/kamilek/Desktop/Projects/cpp_weather_app/View/fonts -isystem /opt/homebrew/include
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
-  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/Controller
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/View/Layout
+
+build CMakeFiles/cpp_weather_app.dir/src/View/Layout/Layout.cpp.o: CXX_COMPILER__cpp_weather_app_unscanned_Debug /Users/kamilek/Desktop/Projects/cpp_weather_app/src/View/Layout/Layout.cpp || cmake_object_order_depends_target_cpp_weather_app
+  DEP_FILE = CMakeFiles/cpp_weather_app.dir/src/View/Layout/Layout.cpp.o.d
+  FLAGS = -Wc++17-extensions -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  INCLUDES = -I/Users/kamilek/Desktop/Projects/cpp_weather_app/src -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/images -I/Users/kamilek/Desktop/Projects/cpp_weather_app/public/fonts -isystem /opt/homebrew/include
+  OBJECT_DIR = CMakeFiles/cpp_weather_app.dir
+  OBJECT_FILE_DIR = CMakeFiles/cpp_weather_app.dir/src/View/Layout
 
 
 # =============================================================================
@@ -176,7 +183,7 @@ build CMakeFiles/cpp_weather_app.dir/Controller/SuggestLocation.cpp.o: CXX_COMPI
 #############################################
 # Link the executable cpp_weather_app
 
-build cpp_weather_app: CXX_EXECUTABLE_LINKER__cpp_weather_app_Debug CMakeFiles/cpp_weather_app.dir/main.cpp.o CMakeFiles/cpp_weather_app.dir/Controller/Weather.cpp.o CMakeFiles/cpp_weather_app.dir/Controller/Location.cpp.o CMakeFiles/cpp_weather_app.dir/Controller/FetchAPI.cpp.o CMakeFiles/cpp_weather_app.dir/Controller/KEYS.cpp.o CMakeFiles/cpp_weather_app.dir/View/Graphics/Inputs/Input.cpp.o CMakeFiles/cpp_weather_app.dir/View/Graphics/StaticText/StaticText.cpp.o CMakeFiles/cpp_weather_app.dir/View/Graphics/Font/CustomFont.cpp.o CMakeFiles/cpp_weather_app.dir/View/Graphics/Image/Image.cpp.o CMakeFiles/cpp_weather_app.dir/View/Graphics/Containers/Div.cpp.o CMakeFiles/cpp_weather_app.dir/View/Graphics/StaticText/CelsiusSign.cpp.o CMakeFiles/cpp_weather_app.dir/View/Layout/Layout.cpp.o CMakeFiles/cpp_weather_app.dir/Controller/Helpers.cpp.o CMakeFiles/cpp_weather_app.dir/View/Graphics/Containers/Circle.cpp.o CMakeFiles/cpp_weather_app.dir/View/Layout/Chart.cpp.o CMakeFiles/cpp_weather_app.dir/Controller/TranslationAPI.cpp.o CMakeFiles/cpp_weather_app.dir/Controller/SuggestLocation.cpp.o | /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib/libcurl.tbd /opt/homebrew/lib/libsfml-graphics.2.6.1.dylib /opt/homebrew/lib/libsfml-audio.2.6.1.dylib /opt/homebrew/lib/libsfml-network.2.6.1.dylib /opt/homebrew/lib/libsfml-window.2.6.1.dylib /opt/homebrew/lib/libsfml-system.2.6.1.dylib
+build cpp_weather_app: CXX_EXECUTABLE_LINKER__cpp_weather_app_Debug CMakeFiles/cpp_weather_app.dir/main.cpp.o CMakeFiles/cpp_weather_app.dir/src/Controller/FetchAPI.cpp.o CMakeFiles/cpp_weather_app.dir/src/Controller/Helpers.cpp.o CMakeFiles/cpp_weather_app.dir/src/Controller/KEYS.cpp.o CMakeFiles/cpp_weather_app.dir/src/Controller/Location.cpp.o CMakeFiles/cpp_weather_app.dir/src/Controller/SuggestLocation.cpp.o CMakeFiles/cpp_weather_app.dir/src/Controller/TranslationAPI.cpp.o CMakeFiles/cpp_weather_app.dir/src/Controller/Weather.cpp.o CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Checkbox/Checkbox.cpp.o CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Containers/Circle.cpp.o CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Containers/Div.cpp.o CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Font/CustomFont.cpp.o CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Image/Image.cpp.o CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Inputs/Input.cpp.o CMakeFiles/cpp_weather_app.dir/src/View/Graphics/StaticText/CelsiusSign.cpp.o CMakeFiles/cpp_weather_app.dir/src/View/Graphics/StaticText/StaticText.cpp.o CMakeFiles/cpp_weather_app.dir/src/View/Layout/Chart.cpp.o CMakeFiles/cpp_weather_app.dir/src/View/Layout/Layout.cpp.o | /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib/libcurl.tbd /opt/homebrew/lib/libsfml-graphics.2.6.1.dylib /opt/homebrew/lib/libsfml-audio.2.6.1.dylib /opt/homebrew/lib/libsfml-network.2.6.1.dylib /opt/homebrew/lib/libsfml-window.2.6.1.dylib /opt/homebrew/lib/libsfml-system.2.6.1.dylib
   FLAGS = -Wc++17-extensions -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/lib/libcurl.tbd  /opt/homebrew/lib/libsfml-graphics.2.6.1.dylib  /opt/homebrew/lib/libsfml-audio.2.6.1.dylib  /opt/homebrew/lib/libsfml-network.2.6.1.dylib  /opt/homebrew/lib/libsfml-window.2.6.1.dylib  /opt/homebrew/lib/libsfml-system.2.6.1.dylib
   OBJECT_DIR = CMakeFiles/cpp_weather_app.dir

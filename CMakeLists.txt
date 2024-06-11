@@ -3,65 +3,33 @@ project(cpp_weather_app)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wc++17-extensions")
 
-set(SOURCE_FILES main.cpp
-        Controller/Weather.cpp
-        Controller/Weather.h
-        Controller/Location.cpp
-        Controller/Location.h
-        Controller/FetchAPI.cpp
-        Controller/FetchAPI.h
-        Controller/KEYS.cpp
-        Controller/KEYS.h
-        View/Graphics/Inputs/Input.cpp
-        View/Graphics/Inputs/Input.h
-        View/Graphics/StaticText/StaticText.cpp
-        View/Graphics/StaticText/StaticText.h
-        View/Graphics/Font/CustomFont.cpp
-        View/Graphics/Font/CustomFont.h
-        View/Graphics/Image/Image.cpp
-        View/Graphics/Image/Image.h
-        View/Graphics/Containers/Div.cpp
-        View/Graphics/Containers/Div.h
-        View/Graphics/StaticText/CelsiusSign.cpp
-        View/Graphics/StaticText/CelsiusSign.h
-        View/Graphics/StaticText/CelsiusSign.cpp
-        View/Layout/Layout.cpp
-        View/Layout/Layout.h
-        Controller/Helpers.cpp
-        Controller/Helpers.h
-        View/Graphics/Containers/Circle.cpp
-        View/Graphics/Containers/Circle.h
-        View/Layout/Chart.cpp
-        View/Layout/Chart.h
-        Controller/TranslationAPI.cpp
-        Controller/TranslationAPI.h
-        Controller/SuggestLocation.cpp
-        Controller/SuggestLocation.h
-)
-
-add_executable(cpp_weather_app ${SOURCE_FILES})
-
-include_directories(${CMAKE_SOURCE_DIR}/include)
-
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 find_package(CURL REQUIRED)
 find_package(nlohmann_json 3.2.0 REQUIRED)
 
-set(FONTS_DIR ${CMAKE_SOURCE_DIR}/View/fonts)
+set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
+set(IMAGE_DIR "${CMAKE_SOURCE_DIR}/public/images")
+set(FONTS_DIR "${CMAKE_SOURCE_DIR}/public/fonts")
+
+file(GLOB_RECURSE SOURCES "${SOURCE_DIR}/**/*.cpp" "${SOURCE_DIR}/**/*.h")
 file(COPY ${FONTS_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 
-target_include_directories(cpp_weather_app PRIVATE ${CMAKE_SOURCE_DIR}/View/fonts)
+file(COPY ${IMAGE_DIR} DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${FONTS_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 
-#configure_file(public/images/background.jpg background.jpg COPYONLY)
-#configure_file(public/images/Components/checked.png checked.png COPYONLY)
-#configure_file(public/images/Components/unchecked.png unchecked.png COPYONLY)
-#configure_file(public/images/CountriesFlags/pl.png pl.png COPYONLY)
-#configure_file(public/images/CountriesFlags/de.png ge.png COPYONLY)
-#configure_file(public/images/CountriesFlags/en.png gb.png COPYONLY)
+add_executable(cpp_weather_app main.cpp ${SOURCES})
 
-file(GLOB IMAGE_FILES ${CMAKE_SOURCE_DIR}/public/Images/**/*.*)
-file(COPY ${IMAGE_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${SOURCE_DIR} ${IMAGE_DIR} ${FONTS_DIR})
+
+#add_custom_target(copy_images ALL
+#        COMMAND ${CMAKE_COMMAND} -E copy_directory
+#        ${IMAGE_DIR} ${CMAKE_BINARY_DIR}/images
+#)
+
+#add_dependencies(cpp_weather_app copy_images)
+
 
 target_link_libraries(cpp_weather_app PRIVATE nlohmann_json::nlohmann_json ${CURL_LIBRARIES} sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 
-
+#target_link_directories(cpp_weather_app PUBLIC ${IMAGE_DIR})
+#target_link_directories()

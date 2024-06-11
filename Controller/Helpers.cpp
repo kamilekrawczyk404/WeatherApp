@@ -37,12 +37,12 @@ nlohmann::json Helpers::getDate(time_t unixSeconds, int shift, int currentGMTOff
         monthIndex = localTime->tm_mon;
     
     const std::vector<std::string> 
-        weekdaysInEnglish({"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}),
-        weekdaysInPolish({"Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"}),
-        weekdaysInGerman({"Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"}),
+        weekdaysInEnglish({"Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."}),
+        weekdaysInPolish({"Niedz.", "Pon.", "Wt.", "S.r", "Czw.", "Pt.", "Sob."}),
+        weekdaysInGerman({"So.", "Mo.", "Di.", "Mi.", "Do.", "Fr.", "Sa."}),
         
         monthsInEnglish({"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}),
-        monthsInPolish({"Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"}),
+        monthsInPolish({"Styczen", "Luty", "Marzec", "Kwiecien", "Maj", "Czerwiec", "Lipiec", "Sierpien", "Wrzesien", "Październik", "Listopad", "Grudzien"}),
         monthsInGerman({ "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"});
     
     return nlohmann::json({

@@ -20,11 +20,11 @@ json Weather::formatData(json &content, json &item) {
          })},
          {"specificInformation", json({
             {"Humidity", json({
-                {"title", json({{"en", "Humidity"}, {"pl", "Wilgotność"}, {"de", "Feuchtigkeit"}})},
+                {"title", json({{"en", "Humidity"}, {"pl", "Wilgotnosc"}, {"de", "Feuchtigkeit"}})},
                 {"value", std::to_string(item["main"]["humidity"].get<int>()) + "%"}
             })},
             {"Pressure", json({
-                {"title", json({{"en", "Air pressure"}, {"pl", "Ciśnienie"}, {"de", "Druck"}})},
+                {"title", json({{"en", "Air pressure"}, {"pl", "Cisnienie"}, {"de", "Druck"}})},
                 {"value", std::to_string(item["main"]["grnd_level"].get<int>()) + "hPa"}
             })},
             {"Cloudiness", json({
@@ -37,7 +37,7 @@ json Weather::formatData(json &content, json &item) {
                 {"deg", item["wind"]["deg"].get<float>()}
             })},
             {"Visibility", json({
-                {"title", json({{"en", "Visibility"}, {"pl", "Widoczność"}, {"de", "Sichtweite"}})},
+                {"title", json({{"en", "Visibility"}, {"pl", "Widocznosc"}, {"de", "Sichtweite"}})},
                 {"value", item.contains("visibility") ? (std::to_string(item["visibility"].get<int>() / 1000)  + "km") : "No data"}
             })},
         })},

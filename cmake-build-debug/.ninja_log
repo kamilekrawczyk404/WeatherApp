@@ -19,3 +19,6 @@
 5	924	1718199434081184797	CMakeFiles/cpp_weather_app.dir/src/Controller/Helpers.cpp.o	5891f04d95669e12
 1435	1851	1718199435011349532	CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Inputs/Input.cpp.o	6b5a717d1ec12f2f
 1137	1557	1718199434716567064	CMakeFiles/cpp_weather_app.dir/src/View/Graphics/Image/Image.cpp.o	7b125e8d210b3631
+5	824	1718781271269445733	CMakeFiles/cpp_weather_app.dir/main.cpp.o	5ef27f7fc2be1bca
+5	1065	1718781271509833988	CMakeFiles/cpp_weather_app.dir/src/Controller/Weather.cpp.o	5b928ae32ef90fa2
+1066	1221	1718781271668288818	cpp_weather_app	f9c80e8937c854f4

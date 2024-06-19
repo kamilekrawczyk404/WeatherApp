@@ -222,8 +222,6 @@ Weather::Weather(std::string& location, std::vector<std::string> &countries):
         {"lowestTemp", std::to_string(Helpers::toCelsius(lowest))},
         {"highestTemp", std::to_string(Helpers::toCelsius(highest))}
     };
-    
-    std::cout << weatherForecast << std::endl;
 }
 
 std::string Weather::getUrl() {

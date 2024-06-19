@@ -52,7 +52,6 @@ void getLocation(std::string content) {
 
 int main() {
     float inputWidth = 250.f;
-    std::cout << Helpers::getPath() << std::endl;
     
     Layout ui(countries);
     Image background("images/background.jpg");

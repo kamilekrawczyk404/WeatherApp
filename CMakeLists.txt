@@ -21,15 +21,15 @@ add_executable(cpp_weather_app main.cpp ${SOURCES})
 
 include_directories(${SOURCE_DIR} ${IMAGE_DIR} ${FONTS_DIR})
 
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  "./cmake-build-debug")
+
+
 #add_custom_target(copy_images ALL
 #        COMMAND ${CMAKE_COMMAND} -E copy_directory
 #        ${IMAGE_DIR} ${CMAKE_BINARY_DIR}/images
 #)
-
+#
 #add_dependencies(cpp_weather_app copy_images)
-
+#add_definitions(-DIMAGE_PATH="${CMAKE_BINARY_DIR}/images")
 
 target_link_libraries(cpp_weather_app PRIVATE nlohmann_json::nlohmann_json ${CURL_LIBRARIES} sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
-
-#target_link_directories(cpp_weather_app PUBLIC ${IMAGE_DIR})
-#target_link_directories()

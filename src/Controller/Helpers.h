@@ -32,7 +32,7 @@ public:
     static float LagrangePolynomial(const std::vector<float>& x, const std::vector<float>& y, float xPoint);
     static sf::Color convertTemperatureToColor(float temp);
     static std::string urlEncode(const std::string &value);
-    static std::string getPath(std::string path);
+    static std::string getPath(std::string path = "");
     
     template<typename T>
     static int findIndex(std::vector<T> &array, T &seeking) {

@@ -52,9 +52,10 @@ void getLocation(std::string content) {
 
 int main() {
     float inputWidth = 250.f;
+    std::cout << Helpers::getPath() << std::endl;
     
     Layout ui(countries);
-    Image background(Helpers::getPath("/images/background.jpg"));
+    Image background("images/background.jpg");
     
     sf::RenderWindow window(sf::VideoMode(background.textureSize.x, background.textureSize.y), "Simple Forecast Application");
 

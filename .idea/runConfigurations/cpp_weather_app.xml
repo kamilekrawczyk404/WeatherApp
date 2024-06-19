@@ -1,5 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="cpp_weather_app" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="cpp_weather_app" TARGET_NAME="cpp_weather_app" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="cpp_weather_app" RUN_TARGET_NAME="cpp_weather_app">
+  <configuration default="false" name="cpp_weather_app" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$CMakeCurrentBuildDir$" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$CMakeCurrentBuildDir$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="cpp_weather_app" TARGET_NAME="cpp_weather_app" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="cpp_weather_app" RUN_TARGET_NAME="cpp_weather_app">
+    <envs>
+      <env name="PATH" value="$PROJECT_DIR$/cmake-build-debug:$USER_HOME$/.platformsh/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/usr/local/MacGPG2/bin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:$USER_HOME$/Library/Application Support/JetBrains/Toolbox/scripts:$USER_HOME$/.composer/vendor/bin" />
+    </envs>
     <method v="2">
       <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
     </method>

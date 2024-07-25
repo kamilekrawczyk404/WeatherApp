@@ -26,9 +26,9 @@ void Input::setPosition(float x, float y) {
 }
 
 void Input::textEntered(sf::Event& event, std::vector<std::string>& errors) {
-    errors[0] = "";
+    errors[0] = ""; 
     
-    if (isalpha(event.text.unicode) || event.text.unicode == '\b') {
+    if (isalpha(event.text.unicode) || event.text.unicode == '\b' || isspace(event.text.unicode) ) {
         if (this->inputText.getString() == placeholder && event.text.unicode != '\b') {
             this->inputText.setString("");
         }
